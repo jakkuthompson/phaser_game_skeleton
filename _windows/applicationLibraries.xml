@@ -1,0 +1,10 @@
+<application>
+  <component name="libraryTable">
+    <library name="emb" type="javaScript">
+      <CLASSES>
+        <root url="file://$USER_HOME$/.WebStorm10/system/extLibs/http_st.chatango.com_js_gz_emb.js" />
+      </CLASSES>
+      <SOURCES />
+    </library>
+  </component>
+</application>
