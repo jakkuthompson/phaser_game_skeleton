@@ -1,4 +1,4 @@
-var Preloader = function (game) {
+var Preloader = function () {
   this.asset = null;
   this.ready = false;
 };
@@ -15,6 +15,7 @@ Preloader.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
     this.load.image('logo', 'assets/TeamSkeltal.gif');
+
 
   },
 
