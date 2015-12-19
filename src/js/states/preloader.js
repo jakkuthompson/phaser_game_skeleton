@@ -18,6 +18,7 @@ Preloader.prototype = {
     this.load.image('menulogo', 'assets/gamelogo.png');
 
 
+
   },
 
   create: function () {

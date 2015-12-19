@@ -12,6 +12,12 @@ Menu.prototype = {
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
 
+    this.playbutton = this.add.sprite(500, 150, 'playbutton');
+    this.playbutton.scale.x = 0.5;
+    this.playbutton.scale.y = 0.5;
+
+
+
 
   },
 
@@ -19,6 +25,7 @@ Menu.prototype = {
   },
 
   onDown: function () {
-    this.game.state.start(playerState.currentLevel);
+
   }
 };
+
