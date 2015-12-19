@@ -8,9 +8,12 @@ Menu.prototype = {
 
   create: function () {
 
-    var style = { font: "65px Arial", fill: "#ffffff", align: "left" };
+    this.asset = this.add.sprite(25, 25, 'menulogo');
+    this.asset.scale.x = 2;
+    this.asset.scale.y = 2;
 
-    this.text = this.add.text(240, 200, "Press to Start", style);
+    var randomvar  = 0;
+
 
   },
 
