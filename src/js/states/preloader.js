@@ -16,6 +16,7 @@ Preloader.prototype = {
     this.load.image('testsprite', 'assets/test.png');
     this.load.image('logo', 'assets/TeamSkeltal.gif');
     this.load.image('menulogo', 'assets/gamelogo.png');
+    this.load.image('menuback', 'assets/background-ruby.png');
 
 
 
