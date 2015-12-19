@@ -12,8 +12,6 @@ Menu.prototype = {
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
 
-    var randomvar  = 0;
-
 
   },
 
