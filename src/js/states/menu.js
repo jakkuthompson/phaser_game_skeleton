@@ -4,6 +4,7 @@ var Menu = function () {
 
 module.exports = Menu;
 
+var music;
 Menu.prototype = {
 
   create: function () {
@@ -22,6 +23,8 @@ Menu.prototype = {
     this.asset = this.add.sprite(564, 300, 'menucredits');
     this.asset.scale.x = 0.7;
     this.asset.scale.y = 0.7;
+    music = this.add.audio('menutheme');
+    music.play()
 
   },
 
