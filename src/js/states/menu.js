@@ -24,7 +24,7 @@ Menu.prototype = {
     this.asset.scale.x = 0.7;
     this.asset.scale.y = 0.7;
     music = this.add.audio('menutheme');
-    music.play()
+    music.play();
 
   },
 
