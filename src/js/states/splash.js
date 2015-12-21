@@ -21,9 +21,7 @@ Splash.prototype = {
 
         this.game.add.tween(this.asset).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-
         this.game.time.events.add(Phaser.Timer.SECOND * 4, update, this);
-
   }
 
 };
