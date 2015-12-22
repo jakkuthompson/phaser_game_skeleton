@@ -8,13 +8,10 @@ var music;
 Menu.prototype = {
 
   create: function () {
-    this.asset = this.add.sprite(0,0, 'menuback');
-    this.asset.scale.x = 0.5;
-    this.asset.scale.y = 0.5;
     this.asset = this.add.sprite(25, 25, 'menulogo');
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
-    this.asset = this.add.sprite(564, 0, 'menuplay');
+    this.asset = this.add.button(564, 0, 'menuplay');
     this.asset.scale.x = 0.7;
     this.asset.scale.y = 0.7;
     this.asset = this.add.sprite(564, 150, 'menusettings');
@@ -35,3 +32,8 @@ Menu.prototype = {
     this.game.state.start(playerState.currentLevel);
   }
 };
+
+function playclick(){
+
+
+}

@@ -21,6 +21,7 @@ Preloader.prototype = {
     this.load.image('menusettings', 'assets/menu/button_un_s.png');
     this.load.image('menucredits', 'assets/menu/button_un_c.png');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
+    this.load.image('menuplay-cl', 'assets/menu/Button_Press.png');
 
 
   },
