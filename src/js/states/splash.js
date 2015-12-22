@@ -10,10 +10,8 @@ module.exports = Splash;
 
 Splash.prototype = {
    create: function () {
-       var x = this.game.width / 2;
-       var y = this.game.height / 2;
 
-       this.asset = this.add.sprite(x, y, 'logo');
+       this.asset = this.add.sprite(240, 240, 'logo');
         this.asset.scale.x = 4;
         this.asset.scale.y = 4;
 
