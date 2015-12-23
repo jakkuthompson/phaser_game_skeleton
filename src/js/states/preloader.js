@@ -17,11 +17,11 @@ Preloader.prototype = {
     this.load.image('logo', 'assets/TeamSkeltal.gif');
     this.load.image('menulogo', 'assets/gamelogo.png');
     this.load.image('menuback', 'assets/background-ruby.png');
-    this.load.image('menuplay', 'assets/menu/button_un.png');
+    this.load.spritesheet('menuplay', 'assets/menu/playbutton.png');
     this.load.image('menusettings', 'assets/menu/button_un_s.png');
     this.load.image('menucredits', 'assets/menu/button_un_c.png');
+    this.load.image('menuplayhov', 'assets/menu/button_press.png');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
-    this.load.image('menuplay-cl', 'assets/menu/Button_Press.png');
 
 
   },

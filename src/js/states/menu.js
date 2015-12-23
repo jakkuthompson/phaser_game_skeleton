@@ -15,7 +15,7 @@ Menu.prototype = {
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
 
-    var play = this.add.sprite(564, 0, 'menuplay');
+    var play = this.add.button(564, 0, 'menuplay');
     play.scale.x = 0.7;
     play.scale.y = 0.7;
     play.inputEnabled = true;
@@ -33,7 +33,6 @@ Menu.prototype = {
   },
 
   update: function () {
-
   },
 
   onDown: function () {
