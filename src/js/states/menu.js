@@ -4,22 +4,27 @@ var Menu = function () {
 
 module.exports = Menu;
 
-var music;
 Menu.prototype = {
 
   create: function () {
     this.asset = this.add.sprite(0, 0, 'menuback');
     this.asset.scale.x = 0.5;
     this.asset.scale.y = 0.5;
+
     this.asset = this.add.sprite(25, 25, 'menulogo');
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
-    this.asset = this.add.button(564, 0, 'menuplay', playclick, this, 1, 0, 2 );
-    this.asset.scale.x = 0.7;
-    this.asset.scale.y = 0.7;
+
+    var play = this.add.sprite(564, 0, 'menuplay');
+    play.scale.x = 0.7;
+    play.scale.y = 0.7;
+    play.inputEnabled = true;
+    play.events.onInputDown.add(listenerPlay, this);
+
     this.asset = this.add.sprite(564, 150, 'menusettings');
     this.asset.scale.x = 0.7;
     this.asset.scale.y = 0.7;
+
     this.asset = this.add.sprite(564, 300, 'menucredits');
     this.asset.scale.x = 0.7;
     this.asset.scale.y = 0.7;
@@ -28,6 +33,7 @@ Menu.prototype = {
   },
 
   update: function () {
+
   },
 
   onDown: function () {
@@ -35,7 +41,7 @@ Menu.prototype = {
   }
 };
 
-function playclick(){
-
-
+  function listenerPlay () {
+    this.game.state.start('Game');
+    music.pause();
 }
