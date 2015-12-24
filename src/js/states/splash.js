@@ -5,21 +5,27 @@ var Splash = function () {
 
 module.exports = Splash;
 
-
+var tween;
 
 
 Splash.prototype = {
    create: function () {
 
-       this.asset = this.add.sprite(240, 240, 'logo');
+       this.asset = this.add.sprite(260, -200, 'logo');
         this.asset.scale.x = 4;
         this.asset.scale.y = 4;
 
-        this.asset.alpha = 0;
+        tween = this.add.tween(this.asset);
 
-        this.game.add.tween(this.asset).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        tween.to({ y: 250 }, 3000, 'Linear', true, 0);
 
-        this.game.time.events.add(Phaser.Timer.SECOND * 4, update, this);
+        this.game.time.events.add(Phaser.Timer.SECOND * 5, update, this);
+
+        bwing = this.add.audio('bwing');
+
+        if(Phaser.Timer.SECOND = 4) {
+            bwing.play()
+        }
   }
 
 };
