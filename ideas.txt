@@ -1,0 +1,11 @@
+top down perspective
+three item slots
+one for each type of item - melee, ranged, defense
+inventory to hold multiple items
+different time periods
+each time period is a level
+each level gives you a unique item to that time period
+
+main character
+name - zephyr
+wears a skeltal mask, completely black clothes, has a hood over his mask.

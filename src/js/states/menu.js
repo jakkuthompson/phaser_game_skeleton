@@ -15,7 +15,7 @@ Menu.prototype = {
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
 
-    play = this.add.button(564, 0, 'menuplay', listenerPlay, this, 0, 1, 2);
+    play = this.add.button(564, 0, 'menuplay', listenerPlay, this, 1, 0, 2);
     play.scale.x = 0.7;
     play.scale.y = 0.7;
 

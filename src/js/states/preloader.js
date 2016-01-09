@@ -17,7 +17,7 @@ Preloader.prototype = {
     this.load.image('logo', 'assets/TeamSkeltal.gif');
     this.load.image('menulogo', 'assets/gamelogo.png');
     this.load.image('menuback', 'assets/background-ruby.png');
-    this.load.spritesheet('menuplay', 'assets/menu/playbutton.png');
+    this.load.spritesheet('menuplay', 'assets/menu/playbutton.png', 338, 170);
     this.load.image('menusettings', 'assets/menu/button_un_s.png');
     this.load.image('menucredits', 'assets/menu/button_un_c.png');
     this.load.image('menuplayhov', 'assets/menu/button_press.png');
