@@ -19,15 +19,13 @@ Menu.prototype = {
     play.scale.x = 0.7;
     play.scale.y = 0.7;
 
-    var settings = this.add.button(564, 150, 'menusettings');
+    var settings = this.add.button(564, 150, 'menusettings', listenerSet, this, 1, 0, 2);
     settings.scale.x = 0.7;
     settings.scale.y = 0.7;
-    settings.onInputDown.add(listenerSet, this);
 
-    var credits = this.add.button(564, 300, 'menucredits');
+    var credits = this.add.button(564, 300, 'menucredits', listenerCredit, this, 1, 0, 2);
     credits.scale.x = 0.7;
     credits.scale.y = 0.7;
-    credits.onInputDown.add(listenerCredit, this);
 
     music = this.add.audio('menutheme');
     music.play();
