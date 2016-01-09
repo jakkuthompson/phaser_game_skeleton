@@ -11,9 +11,9 @@ var tween;
 Splash.prototype = {
    create: function () {
 
-       this.asset = this.add.sprite(260, -200, 'logo');
-        this.asset.scale.x = 4;
-        this.asset.scale.y = 4;
+       this.asset = this.add.sprite(255, -200, 'logo');
+        this.asset.scale.x = 1;
+        this.asset.scale.y = 1;
 
         tween = this.add.tween(this.asset);
 

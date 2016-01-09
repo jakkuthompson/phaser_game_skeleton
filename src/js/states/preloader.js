@@ -14,7 +14,7 @@ Preloader.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
-    this.load.image('logo', 'assets/TeamSkeltal.gif');
+    this.load.image('logo', 'assets/TeamSkeltal.png');
     this.load.image('menulogo', 'assets/gamelogo.png');
     this.load.image('menuback', 'assets/background-ruby.png');
     this.load.spritesheet('menuplay', 'assets/menu/playbutton.png', 338, 170);
