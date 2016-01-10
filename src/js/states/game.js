@@ -38,6 +38,7 @@ Game.prototype = {
   },
 
   onInputDown: function () {
-    this.game.state.start('Menu');
+    var airhorn = this.add.audio('airhorn');
+    airhorn.play();
   }
 };
