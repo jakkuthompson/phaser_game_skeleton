@@ -22,6 +22,7 @@ Preloader.prototype = {
     this.load.spritesheet('menucredits', 'assets/menu/creditsbutton.png', 338, 170);
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
+    this.load.spritesheet('maincharacter', 'assets/game/MainCharacter.png', 160,160,2);
 
 
   },
