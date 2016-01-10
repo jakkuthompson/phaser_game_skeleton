@@ -1,45 +1,57 @@
-var Player = require('../models/player');
+
 
 var Game = function () {
-  this.testentity = null;
+
 };
 
 module.exports = Game;
 
 Game.prototype = {
 
+
+
   create: function () {
-    var x = (this.game.width / 2) - 100;
-    var y = (this.game.height / 2) - 50;
+    this.asset = this.add.sprite(150, 150, 'maincharacter');
+    this.asset.scale.x = 0.5;
+    this.asset.scale.y = 0.5;
+    this.asset.frame = 0; //going to the right
+    this.asset.frame = 1;//going to the left
 
-    this.testentity = new Player(this.game, x, y);
-    this.testentity.anchor.setTo(0.5, 0.5);
+    //keypad input detectors
+    upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+    downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
-    this.input.onDown.add(this.onInputDown, this);
+
   },
 
   update: function () {
-    var x, y, cx, cy, dx, dy, angle, scale;
+    //makes the character move down
+    if (upKey.isDown)
+    {
+      this.asset.y = this.asset.y - 2;
+    }
+    //makes the character move up
+    else if (downKey.isDown)
+    {
+      this.asset.y = this.asset.y + 2;
+    }
+    //makes the character move left
+    if (leftKey.isDown)
+    {
+      this.asset.frame = 1;
+      this.asset.x = this.asset.x - 2;
+    }
+    //makes the character move right
+    else if (rightKey.isDown)
+    {
+      this.asset.frame = 0;
+      this.asset.x = this.asset.x + 2;
+    }
 
-    x = this.input.position.x;
-    y = this.input.position.y;
-    cx = this.world.centerX;
-    cy = this.world.centerY;
 
-    angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
-    this.testentity.angle = angle;
-
-    dx = x - cx;
-    dy = y - cy;
-    scale = Math.sqrt(dx * dx + dy * dy) / 100;
-
-    this.testentity.scale.x = scale * 0.6;
-    this.testentity.scale.y = scale * 0.6;
-  },
-
-  onInputDown: function () {
-    var airhorn = this.add.audio('airhorn');
-    var random = console.log('you have been spooked by the spooky scary game programmer.');
-    airhorn.play();
   }
+
+
 };

@@ -37,6 +37,7 @@ Menu.prototype = {
   onDown: function () {
     this.game.state.start(playerState.currentLevel);
   }
+
 };
 
   function listenerPlay () {
