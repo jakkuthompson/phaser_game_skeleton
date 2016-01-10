@@ -39,6 +39,7 @@ Game.prototype = {
 
   onInputDown: function () {
     var airhorn = this.add.audio('airhorn');
+    var random = console.log('you have been spooked by the spooky scary game programmer.');
     airhorn.play();
   }
 };
