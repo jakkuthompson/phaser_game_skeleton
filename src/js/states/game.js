@@ -11,6 +11,11 @@ Game.prototype = {
 
 
   create: function () {
+    map = this.add.tilemap('testroom');
+    map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
+    layer = map.createLayer('Tile Layer 1');
+    layer.resizeWorld(); //remember to add collision = map.setCollisionBetween(1, 12);
+
     this.asset = this.add.sprite(150, 150, 'maincharacter');
     this.asset.scale.x = 0.5;
     this.asset.scale.y = 0.5;
