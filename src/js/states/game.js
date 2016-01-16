@@ -15,8 +15,10 @@ Game.prototype = {
     //added tilesheet
     map = this.add.tilemap('testroom');
     map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
+    map.setCollision(1048);
+
     layer = map.createLayer('Tile Layer 1');
-    layer.resizeWorld(); //remember to add collision = map.setCollisionBetween(1, 12);
+    layer.debug = true;
 
     this.asset = this.add.sprite(150, 150, 'maincharacter');
     this.asset.scale.x = 0.5;
@@ -50,6 +52,7 @@ Game.prototype = {
   },
 
   update: function () {
+    game.physics.arcade.collide(p, layer);
 
 
 
