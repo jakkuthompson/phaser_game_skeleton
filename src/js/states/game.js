@@ -24,7 +24,12 @@ Game.prototype = {
     this.asset.frame = 0; //going to the right
     this.asset.frame = 1;//going to the left
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
-    this.asset.body.collideWorldBounds = true;
+
+    this.enemy = this.add.sprite(500,150, 'enemy');
+    this.game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
+
+
+
 
 
     //keypad input detectors
