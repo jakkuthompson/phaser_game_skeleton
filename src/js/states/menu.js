@@ -34,6 +34,9 @@ Menu.prototype = {
   },
 
   update: function () {
+
+
+
   },
 
   onDown: function () {

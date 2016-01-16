@@ -12,7 +12,7 @@ Game.prototype = {
 
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
+    //added tilesheet
     map = this.add.tilemap('testroom');
     map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
     layer = map.createLayer('Tile Layer 1');
@@ -24,7 +24,7 @@ Game.prototype = {
     this.asset.frame = 0; //going to the right
     this.asset.frame = 1;//going to the left
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
-
+    //enemy sprite
     this.enemy = this.add.sprite(500,150, 'enemy');
     this.game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
@@ -43,6 +43,9 @@ Game.prototype = {
   },
 
   update: function () {
+
+
+
     //makes the character move down
     if (upKey.isDown) {
       this.asset.y = this.asset.y - 2;
@@ -63,6 +66,9 @@ Game.prototype = {
     }
     this.game.debug.body(this.asset);
 
+    var radians = this.game.physics.arcade.angleBetween(this.enemy, this.asset);
+    var degrees = radians * (180/Math.PI);
+    this.game.physics.arcade.velocityFromAngle(degrees, 60, this.enemy.body.velocity);
 
 
 
