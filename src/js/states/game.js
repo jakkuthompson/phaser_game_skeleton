@@ -27,13 +27,13 @@ Game.prototype = {
     this.asset.frame = 1;//going to the left
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
     //enemy sprite 1
-    this.enemy1 = this.add.sprite(500,150, 'enemy');
+    this.enemy1 = this.add.sprite(310,-1000, 'enemy');
     this.game.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
     //enemy sprite 2
-    this.enemy2 = this.add.sprite(100,500, 'enemy');
+    this.enemy2 = this.add.sprite(310,-3, 'enemy');
     this.game.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
     //enemy sprite 3
-    this.enemy3 = this.add.sprite(400,400, 'enemy');
+    this.enemy3 = this.add.sprite(310,-300, 'enemy');
     this.game.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
 
 

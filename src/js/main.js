@@ -7,7 +7,6 @@ window.Utils = require('./utils');
 window.playerState = {
     currentLevel: 'Game'
 };
-
 game.state.add('Boot', require('./states/boot'));
 game.state.add('Splash', require('./states/splash'));
 game.state.add('Preloader', require('./states/preloader'));
