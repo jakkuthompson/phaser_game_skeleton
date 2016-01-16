@@ -29,7 +29,7 @@ Menu.prototype = {
 
     music = this.add.audio('menutheme');
 
-      //music.play();
+      music.play();
 
   },
 
