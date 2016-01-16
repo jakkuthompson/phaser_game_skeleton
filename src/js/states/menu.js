@@ -28,7 +28,9 @@ Menu.prototype = {
     credits.scale.y = 0.7;
 
     music = this.add.audio('menutheme');
-    music.play();
+
+      //music.play();
+
   },
 
   update: function () {

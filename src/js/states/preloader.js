@@ -5,6 +5,7 @@ var Preloader = function () {
 
 module.exports = Preloader;
 
+
 Preloader.prototype = {
 
   preload: function () {
@@ -25,6 +26,7 @@ Preloader.prototype = {
     this.load.spritesheet('maincharacter', 'assets/game/MainCharacter.png', 160, 160 , 2);
     this.load.tilemap('testroom', 'assets/game/test-room.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
+
 
   },
 
