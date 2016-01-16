@@ -26,6 +26,7 @@ Game.prototype = {
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
     this.asset.body.collideWorldBounds = true;
 
+
     //keypad input detectors
     upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
     downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
@@ -55,6 +56,9 @@ Game.prototype = {
       this.asset.frame = 0;
       this.asset.x = this.asset.x + 2;
     }
+    this.game.debug.body(this.asset);
+
+
 
 
   }
