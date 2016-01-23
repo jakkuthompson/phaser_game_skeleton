@@ -48,6 +48,17 @@ Game.prototype = {
   update: function () {
     this.physics.arcade.collide(this.asset, this.layer);
     this.physics.arcade.collide(this.asset, this.enemy1);
+    this.physics.arcade.collide(this.asset, this.enemy2);
+    this.physics.arcade.collide(this.asset, this.enemy3);
+    this.physics.arcade.collide(this.enemy1, this.enemy2);
+    this.physics.arcade.collide(this.enemy1, this.enemy3);
+    this.physics.arcade.collide(this.enemy2, this.enemy1);
+    this.physics.arcade.collide(this.enemy2, this.enemy3);
+
+
+
+
+
 
 
     //makes the character move down
