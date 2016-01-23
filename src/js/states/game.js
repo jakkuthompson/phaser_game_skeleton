@@ -29,14 +29,26 @@ Game.prototype = {
     this.asset.body.collideWorldBounds = true;
 
     //enemy sprite 1
-    this.enemy1 = this.add.sprite(310,-1000, 'enemy');
+    this.enemy1 = this.add.sprite(400,250, 'enemy');
     this.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
     //enemy sprite 2
-    this.enemy2 = this.add.sprite(310,-3, 'enemy');
+    this.enemy2 = this.add.sprite(200,300, 'enemy');
     this.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
     //enemy sprite 3
     this.enemy3 = this.add.sprite(310,-300, 'enemy');
     this.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
+
+    var tween1;
+    var tween2;
+
+    tween1 = this.game.add.tween(this.enemy1);
+    tween1.to({x: [500, 500, 400, 400], y: [250, 150, 150, 250]}, 2000, "Linear").loop(true);
+    tween1.start();
+
+
+    tween2 = this.game.add.tween(this.enemy2);
+    tween2.to({x: [200,100,100,200], y: [400,400,300,300]}, 2000, "Linear").loop(true);
+    tween2.start();
 
 
     //keypad input detectors
@@ -73,25 +85,12 @@ Game.prototype = {
     //makes the character move right
     else if (rightKey.isDown) {
       this.asset.frame = 0;
-      this.asset.body.velocity.x -= 2;
+      this.asset.body.velocity.x += 2;
     }
     this.game.debug.body(this.asset);
     this.game.debug.body(this.enemy1);
     this.game.debug.body(this.enemy2);
     this.game.debug.body(this.enemy3);
-
-    //enemy one follow
-    var radiansone = this.game.physics.arcade.angleBetween(this.enemy1, this.asset);
-    var degreesone = radiansone * (180/Math.PI);
-    this.game.physics.arcade.velocityFromAngle(degreesone, 60, this.enemy1.body.velocity);
-    //enemy two follow
-    var radianstwo = this.game.physics.arcade.angleBetween(this.enemy2, this.asset);
-    var degreestwo = radianstwo * (180/Math.PI);
-    this.game.physics.arcade.velocityFromAngle(degreestwo, 60, this.enemy2.body.velocity);
-    //enemy three follow
-    var radiansthree = this.game.physics.arcade.angleBetween(this.enemy3, this.asset);
-    var degreesthree = radiansthree * (180/Math.PI);
-    this.game.physics.arcade.velocityFromAngle(degreesthree, 60, this.enemy3.body.velocity);
 
 
 
