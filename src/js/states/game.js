@@ -1,32 +1,31 @@
-
-
 var Game = function () {
-
+  this.map = null;
+  this.layer = null;
 };
 
 module.exports = Game;
 
 Game.prototype = {
 
-
-
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    map = this.add.tilemap('testroom');
-    map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
+    this.map = this.add.tilemap('testroom');
+    this.map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
 
-    layer = map.createLayer('Tile Layer 1');
-    layer.debug = true;
-    map.setCollision(1048);
+    this.layer = this.map.createLayer('Tile Layer 1');
+    this.layer.debug = true;
+    this.map.setCollision(1048);
 
     this.asset = this.add.sprite(150, 150, 'maincharacter');
     this.asset.scale.x = 0.5;
     this.asset.scale.y = 0.5;
     this.asset.frame = 0; //going to the right
     this.asset.frame = 1;//going to the left
-
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
+    this.asset.body.immovable = true;
+    this.asset.body.collideWorldBounds = true;
+
     //enemy sprite 1
     this.enemy1 = this.add.sprite(310,-1000, 'enemy');
     this.game.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
@@ -44,12 +43,22 @@ Game.prototype = {
     leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
-
-
   },
 
   update: function () {
-    this.physics.arcade.collide(this.asset, layer);
+    this.physics.arcade.collide(this.asset, this.layer);
+    this.physics.arcade.collide(this.asset, this.enemy1);
+    this.physics.arcade.collide(this.asset, this.enemy2);
+    this.physics.arcade.collide(this.asset, this.enemy3);
+    this.physics.arcade.collide(this.enemy1, this.enemy2);
+    this.physics.arcade.collide(this.enemy1, this.enemy3);
+    this.physics.arcade.collide(this.enemy2, this.enemy1);
+    this.physics.arcade.collide(this.enemy2, this.enemy3);
+
+
+
+
+
 
 
     //makes the character move down
