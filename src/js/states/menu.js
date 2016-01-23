@@ -56,6 +56,6 @@ Menu.prototype = {
   }
 
   function listenerCredit () {
-    this.game.state.start('Splash');
+    this.game.state.start('Credits');
     music.pause();
   }
