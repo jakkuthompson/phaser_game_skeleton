@@ -1,6 +1,7 @@
 var Game = function () {
   this.map = null;
   this.layer = null;
+  this.cursors = null;
 };
 
 module.exports = Game;
@@ -52,10 +53,8 @@ Game.prototype = {
 
 
     //keypad input detectors
-    upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
-    downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-    leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    this.cursors = this.input.keyboard.createCursorKeys();
+
 
   },
 
@@ -69,24 +68,31 @@ Game.prototype = {
     this.physics.arcade.collide(this.enemy2, this.enemy1);
     this.physics.arcade.collide(this.enemy2, this.enemy3);
 
-    //makes the character move down
-    if (upKey.isDown) {
-      this.asset.body.velocity.y -= 2;
-    }
-    //makes the character move up
-    else if (downKey.isDown) {
-      this.asset.body.velocity.y += 2;
-    }
-    //makes the character move left
-    if (leftKey.isDown) {
+    this.asset.body.velocity.set(0);
+
+    if (this.cursors.left.isDown)
+    {
+      this.asset.body.velocity.x = -100;
       this.asset.frame = 1;
-      this.asset.body.velocity.x -= 2;
     }
-    //makes the character move right
-    else if (rightKey.isDown) {
+    else if (this.cursors.right.isDown)
+    {
+      this.asset.body.velocity.x = 100;
       this.asset.frame = 0;
-      this.asset.body.velocity.x += 2;
     }
+    else if (this.cursors.up.isDown)
+    {
+      this.asset.body.velocity.y = -100;
+    }
+    else if (this.cursors.down.isDown)
+    {
+      this.asset.body.velocity.y = 100;
+    }
+    else
+    {
+      this.asset.animations.stop();
+    }
+
     this.game.debug.body(this.asset);
     this.game.debug.body(this.enemy1);
     this.game.debug.body(this.enemy2);
