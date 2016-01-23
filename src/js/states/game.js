@@ -12,19 +12,20 @@ Game.prototype = {
 
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    //added tilesheet
+
     map = this.add.tilemap('testroom');
     map.addTilesetImage('DungeonCrawl_ProjectUtumnoTileset', 'tileset');
-    map.setCollision(1048);
 
     layer = map.createLayer('Tile Layer 1');
     layer.debug = true;
+    map.setCollision(1048);
 
     this.asset = this.add.sprite(150, 150, 'maincharacter');
     this.asset.scale.x = 0.5;
     this.asset.scale.y = 0.5;
     this.asset.frame = 0; //going to the right
     this.asset.frame = 1;//going to the left
+
     this.game.physics.enable(this.asset, Phaser.Physics.ARCADE);
     //enemy sprite 1
     this.enemy1 = this.add.sprite(310,-1000, 'enemy');
@@ -35,10 +36,6 @@ Game.prototype = {
     //enemy sprite 3
     this.enemy3 = this.add.sprite(310,-300, 'enemy');
     this.game.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
-
-
-
-
 
 
     //keypad input detectors
@@ -52,8 +49,7 @@ Game.prototype = {
   },
 
   update: function () {
-    game.physics.arcade.collide(p, layer);
-
+    this.physics.arcade.collide(this.asset, layer);
 
 
     //makes the character move down
@@ -75,6 +71,10 @@ Game.prototype = {
       this.asset.x = this.asset.x + 2;
     }
     this.game.debug.body(this.asset);
+    this.game.debug.body(this.enemy1);
+    this.game.debug.body(this.enemy2);
+    this.game.debug.body(this.enemy3);
+
     //enemy one follow
     var radiansone = this.game.physics.arcade.angleBetween(this.enemy1, this.asset);
     var degreesone = radiansone * (180/Math.PI);
