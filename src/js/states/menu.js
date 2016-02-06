@@ -15,7 +15,7 @@ Menu.prototype = {
     this.asset.scale.x = 2;
     this.asset.scale.y = 2;
 
-    play = this.add.button(564, 0, 'menuplay', listenerPlay, this, 1, 0, 2);
+    var play = this.add.button(564, 0, 'menuplay', listenerPlay, this, 1, 0, 2);
     play.scale.x = 0.7;
     play.scale.y = 0.7;
 
@@ -56,6 +56,6 @@ Menu.prototype = {
   }
 
   function listenerCredit () {
-    this.game.state.start('Splash');
+    this.game.state.start('Credits');
     music.pause();
   }

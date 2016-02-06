@@ -12,5 +12,7 @@ game.state.add('Splash', require('./states/splash'));
 game.state.add('Preloader', require('./states/preloader'));
 game.state.add('Menu', require('./states/menu'));
 game.state.add('Game', require('./states/game'));
+game.state.add('Credits', require('./states/credits'));
+game.state.add('Settings', require('./states/settings'));
 
 game.state.start('Boot');
