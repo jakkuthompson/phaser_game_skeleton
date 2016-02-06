@@ -24,11 +24,10 @@ Preloader.prototype = {
     this.load.spritesheet('menucredits', 'assets/menu/creditsbutton.png', 338, 170);
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
-    this.load.spritesheet('maincharacter', 'assets/game/Zephyr.png', 30, 45,15,2,2);
+    this.load.spritesheet('maincharacter', 'assets/game/Zephyr.png', 30, 45, 15, 2, 2);
     this.load.tilemap('testroom', 'assets/game/test-room.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
-    this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64,64);
-    this.load.image('bullet', '');
+    this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
   },
 
   create: function () {
@@ -45,4 +44,4 @@ Preloader.prototype = {
     this.ready = true;
   }
 
-;
+};
