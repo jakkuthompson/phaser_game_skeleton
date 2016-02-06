@@ -44,7 +44,7 @@ Game.prototype = {
 
     var tween1;
     var tween2;
-
+//test
     tween1 = this.game.add.tween(this.enemy1);
     tween1.to({x: [500, 500, 400, 400], y: [250, 150, 150, 250]}, 2000, "Linear").loop(true);
     tween1.start();
