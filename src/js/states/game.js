@@ -17,8 +17,8 @@ Game.prototype = {
 
 
     this.map = this.add.tilemap('hub');
-    this.map.addTilesetImage('t1', 'tileset');
-    this.map.addTilesetImage('t2', 'Hanzo-TownSet01VS-1');
+    this.map.addTilesetImage('t1', 'tileset'); //dank memes
+    this.map.addTilesetImage('Hanzo-TownSet01VS-1', 'Hanzo-TownSet01VS-1');
 
     this.layer = this.map.createLayer('t1');
     this.map.setCollision(1193);
