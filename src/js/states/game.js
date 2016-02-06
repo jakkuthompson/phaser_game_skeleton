@@ -36,7 +36,7 @@ Game.prototype = {
     this.enemy2 = this.add.sprite(200,300, 'enemy');
     this.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
     //enemy sprite 3
-    this.enemy3 = this.add.sprite(310,-300, 'enemy');
+    this.enemy3 = this.add.sprite(310,300, 'enemy');
     this.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
 
     var tween1;
