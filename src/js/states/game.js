@@ -20,11 +20,14 @@ Game.prototype = {
     this.layer.resizeWorld();
     this.map.setCollision(1048);
 
+
+
+
     this.asset = this.add.sprite(150, 150, 'maincharacter');
-    this.asset.scale.x = 0.5;
-    this.asset.scale.y = 0.5;
-    this.asset.frame = 0; //going to the right
-    this.asset.frame = 1;//going to the left
+    this.asset.scale.x = 1.5;
+    this.asset.scale.y = 1.5;
+    this.asset.frame = 7; //going to the right
+    this.asset.frame = 4;//going to the left
     this.physics.enable(this.asset, Phaser.Physics.ARCADE);
     this.asset.body.immovable = true;
     this.asset.body.collideWorldBounds = true;
@@ -73,20 +76,22 @@ Game.prototype = {
     if (this.cursors.left.isDown)
     {
       this.asset.body.velocity.x = -100;
-      this.asset.frame = 1;
+      this.asset.frame = 4;
     }
     else if (this.cursors.right.isDown)
     {
       this.asset.body.velocity.x = 100;
-      this.asset.frame = 0;
+      this.asset.frame = 8;
     }
     else if (this.cursors.up.isDown)
     {
       this.asset.body.velocity.y = -100;
+      this.asset.frame = 12;
     }
     else if (this.cursors.down.isDown)
     {
       this.asset.body.velocity.y = 100;
+      this.asset.frame = 1;
     }
     else
     {

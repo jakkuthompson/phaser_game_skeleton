@@ -12,6 +12,7 @@ Preloader.prototype = {
     this.asset = this.add.sprite(320, 240, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
+//test
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
@@ -23,7 +24,7 @@ Preloader.prototype = {
     this.load.spritesheet('menucredits', 'assets/menu/creditsbutton.png', 338, 170);
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
-    this.load.spritesheet('maincharacter', 'assets/game/MainCharacter.png', 160, 160,2);
+    this.load.spritesheet('maincharacter', 'assets/game/Zephyr.png', 30, 45,15,2,2);
     this.load.tilemap('testroom', 'assets/game/test-room.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64,64);
