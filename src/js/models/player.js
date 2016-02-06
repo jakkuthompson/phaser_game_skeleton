@@ -13,6 +13,9 @@ Player.prototype = {
         downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+
+        zKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z); //sword attack
+
     }
 
 };
