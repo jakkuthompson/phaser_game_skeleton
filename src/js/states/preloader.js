@@ -12,6 +12,7 @@ Preloader.prototype = {
     this.asset = this.add.sprite(320, 240, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
+
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
