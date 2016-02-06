@@ -28,7 +28,6 @@ Preloader.prototype = {
     this.load.tilemap('testroom', 'assets/game/test-room.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
-    this.load.image('bullet', 'assets/game/Bullet #1.png')
   },
 
   create: function () {
