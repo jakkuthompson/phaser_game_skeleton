@@ -1,7 +1,8 @@
 var Game = function () {
   this.map = null;
+  this.background = null;
+  this.house = null;
   this.layer = null;
-  this.warp = null;
   this.cursors = null;
 };
 
@@ -15,28 +16,29 @@ Game.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
-
     this.map = this.add.tilemap('hub');
     this.map.addTilesetImage('t1', 'tileset');
-    this.map.addTilesetImage('t2', 'Hanzo-TownSet01VS-1');
 
     this.layer = this.map.createLayer('t1');
-    this.map.setCollision(1193);
+    this.map.setCollision(967);  //Edge Barrier
+    this.map.setTileIndexCallback(979, warpDoor, this.asset);
+    this.map.setCollision(1193); //Barrier
 
-    this.warp = this.map.createLayer('t1');
-    this.warp.debug = true;
-    this.map.setCollision(949);
+    this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
 
-    this.asset = this.add.sprite(this.world.centerX,this.world.centerY, 'maincharacter');
+    this.asset = this.add.sprite(this.world.centerX, this.world.centerY, 'maincharacter');
     this.asset.scale.x = .99;
     this.asset.frame = 7; //going to the right
     this.asset.frame = 4;//going to the left
     this.physics.enable(this.asset, Phaser.Physics.ARCADE);
     this.physics.enable(this.asset, Phaser.Physics.P2JS);
     this.asset.body.immovable = true;
-    this.asset.body.collideWorldBounds = true;
     this.game.world.setBounds(0, 0, 2304, 609);
 
+    this.asset.body.setSize(29, 40, 0, 0);
+
+
+    this.house = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
     //enemy sprite 1
     this.enemy1 = this.add.sprite(400,250, 'enemy');
@@ -67,6 +69,10 @@ Game.prototype = {
 
   },
 
+  warpDoor: function () {
+   this.game.start(Shop);
+},
+
   update: function () {
     this.physics.arcade.collide(this.asset, this.layer);
     this.physics.arcade.collide(this.asset, this.enemy1);
@@ -91,12 +97,12 @@ Game.prototype = {
     }
     else if (this.cursors.up.isDown)
     {
-      this.asset.body.velocity.y = -100;
+      this.asset.body.velocity.y = -200;
         this.asset.frame = 12;
     }
     else if (this.cursors.down.isDown)
     {
-      this.asset.body.velocity.y = 100;
+      this.asset.body.velocity.y = 200;
         this.asset.frame = 1;
     }
     else
@@ -104,7 +110,7 @@ Game.prototype = {
       this.asset.animations.stop();
     }
 
-
+    this.game.debug.body(this.asset);
 
 
   }
