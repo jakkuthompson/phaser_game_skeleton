@@ -23,6 +23,7 @@ Preloader.prototype = {
     this.load.spritesheet('menucredits', 'assets/menu/creditsbutton.png', 338, 170);
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
+    this.load.audio('overworld', 'assets/audio/overworld.mp3');
     this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 30, 45, 15, 2, 2);
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
@@ -45,5 +46,6 @@ Preloader.prototype = {
 
   onLoadComplete: function () {
     this.ready = true;
+
   }
 };

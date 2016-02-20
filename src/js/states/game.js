@@ -4,9 +4,8 @@ var Game = function () {
   this.house = null;
   this.layer = null;
   this.cursors = null;
+  this.music = null;
 };
-
-
 
 module.exports = Game;
 
@@ -16,12 +15,21 @@ Game.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
+    this.music = this.add.audio('overworld');
+    this.music.play();
+
     this.map = this.add.tilemap('hub');
     this.map.addTilesetImage('t1', 'tileset');
 
     this.layer = this.map.createLayer('t1');
     this.map.setCollision(967);  //Edge Barrier
-    this.map.setTileIndexCallback(979, warpDoor, this.asset);
+    this.map.setTileIndexCallback(979, () => {
+        this.game.state.start('Level1');
+    }, this.asset);
+    this.map.setTileIndexCallback(1005, () => {
+      this.game.state.start('Shop');
+      this.music.pause();
+    }, this.asset);
     this.map.setCollision(1193); //Barrier
 
     this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
@@ -66,12 +74,7 @@ Game.prototype = {
 
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
-
   },
-
-  warpDoor: function () {
-   this.game.start(Shop);
-},
 
   update: function () {
     this.physics.arcade.collide(this.asset, this.layer);
