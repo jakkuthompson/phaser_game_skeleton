@@ -136,7 +136,7 @@ Game.prototype = {
       }
 
     }
-
+//change
 
     this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; }, this);
     this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false;}, this);
