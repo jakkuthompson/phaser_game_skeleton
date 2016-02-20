@@ -5,7 +5,8 @@ var Game = function () {
   this.cursors = null;
 };
 
-
+     var enemy1health = 66;
+    var enemy2health = 66;
 
 
 module.exports = Game;
@@ -21,15 +22,10 @@ Game.prototype = {
 
     //tilemap
     this.map = this.add.tilemap('hub');
-    this.map.addTilesetImage('t1', 'tileset'); //dank memes
-    this.map.addTilesetImage('Hanzo-TownSet01VS-1', 'Hanzo-TownSet01VS-1');
+    this.map.addTilesetImage('t1', 'tileset');
 
     this.layer = this.map.createLayer('t1');
     this.map.setCollision(1193);
-
-    this.warp = this.map.createLayer('t1');
-    this.warp.debug = true;
-    this.map.setCollision(949);
 
     //info for the main character
 
@@ -46,13 +42,11 @@ Game.prototype = {
 
     //enemy sprite 1
     this.enemy1 = this.add.sprite(400,250, 'enemy');
-    this.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
+    this.game.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
     //enemy sprite 2
     this.enemy2 = this.add.sprite(200,300, 'enemy');
-    this.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
-    //enemy sprite 3
-    anim1 = this.enemy3 = this.add.sprite(310,-300, 'enemy');
-    this.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
+    this.game.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
+
 
     //sword sprite
     this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
@@ -60,14 +54,14 @@ Game.prototype = {
     this.sword.scale.y = 0.25;
     this.sword.animations.add('swing');
     this.sword.visible = false;
+    this.game.physics.enable(this.sword, Phaser.Physics.ARCADE);
     //sword two sprite
     this.sword2 = this.add.sprite(this.asset.x,this.asset.y,'sword2');
     this.sword2.scale.x = 0.25;
     this.sword2.scale.y = 0.25;
     this.sword2.animations.add('swingtwo');
     this.sword2.visible = false;
-
-
+    this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
 
 
 
@@ -99,13 +93,8 @@ Game.prototype = {
 
 
     this.physics.arcade.collide(this.asset, this.layer);
-    this.physics.arcade.collide(this.asset, this.enemy1);
-    this.physics.arcade.collide(this.asset, this.enemy2);
-    this.physics.arcade.collide(this.asset, this.enemy3);
     this.physics.arcade.collide(this.enemy1, this.enemy2);
-    this.physics.arcade.collide(this.enemy1, this.enemy3);
     this.physics.arcade.collide(this.enemy2, this.enemy1);
-    this.physics.arcade.collide(this.enemy2, this.enemy3);
 
     //main character movement
     this.asset.body.velocity.set(0);
@@ -153,27 +142,56 @@ Game.prototype = {
     this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false;}, this);
 
 
-
-
     //keep the sword by the main character
     this.sword.x = this.asset.x;
     this.sword.y = this.asset.y;
     this.sword2.x = this.asset.x - 20;
     this.sword2.y = this.asset.y;
 
+    if(this.sword.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
+    }
+    if(this.sword2.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword2, this.enemy1, enemy1attacked, null, this);
+    }
+
+    if(this.sword.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword, this.enemy2, enemy2attacked, null, this);
+    }
+    if(this.sword2.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
+    }
+
+
+
+
+    if(enemy1health == 0){
+      this.enemy1.visible = false;
+    }
+
+    if(enemy2health == 0){
+      this.enemy2.visible = false;
+    }
 
 
   }
 
 
 
-
-
-
-
-
 };
 
 
+function enemy1attacked (){
 
+  enemy1health = enemy1health - 1;
+
+
+}
+
+function enemy2attacked (){
+
+  enemy2health = enemy2health - 1;
+
+
+}
 
