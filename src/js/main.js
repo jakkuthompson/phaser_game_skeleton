@@ -14,5 +14,6 @@ game.state.add('Menu', require('./states/menu'));
 game.state.add('Game', require('./states/game'));
 game.state.add('Credits', require('./states/credits'));
 game.state.add('Settings', require('./states/settings'));
+game.state.add('Shop', require('./states/shop'));
 
 game.state.start('Boot');

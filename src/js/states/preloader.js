@@ -24,7 +24,8 @@ Preloader.prototype = {
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
     this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 30, 45, 15, 2, 2);
-    this.load.tilemap('testroom', 'assets/game/test-room.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.image('hubimg', 'assets/game/hub.png');
+    this.load.image('hubimg2', 'assets/game/hub2.png');
     this.load.tilemap('hub', 'assets/game/hub.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
