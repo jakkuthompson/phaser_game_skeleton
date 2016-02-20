@@ -1,66 +1,76 @@
 var Game = function () {
   this.map = null;
-  this.background = null;
-  this.house = null;
   this.layer = null;
+  this.warp = null;
   this.cursors = null;
-  this.music = null;
 };
+
+     var enemy1health = 66;
+    var enemy2health = 66;
+
 
 module.exports = Game;
 
 Game.prototype = {
 
+
+
+
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
-    this.music = this.add.audio('overworld');
-    this.music.play();
-
+    //tilemap
     this.map = this.add.tilemap('hub');
     this.map.addTilesetImage('t1', 'tileset');
 
     this.layer = this.map.createLayer('t1');
-    this.map.setCollision(967);  //Edge Barrier
-    this.map.setTileIndexCallback(979, () => {
-        this.game.state.start('Level1');
-    }, this.asset);
-    this.map.setTileIndexCallback(1005, () => {
-      this.game.state.start('Shop');
-      this.music.pause();
-    }, this.asset);
-    this.map.setCollision(1193); //Barrier
+    this.map.setCollision(1193);
 
-    this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
+    //info for the main character
 
-    this.asset = this.add.sprite(this.world.centerX, this.world.centerY, 'maincharacter');
+    this.asset = this.add.sprite(this.world.centerX,this.world.centerY, 'maincharacter');
     this.asset.scale.x = .99;
     this.asset.frame = 7; //going to the right
     this.asset.frame = 4;//going to the left
     this.physics.enable(this.asset, Phaser.Physics.ARCADE);
     this.physics.enable(this.asset, Phaser.Physics.P2JS);
     this.asset.body.immovable = true;
+    this.asset.body.collideWorldBounds = true;
     this.game.world.setBounds(0, 0, 2304, 609);
 
-    this.asset.body.setSize(29, 40, 0, 0);
-
-
-    this.house = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
     //enemy sprite 1
     this.enemy1 = this.add.sprite(400,250, 'enemy');
-    this.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
+    this.game.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
     //enemy sprite 2
     this.enemy2 = this.add.sprite(200,300, 'enemy');
-    this.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
-    //enemy sprite 3
-    this.enemy3 = this.add.sprite(310,-300, 'enemy');
-    this.physics.enable(this.enemy3, Phaser.Physics.ARCADE);
+    this.game.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
 
+
+    //sword sprite
+    this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
+    this.sword.scale.x = 0.25;
+    this.sword.scale.y = 0.25;
+    this.sword.animations.add('swing');
+    this.sword.visible = false;
+    this.game.physics.enable(this.sword, Phaser.Physics.ARCADE);
+    //sword two sprite
+    this.sword2 = this.add.sprite(this.asset.x,this.asset.y,'sword2');
+    this.sword2.scale.x = 0.25;
+    this.sword2.scale.y = 0.25;
+    this.sword2.animations.add('swingtwo');
+    this.sword2.visible = false;
+    this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
+
+
+
+
+    //enemy path
     var tween1;
     var tween2;
-//test
+
+
     tween1 = this.game.add.tween(this.enemy1);
     tween1.to({x: [500, 500, 400, 400], y: [250, 150, 150, 250]}, 2000, "Linear").loop(true);
     tween1.start();
@@ -74,49 +84,114 @@ Game.prototype = {
 
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
+
   },
 
   update: function () {
-    this.physics.arcade.collide(this.asset, this.layer);
-    this.physics.arcade.collide(this.asset, this.enemy1);
-    this.physics.arcade.collide(this.asset, this.enemy2);
-    this.physics.arcade.collide(this.asset, this.enemy3);
-    this.physics.arcade.collide(this.enemy1, this.enemy2);
-    this.physics.arcade.collide(this.enemy1, this.enemy3);
-    this.physics.arcade.collide(this.enemy2, this.enemy1);
-    this.physics.arcade.collide(this.enemy2, this.enemy3);
+    var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
+
+
+    this.physics.arcade.collide(this.asset, this.layer);
+    this.physics.arcade.collide(this.enemy1, this.enemy2);
+    this.physics.arcade.collide(this.enemy2, this.enemy1);
+
+    //main character movement
     this.asset.body.velocity.set(0);
 
-    if (this.cursors.left.isDown)
-    {
+    if (this.cursors.left.isDown) {
       this.asset.body.velocity.x = -200;
       this.asset.frame = 4;
+      this.sword.frame = 2;
+      this.sword.angle = 0;
     }
-    else if (this.cursors.right.isDown)
-    {
+    else if (this.cursors.right.isDown) {
       this.asset.body.velocity.x = 200;
       this.asset.frame = 8;
+      this.sword.frame = 1;
     }
-    else if (this.cursors.up.isDown)
-    {
-      this.asset.body.velocity.y = -200;
+    else if (this.cursors.up.isDown) {
+      this.asset.body.velocity.y = -100;
         this.asset.frame = 12;
     }
-    else if (this.cursors.down.isDown)
-    {
-      this.asset.body.velocity.y = 200;
+    else if (this.cursors.down.isDown) {
+      this.asset.body.velocity.y = 100;
         this.asset.frame = 1;
     }
-    else
-    {
+    else {
       this.asset.animations.stop();
     }
 
-    this.game.debug.body(this.asset);
+    //sword attack
+    if(attackKey.isDown){
+      if(this.asset.frame == 8){
+        this.sword.visible = true;
+        this.sword.animations.play('swing', 13, false);
+      }
+      if(this.asset.frame == 4){
+        this.sword2.visible = true;
+        this.sword2.animations.play('swingtwo', 13, false);
+
+
+      }
+
+    }
+
+
+    this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; }, this);
+    this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false;}, this);
+
+
+    //keep the sword by the main character
+    this.sword.x = this.asset.x;
+    this.sword.y = this.asset.y;
+    this.sword2.x = this.asset.x - 20;
+    this.sword2.y = this.asset.y;
+
+    if(this.sword.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
+    }
+    if(this.sword2.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword2, this.enemy1, enemy1attacked, null, this);
+    }
+
+    if(this.sword.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword, this.enemy2, enemy2attacked, null, this);
+    }
+    if(this.sword2.animations.currentAnim.isPlaying == true) {
+      this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
+    }
+
+
+
+
+    if(enemy1health == 0){
+      this.enemy1.visible = false;
+    }
+
+    if(enemy2health == 0){
+      this.enemy2.visible = false;
+    }
 
 
   }
 
 
+
 };
+
+
+function enemy1attacked (){
+
+  enemy1health = enemy1health - 1;
+
+
+}
+
+function enemy2attacked (){
+
+  enemy2health = enemy2health - 1;
+
+
+}
+

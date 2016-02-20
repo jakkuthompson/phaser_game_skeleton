@@ -31,6 +31,8 @@ Preloader.prototype = {
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64,64);
+    this.load.spritesheet('sword', 'assets/game/Sword.png',192,192,7)
+    this.load.spritesheet('sword2', 'assets/game/sword2.png',192,192,7)
 
   },
 
