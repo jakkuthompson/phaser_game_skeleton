@@ -1,44 +1,59 @@
 var Game = function () {
   this.map = null;
   this.layer = null;
-  this.warp = null;
   this.cursors = null;
+  this.music = null;
+  this.background = null;
+  this.background2 = null;
+
 };
 
-     var enemy1health = 66;
-    var enemy2health = 66;
+var enemy1health = 66;
+var enemy2health = 66;
 
 
 module.exports = Game;
 
 Game.prototype = {
 
-
-
-
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
+
+    this.music = this.add.audio('overworld');
+    this.music.play();
 
     //tilemap
     this.map = this.add.tilemap('hub');
     this.map.addTilesetImage('t1', 'tileset');
 
     this.layer = this.map.createLayer('t1');
-    this.map.setCollision(1193);
+    this.map.setCollision(967);  //Edge Barrier
+    this.map.setTileIndexCallback(979, () => {
+      this.game.state.start('Level1');
+      this.music.pause();
+    }, this.asset);
+    this.map.setTileIndexCallback(1005, () => {
+      this.game.state.start('Shop');
+      this.music.pause();
+    }, this.asset);
+    this.map.setCollision(1193); //Barrier
 
-    //info for the main character
+    this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
 
     this.asset = this.add.sprite(this.world.centerX,this.world.centerY, 'maincharacter');
     this.asset.scale.x = .99;
-    this.asset.frame = 7; //going to the right
-    this.asset.frame = 4;//going to the left
+    this.asset.animations.add('left', [3, 4, 5], 20, true);
+    this.asset.animations.add('right', [6, 7, 8], 20, true);
+    this.asset.animations.add('down', [0, 1, 2], 20, true);
+    this.asset.animations.add('up', [9, 10, 11], 20, true);
     this.physics.enable(this.asset, Phaser.Physics.ARCADE);
     this.physics.enable(this.asset, Phaser.Physics.P2JS);
     this.asset.body.immovable = true;
     this.asset.body.collideWorldBounds = true;
     this.game.world.setBounds(0, 0, 2304, 609);
 
+    this.background2 = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
     //enemy sprite 1
     this.enemy1 = this.add.sprite(400,250, 'enemy');
@@ -62,9 +77,6 @@ Game.prototype = {
     this.sword2.animations.add('swingtwo');
     this.sword2.visible = false;
     this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
-
-
-
 
     //enemy path
     var tween1;
@@ -101,22 +113,19 @@ Game.prototype = {
 
     if (this.cursors.left.isDown) {
       this.asset.body.velocity.x = -200;
-      this.asset.frame = 4;
-      this.sword.frame = 2;
-      this.sword.angle = 0;
+      this.asset.play('left');
     }
     else if (this.cursors.right.isDown) {
       this.asset.body.velocity.x = 200;
-      this.asset.frame = 8;
-      this.sword.frame = 1;
+      this.asset.play('right');
     }
     else if (this.cursors.up.isDown) {
-      this.asset.body.velocity.y = -100;
-        this.asset.frame = 12;
+      this.asset.body.velocity.y = -200;
+        this.asset.play('up');
     }
     else if (this.cursors.down.isDown) {
-      this.asset.body.velocity.y = 100;
-        this.asset.frame = 1;
+      this.asset.body.velocity.y = 200;
+        this.asset.play('down');
     }
     else {
       this.asset.animations.stop();

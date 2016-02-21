@@ -1,5 +1,6 @@
 var Menu = function () {
   this.text = null;
+  this.music = null;
 };
 
 module.exports = Menu;
@@ -27,10 +28,6 @@ Menu.prototype = {
     credits.scale.x = 0.7;
     credits.scale.y = 0.7;
 
-    music = this.add.audio('menutheme');
-
-      music.play();
-
   },
 
   update: function () {
@@ -47,15 +44,15 @@ Menu.prototype = {
 
   function listenerPlay () {
     this.game.state.start('Game');
-    music.pause();
+    this.music.pause();
 }
 
   function listenerSet () {
     this.game.state.start('Preloader');
-    music.pause();
+    this.music.pause();
   }
 
   function listenerCredit () {
     this.game.state.start('Credits');
-    music.pause();
+    this.music.pause();
   }
