@@ -1,5 +1,9 @@
 var Shop = function () {
     this.background = null;
+    this.item1 = null;
+    this.item2 = null;
+    this.item3 = null;
+    this.cursors = null;
 };
 
 module.exports = Shop;
@@ -20,6 +24,18 @@ Shop.prototype = {
         this.asset = this.add.sprite(0, 65, 'shopkeeper');
         this.asset.scale.x = 2;
         this.asset.scale.y = 2;
-    }
+        this.item1 = this.add.text(385, 55, "Some item.", {
+            font: "30px Arial",
+            fill: "#000"
+        });
+        this.item2 = this.add.text(385, 95, "Some item.", {
+            font: "30px Arial",
+            fill: "#000"
+        });
 
+        this.item3 = this.add.text(385, 135, "Some item.", {
+            font: "30px Arial",
+            fill: "#000"
+        });
+    }
 };

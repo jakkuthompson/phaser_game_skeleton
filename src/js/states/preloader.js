@@ -9,7 +9,7 @@ module.exports = Preloader;
 Preloader.prototype = {
 
   preload: function () {
-    this.asset = this.add.sprite(320, 240, 'preloader');
+    this.asset = this.add.sprite(this.world.centerX, this.world.centerY, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
@@ -24,7 +24,7 @@ Preloader.prototype = {
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
     this.load.audio('overworld', 'assets/audio/overworld.mp3');
-    this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 30, 45, 15, 2, 2);
+    this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 32, 32);
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
     this.load.tilemap('hub', 'assets/game/hub.json', null, Phaser.Tilemap.TILED_JSON);
