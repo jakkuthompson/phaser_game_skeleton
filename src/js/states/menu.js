@@ -48,7 +48,7 @@ Menu.prototype = {
 }
 
   function listenerSet () {
-    this.game.state.start('Preloader');
+    this.game.state.start('Settings');
     this.music.pause();
   }
 
