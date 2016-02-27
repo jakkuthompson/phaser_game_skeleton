@@ -41,7 +41,7 @@ Game.prototype = {
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
       this.game.state.start('Shop');
-      this.music.pause();
+      this.music.pause(); //bruh
     }, this.asset);
     this.map.setCollision(1193); //Barrier
 
