@@ -37,5 +37,15 @@ Shop.prototype = {
             font: "30px Arial",
             fill: "#000"
         });
+
+        var back = this.add.button(730, 0, 'exitstore', backtogame, this, 1, 0, 2);
+        back.scale.x = 0.7;
+        back.scale.y = 0.7;
+
     }
 };
+
+function backtogame (){
+    this.game.state.start('Game');
+
+}
