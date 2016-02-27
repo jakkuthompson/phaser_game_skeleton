@@ -5,8 +5,13 @@ var Game = function () {
   this.music = null;
   this.background = null;
   this.background2 = null;
-
+  this.sword = null;
+  this.sword2 = null;
+  this.pause = null;
+  this.pauseMenu = null;
 };
+
+var Game = require("../models/player");
 
 var enemy1health = 66;
 var enemy2health = 66;
@@ -97,6 +102,24 @@ Game.prototype = {
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    this.pause = this.add.image(764, 0, 'pause');
+    this.pause.fixedToCamera = true;
+    this.pause.scale.x = .1;
+    this.pause.scale.y = .1;
+    this.pause.inputEnabled = true;
+    this.pause.events.onInputDown.add(() => {
+      this.game.paused = true;
+      this.music.pause();
+    });
+
+    this.game.input.onDown.add(() => {
+      if(this.game.paused) {
+      this.game.paused = false;
+      this.music.resume();
+      }
+      else {
+        }
+    }, self);
   },
 
   update: function () {
