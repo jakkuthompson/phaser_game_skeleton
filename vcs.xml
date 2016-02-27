@@ -6,7 +6,12 @@
           <option name="url" value="http://github.com" />
           <option name="userName" value="jakkuthompson" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/coderdojotoledo/coderdojotoledo.github.io.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
+    <option name="cloneParentDir" value="C:\Users\DogeMaster420 (Jack)\WebstormProjects" />
   </component>
 </application>
