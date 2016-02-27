@@ -25,7 +25,7 @@ Preloader.prototype = {
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
     this.load.audio('overworld', 'assets/audio/overworld.mp3');
     this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 32, 32);
-    this.load.image('pause', 'assets/game/shop/pause_boyyyy_360.png');
+    this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
     this.load.image('play', 'assets/game/shop/play_360.png');
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');

@@ -105,7 +105,7 @@ Game.prototype = {
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.pause = this.add.image(764, 0, 'pause');
+    this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
     this.pause.fixedToCamera = true;
     this.pause.scale.x = .1;
     this.pause.scale.y = .1;
@@ -247,6 +247,10 @@ function enemy2attacked (){
 }
 
 function heroattacked (){
+
+}
+
+function listenerPause () {
 
 }
 
