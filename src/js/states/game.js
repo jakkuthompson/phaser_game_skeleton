@@ -15,6 +15,7 @@ var Game = require("../models/player");
 
 var enemy1health = 66;
 var enemy2health = 66;
+var herohealth = 100;
 
 
 module.exports = Game;
@@ -57,6 +58,8 @@ Game.prototype = {
     this.asset.body.immovable = true;
     this.asset.body.collideWorldBounds = true;
     this.game.world.setBounds(0, 0, 2304, 609);
+
+
 
     this.background2 = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
@@ -124,7 +127,11 @@ Game.prototype = {
 
   update: function () {
     var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
-
+    var wKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+    var sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+    var aKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+    var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 
     this.physics.arcade.collide(this.asset, this.layer);
@@ -134,19 +141,19 @@ Game.prototype = {
     //main character movement
     this.asset.body.velocity.set(0);
 
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || aKey.isDown) {
       this.asset.body.velocity.x = -200;
       this.asset.play('left');
     }
-    else if (this.cursors.right.isDown) {
+    else if (this.cursors.right.isDown || dKey.isDown) {
       this.asset.body.velocity.x = 200;
       this.asset.play('right');
     }
-    else if (this.cursors.up.isDown) {
+    else if (this.cursors.up.isDown || wKey.isDown) {
       this.asset.body.velocity.y = -200;
         this.asset.play('up');
     }
-    else if (this.cursors.down.isDown) {
+    else if (this.cursors.down.isDown || sKey.isDown) {
       this.asset.body.velocity.y = 200;
         this.asset.play('down');
     }
@@ -155,12 +162,12 @@ Game.prototype = {
     }
 
     //sword attack
-    if(attackKey.isDown){
-      if(this.asset.frame == 8){
+    if(attackKey.isDown || spacebar.isDown){
+      if(this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8){
         this.sword.visible = true;
         this.sword.animations.play('swing', 13, false);
       }
-      if(this.asset.frame == 4){
+      if(this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5){
         this.sword2.visible = true;
         this.sword2.animations.play('swingtwo', 13, false);
 
@@ -168,7 +175,7 @@ Game.prototype = {
       }
 
     }
-//change
+
 
     this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; }, this);
     this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false;}, this);
@@ -180,6 +187,7 @@ Game.prototype = {
     this.sword2.x = this.asset.x - 20;
     this.sword2.y = this.asset.y;
 
+    //collision detection for hitting the enemies
     if(this.sword.animations.currentAnim.isPlaying == true) {
       this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
     }
@@ -196,14 +204,25 @@ Game.prototype = {
 
 
 
-
+    //check for enemy kill
     if(enemy1health == 0){
       this.enemy1.visible = false;
+
     }
 
     if(enemy2health == 0){
       this.enemy2.visible = false;
+
     }
+
+    //collision detection for hero getting attacked
+    this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
+    this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+
+
+
+
+
 
 
   }
@@ -224,6 +243,10 @@ function enemy2attacked (){
 
   enemy2health = enemy2health - 1;
 
+
+}
+
+function heroattacked (){
 
 }
 
