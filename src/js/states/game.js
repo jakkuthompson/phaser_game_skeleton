@@ -10,6 +10,7 @@ var Game = function () {
 
 var enemy1health = 66;
 var enemy2health = 66;
+var herohealth = 100;
 
 
 module.exports = Game;
@@ -163,6 +164,7 @@ Game.prototype = {
     this.sword2.x = this.asset.x - 20;
     this.sword2.y = this.asset.y;
 
+    //collision detection for hitting the enemies
     if(this.sword.animations.currentAnim.isPlaying == true) {
       this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
     }
@@ -179,7 +181,7 @@ Game.prototype = {
 
 
 
-
+    //check for enemy kill
     if(enemy1health == 0){
       this.enemy1.visible = false;
 
@@ -189,6 +191,15 @@ Game.prototype = {
       this.enemy2.visible = false;
 
     }
+
+    //collision detection for hero getting attacked
+    this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
+    this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+
+
+
+
+
 
 
   }
@@ -209,6 +220,10 @@ function enemy2attacked (){
 
   enemy2health = enemy2health - 1;
 
+
+}
+
+function heroattacked (){
 
 }
 
