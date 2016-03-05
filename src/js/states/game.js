@@ -13,10 +13,12 @@ var Game = function () {
 
 var Game = require("../models/player");
 
-var enemy1health = 66;
-var enemy2health = 66;
+var enemy1health = 3;
+var enemy2health = 3;
 var herohealth = 100;
 var money = 0;
+var alreadyhit1 = 0
+var alreadyhit2 = 0;
 
 
 
@@ -182,8 +184,10 @@ Game.prototype = {
     }
 
 
-    this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; }, this);
-    this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false;}, this);
+    this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
+      alreadyhit2 = 0; }, this);
+    this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
+      alreadyhit2 = 0;}, this);
 
 
     //keep the sword by the main character
@@ -193,20 +197,19 @@ Game.prototype = {
     this.sword2.y = this.asset.y;
 
     //collision detection for hitting the enemies
-    if(this.sword.animations.currentAnim.isPlaying == true) {
+    if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
       this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
     }
-    if(this.sword2.animations.currentAnim.isPlaying == true) {
+    if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
       this.game.physics.arcade.overlap(this.sword2, this.enemy1, enemy1attacked, null, this);
     }
 
-    if(this.sword.animations.currentAnim.isPlaying == true) {
+    if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
       this.game.physics.arcade.overlap(this.sword, this.enemy2, enemy2attacked, null, this);
     }
-    if(this.sword2.animations.currentAnim.isPlaying == true) {
+    if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
       this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
     }
-
 
 
     //check for enemy kill
@@ -218,7 +221,7 @@ Game.prototype = {
 
     if(enemy2health == 0){
       this.enemy2.visible = false;
-      money= money + 10;
+      money = money + 10;
     }
 
     //collision detection for hero getting attacked
@@ -237,7 +240,6 @@ Game.prototype = {
 
 
 
-
   }
 
 
@@ -245,16 +247,16 @@ Game.prototype = {
 };
 
 
-function enemy1attacked (){
-
-  enemy1health = enemy1health - 1;
-
-
+function enemy1attacked () {
+    enemy1health = enemy1health - 1;
+    alreadyhit1 = 1;
+  console.log(enemy1health);
 }
 
 function enemy2attacked (){
-
-  enemy2health = enemy2health - 1;
+    enemy2health = enemy2health - 1;
+    alreadyhit2 = 1;
+  console.log(enemy2health);
 
 
 }

@@ -8,10 +8,12 @@ Settings.prototype = {
 
     create: function (){
 
-        
 
 
 
+        var back = this.add.button(730, 0, 'exitstore', gotomenu, this, 1, 0, 2);
+        back.scale.x = 0.7;
+        back.scale.y = 0.7;
 
     },
     update: function (){
@@ -21,3 +23,9 @@ Settings.prototype = {
     }
 };
 
+function gotomenu(){
+
+    this.game.state.start('Menu');
+
+
+}
