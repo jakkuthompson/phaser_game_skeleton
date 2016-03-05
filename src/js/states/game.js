@@ -129,7 +129,7 @@ Game.prototype = {
         }
     }, self);
 
- //test
+
   },
 
   update: function () {
