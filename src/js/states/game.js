@@ -16,6 +16,8 @@ var Game = require("../models/player");
 var enemy1health = 66;
 var enemy2health = 66;
 var herohealth = 100;
+var money = 0;
+
 
 
 module.exports = Game;
@@ -36,7 +38,8 @@ Game.prototype = {
     this.layer = this.map.createLayer('t1');
     this.map.setCollision(967);  //Edge Barrier
     this.map.setTileIndexCallback(979, () => {
-      this.game.state.start('Level1');
+
+
       this.music.pause();
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
@@ -47,7 +50,7 @@ Game.prototype = {
 
     this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
 
-    this.asset = this.add.sprite(this.world.centerX,this.world.centerY, 'maincharacter');
+    this.asset = this.add.sprite(250,300, 'maincharacter');
     this.asset.scale.x = .99;
     this.asset.animations.add('left', [3, 4, 5], 20, true);
     this.asset.animations.add('right', [6, 7, 8], 20, true);
@@ -90,15 +93,15 @@ Game.prototype = {
     var tween1;
     var tween2;
 
-
     tween1 = this.game.add.tween(this.enemy1);
     tween1.to({x: [500, 500, 400, 400], y: [250, 150, 150, 250]}, 2000, "Linear").loop(true);
     tween1.start();
 
-
     tween2 = this.game.add.tween(this.enemy2);
     tween2.to({x: [200,100,100,200], y: [400,400,300,300]}, 2000, "Linear").loop(true);
     tween2.start();
+
+
 
     this.game.camera.follow(this.asset);
 
@@ -123,6 +126,8 @@ Game.prototype = {
       else {
         }
     }, self);
+
+
   },
 
   update: function () {
@@ -207,18 +212,26 @@ Game.prototype = {
     //check for enemy kill
     if(enemy1health == 0){
       this.enemy1.visible = false;
+      money = money + 10;
 
     }
 
     if(enemy2health == 0){
       this.enemy2.visible = false;
-
+      money= money + 10;
     }
 
     //collision detection for hero getting attacked
     this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
     this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
 
+
+
+
+    //check for hero death
+    if(herohealth == 0){
+      console.log("Hero Died");
+    }
 
 
 
@@ -247,6 +260,11 @@ function enemy2attacked (){
 }
 
 function heroattacked (){
+  if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
+    herohealth = herohealth - 1;
+
+  }
+
 
 }
 
