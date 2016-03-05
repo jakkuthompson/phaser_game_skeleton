@@ -11,13 +11,13 @@ var Game = function () {
   this.pauseMenu = null;
 };
 
-var Game = require("../models/player");
+var Player = require("../models/player");
 
 var enemy1health = 3;
 var enemy2health = 3;
 var herohealth = 100;
 var money = 0;
-var alreadyhit1 = 0
+var alreadyhit1 = 0;
 var alreadyhit2 = 0;
 
 
@@ -40,15 +40,14 @@ Game.prototype = {
     this.layer = this.map.createLayer('t1');
     this.map.setCollision(967);  //Edge Barrier
     this.map.setTileIndexCallback(979, () => {
-
-
+      this.game.state.start('Level1');
       this.music.pause();
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
       this.game.state.start('Shop');
       this.music.pause(); //bruh
     }, this.asset);
-    this.map.setCollision(1193); //Barrier
+    this.map.setCollision(1193); //Barrier for D1
 
     this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
 
