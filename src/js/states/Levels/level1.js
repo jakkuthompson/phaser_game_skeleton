@@ -117,6 +117,17 @@ Level1.prototype = {
             }
 
         }
+
+        this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
+            alreadyhit2 = 0; }, this);
+        this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
+            alreadyhit2 = 0;}, this);
+
+        //keep the sword by the main character
+        this.sword.x = this.asset.x;
+        this.sword.y = this.asset.y;
+        this.sword2.x = this.asset.x - 20;
+        this.sword2.y = this.asset.y;
     }
 };
 
