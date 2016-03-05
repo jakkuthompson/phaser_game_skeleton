@@ -24,12 +24,14 @@ Preloader.prototype = {
     this.load.audio('bwing', 'assets/audio/bwing.mp3');
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
     this.load.audio('overworld', 'assets/audio/overworld.mp3');
+    this.load.audio('dungeon1theme', 'assets/audio/Cyborg Ninja.mp3');
     this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 32, 32);
     this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
     this.load.image('play', 'assets/game/shop/play_360.png');
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
     this.load.tilemap('hub', 'assets/game/hub.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('dungeon1', 'assets/game/Level1/dungeon1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64,64);

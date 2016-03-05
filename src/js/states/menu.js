@@ -44,15 +44,12 @@ Menu.prototype = {
 
   function listenerPlay () {
     this.game.state.start('Game');
-    this.music.pause();
 }
 
   function listenerSet () {
     this.game.state.start('Settings');
-    this.music.pause();
   }
 
   function listenerCredit () {
     this.game.state.start('Credits');
-    this.music.pause();
   }
