@@ -8,7 +8,6 @@ var Game = function () {
   this.sword = null;
   this.sword2 = null;
   this.pause = null;
-  this.pauseMenu = null;
 };
 
 var enemy1health = 66;
