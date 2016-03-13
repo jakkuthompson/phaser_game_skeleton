@@ -19,6 +19,14 @@ var herohealth = 100;
 var money = 0;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
+var counter = 0;
+var enemy1x = 400;
+var enemy1y = 250;
+var walkmore = true;
+var enemy2x = 200;
+var enemy2y = 300;
+var walkmore2 = true;
+
 
 
 
@@ -68,10 +76,10 @@ Game.prototype = {
     this.background2 = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
     //enemy sprite 1
-    this.enemy1 = this.add.sprite(400,250, 'enemy');
+    this.enemy1 = this.add.sprite(enemy1x,enemy1y, 'enemy');
     this.game.physics.enable(this.enemy1, Phaser.Physics.ARCADE);
     //enemy sprite 2
-    this.enemy2 = this.add.sprite(200,300, 'enemy');
+    this.enemy2 = this.add.sprite(enemy2x,enemy2y, 'enemy');
     this.game.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
 
 
@@ -89,18 +97,6 @@ Game.prototype = {
     this.sword2.animations.add('swingtwo');
     this.sword2.visible = false;
     this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
-
-    //enemy path
-    var tween1;
-    var tween2;
-
-    tween1 = this.game.add.tween(this.enemy1);
-    tween1.to({x: [500, 500, 400, 400], y: [250, 150, 150, 250]}, 2000, "Linear").loop(true);
-    tween1.start();
-
-    tween2 = this.game.add.tween(this.enemy2);
-    tween2.to({x: [200,100,100,200], y: [400,400,300,300]}, 2000, "Linear").loop(true);
-    tween2.start();
 
 
 
@@ -129,9 +125,79 @@ Game.prototype = {
     }, self);
 
 
+
+    if(this.enemy1.x == 500 && this.enemy1.y == 250){
+      console.log("Change Frame");
+      this.enemy1.frame = 9;
+
+    }
+    if(this.enemy1.x == 500 && this.enemy1.y == 150){
+      this.enemy1.frame = 5;
+
+    }
+    if(this.enemy1.x == 500 && this.enemy1.y == 150){
+      this.enemy1.frame = 13;
+
+    }
+    if(this.enemy1.x == 400 && this.enemy1.y == 250){
+      this.enemy1.frame = 1;
+
+    }
+    //enemy1 movement
+
+    tween1 = this.game.add.tween(this.enemy1);
+    tween1.to({x: [enemy1x + 100], y: [enemy1y]}, 500, "Linear");
+    enemy1x = enemy1x + 100;
+
+    tween3 = this.game.add.tween(this.enemy1);
+    tween3.to({x: [enemy1x], y: [enemy1y - 100]}, 500, "Linear");
+    enemy1y = enemy1y - 100;
+
+    tween4 = this.game.add.tween(this.enemy1);
+    tween4.to({x: [enemy1x - 100], y: [enemy1y]}, 500, "Linear");
+    enemy1x = enemy1x - 100;
+
+    tween5 = this.game.add.tween(this.enemy1);
+    tween5.to({x: [enemy1x], y: [enemy1y + 100]}, 500, "Linear");
+    enemy1y = enemy1y + 100;
+
+    //enemy2 movement
+
+    tween2 = this.game.add.tween(this.enemy2);
+    tween2.to({x: [enemy2x], y: [enemy2y+100]}, 500, "Linear");
+    enemy2y = enemy2y + 100;
+
+    tween6 = this.game.add.tween(this.enemy2);
+    tween6.to({x: [enemy2x - 100], y: [enemy2y]}, 500, "Linear");
+    enemy2x = enemy2x - 100;
+
+    tween7 = this.game.add.tween(this.enemy2);
+    tween7.to({x: [enemy2x], y: [enemy2y-100]}, 500, "Linear");
+    enemy2y = enemy2y - 100;
+
+    tween8 = this.game.add.tween(this.enemy2);
+    tween8.to({x: [enemy2x+100], y: [enemy2y]}, 500, "Linear");
+    enemy2x = enemy2x + 100;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   },
 
   update: function () {
+
     var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     var wKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     var sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -181,6 +247,7 @@ Game.prototype = {
       }
 
     }
+
 
 
     this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
@@ -235,11 +302,61 @@ Game.prototype = {
       console.log("Hero Died");
     }
 
+    //enemy2 movement
+    if(walkmore2 == true)  { walkmore2 = false;
+      this.enemy2.frame = 1;
+      tween2.start();
+      tween2.onComplete.add(doSomething, this);
+      function doSomething() {
+        this.enemy2.frame = 13;
+        tween6.start();
+        tween6.onComplete.add(doSomething, this);
+        function doSomething() {
+          this.enemy2.frame = 5;tween7.start();
+          tween7.onComplete.add(doSomething, this);
+          function doSomething() {
+            this.enemy2.frame = 9;tween8.start();
+            tween8.onComplete.add(doSomething, this);
+            function doSomething() {walkmore2 = true;
+            }
+          }
+        }
+      }
+    }
+    //enemy1 movement
+    if(walkmore == true) {
+
+      this.enemy1.frame = 9;
+      tween1.start();
+      walkmore = false;
+      tween1.onComplete.add(doSomething2, this);
+      function doSomething2() {
+        this.enemy1.frame = 5;
+        tween3.start();
+        tween3.onComplete.add(doSomething2, this);
+        function doSomething2() {
+          this.enemy1.frame = 13;
+          tween4.start();
+          tween4.onComplete.add(doSomething2, this);
+          function doSomething2() {
+            this.enemy1.frame = 1;
+            tween5.start();
+            tween5.onComplete.add(doSomething2, this);
+            function doSomething2() {
+              walkmore = true;
+            }
+          }
+        }
+      }
+    }
+
+
 
 
 
 
   }
+
 
 
 
@@ -272,4 +389,17 @@ function heroattacked (){
 function listenerPause () {
 
 }
+
+function enemy1move(){
+
+}
+
+function enemy2move(){
+
+
+}
+
+
+
+
 
