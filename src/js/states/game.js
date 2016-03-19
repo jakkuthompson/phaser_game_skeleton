@@ -178,22 +178,6 @@ Game.prototype = {
     tween8 = this.game.add.tween(this.enemy2);
     tween8.to({x: [enemy2x+100], y: [enemy2y]}, 500, "Linear");
     enemy2x = enemy2x + 100;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   },
 
   update: function () {

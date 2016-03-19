@@ -2,6 +2,8 @@ var Level1 = function () {
     this.map = null;
     this.layer = null;
     this.music = null;
+    this.snekek = null;
+    this.enemies = null;
 };
 
 module.exports = Level1;
@@ -19,9 +21,13 @@ Level1.prototype = {
         this.map.addTilesetImage('t1', 'tileset');
 
         this.layer = this.map.createLayer('t1');
+        this.map.setTileIndexCallback(961, () => {
+            this.game.state.start('Game');
+            this.music.pause();
+        }, this.asset);
         this.map.setCollision(1193); //Barrier
 
-        this.asset = this.add.sprite(784, 1536, 'maincharacter');
+        this.asset = this.add.sprite(384, 544, 'maincharacter');
         this.asset.scale.x = .99;
         this.asset.animations.add('left', [3, 4, 5], 20, true);
         this.asset.animations.add('right', [6, 7, 8], 20, true);
@@ -31,7 +37,11 @@ Level1.prototype = {
         this.physics.enable(this.asset, Phaser.Physics.P2JS);
         this.asset.body.immovable = true;
         this.asset.body.collideWorldBounds = true;
-        this.game.world.setBounds(0, 0, 1600, 1600);
+        this.game.world.setBounds(0, 0, 800, 608);
+
+        this.snekek = this.add.sprite('snekek', this.world.centerX, this.world.centerY);
+        this.snekek.animations.add('snekek1');
+        this.snekek.play('snekek1', 3, true);
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;

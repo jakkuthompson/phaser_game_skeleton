@@ -105,6 +105,64 @@ Player.prototype = {
     }
 
 };
+Player.prototype.serialize = function(savePosition) {
+    if (savePosition === undefined) savePosition = true;
+    var fields = [
+        'speech',
+        'battle',
+        'health',
+        'motion',
+        'target',
+        'quests',
+        'items',
+        'options',
+        'log'
+    ];
+
+    if (savePosition) {
+        fields.push('x');
+        fields.push('y');
+    }
+
+    var obj = {};
+
+    for (var i in fields) {
+        var field = fields[i];
+        obj[field] = this[field];
+    }
+
+    return JSON.stringify(obj);
+};
+
+/**
+ * This is a class method, not an instance method!
+ *
+ * @param state string | object the state to unserialize into a character
+ *
+ * @return Character instance, class depending on the state restored
+ */
+Player.Unserialize = function(state) {
+    // We should be able to accept an object or a string.
+    if (typeof state === 'string') {
+        state = JSON.parse(state);
+    }
+
+    // Call our character factory to make a new instance of className
+    var instance = Player.Factory(
+        Player,
+        game, // Game reference. Required
+        0, // x-pos. Required, but overridden by unserialize
+        0, // y-pos. Required, but overridden by unserialize
+        {} // options. Required, but overridden by unserialize
+    );
+
+    // Copy our saved state into the new object
+    for (var i in state) {
+        instance[i] = state[i];
+    }
+
+    return instance;
+};
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;

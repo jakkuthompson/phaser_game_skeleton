@@ -38,6 +38,7 @@ Preloader.prototype = {
     this.load.spritesheet('sword', 'assets/game/Sword.png',192,192,7);
     this.load.spritesheet('sword2', 'assets/game/sword2.png',192,192,7);
     this.load.spritesheet('exitstore', 'assets/game/shop/Exit.png');
+    this.load.spritesheet('snekek', 'assets/game/Level1/snekek.png', 32, 32);
 
   },
 
