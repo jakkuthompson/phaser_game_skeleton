@@ -16,7 +16,7 @@ var Player = require("../models/player");
 var enemy1health = 3;
 var enemy2health = 3;
 var herohealth = 100;
-var money = 0;
+var coins = 0;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
 var counter = 0;
@@ -265,13 +265,13 @@ Game.prototype = {
     //check for enemy kill
     if(enemy1health == 0){
       this.enemy1.visible = false;
-      money = money + 10;
+      coins = coins + 10;
 
     }
 
     if(enemy2health == 0){
       this.enemy2.visible = false;
-      money = money + 10;
+      coins = coins + 10;
     }
 
     //collision detection for hero getting attacked
@@ -350,13 +350,11 @@ Game.prototype = {
 function enemy1attacked () {
     enemy1health = enemy1health - 1;
     alreadyhit1 = 1;
-  console.log(enemy1health);
 }
 
 function enemy2attacked (){
     enemy2health = enemy2health - 1;
     alreadyhit2 = 1;
-  console.log(enemy2health);
 
 
 }
@@ -371,15 +369,6 @@ function heroattacked (){
 }
 
 function listenerPause () {
-
-}
-
-function enemy1move(){
-
-}
-
-function enemy2move(){
-
 
 }
 

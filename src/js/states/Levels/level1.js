@@ -8,6 +8,20 @@ var Level1 = function () {
 
 module.exports = Level1;
 
+var snekkek1x = 200;
+var snekkek1y = 400;
+var walkmore = true;
+var alreadyhit1 = 0;
+var snekkek1health = 2;
+var coins = 0;
+var snekkek2x = 400;
+var snekkek2y = 200;
+var snekkek2health = 2;
+var alreadyhit2 = 0;
+
+
+
+
 Level1.prototype = {
     create: function () {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -59,6 +73,25 @@ Level1.prototype = {
 
         this.game.camera.follow(this.asset);
 
+        //adding snekkek enimies
+
+        this.snekkek1 = this.add.sprite(snekkek1x,snekkek1y, 'snekkek');
+        this.game.physics.enable(this.snekkek1, Phaser.Physics.ARCADE);
+        this.snekkek1.scale.x = 1.25;
+        this.snekkek1.scale.y = 1.25;
+        this.snekkek1.animations.add('right', [0,1,0], 15, true);
+
+        //adding snekkek enimies
+
+        this.snekkek2 = this.add.sprite(snekkek2x,snekkek2y, 'snekkek');
+        this.game.physics.enable(this.snekkek2, Phaser.Physics.ARCADE);
+        this.snekkek2.scale.x = 1.25;
+        this.snekkek2.scale.y = 1.25;
+        this.snekkek2.animations.add('right', [0,1,0], 15, true);
+
+
+
+
         //keypad input detectors
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -80,6 +113,13 @@ Level1.prototype = {
             else {
             }
         }, self);
+
+
+
+
+        //snekkek1 movement
+
+
     },
 
     update: function () {
@@ -128,6 +168,9 @@ Level1.prototype = {
 
         }
 
+
+
+
         this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
             alreadyhit2 = 0; }, this);
         this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
@@ -138,9 +181,76 @@ Level1.prototype = {
         this.sword.y = this.asset.y;
         this.sword2.x = this.asset.x - 20;
         this.sword2.y = this.asset.y;
+
+        //snekkek1 movement
+        if(this.asset.x < this.snekkek1.x){
+            this.snekkek1.x--;
+        }
+        if(this.asset.x > this.snekkek1.x){
+            this.snekkek1.x++;
+        }
+        if(this.asset.y < this.snekkek1.y){
+            this.snekkek1.y--;
+        }
+        if(this.asset.y > this.snekkek1.y){
+            this.snekkek1.y++;
+        }
+
+        //snekkek2 movement
+        if(this.asset.x < this.snekkek2.x){
+            this.snekkek2.x--;
+        }
+        if(this.asset.x > this.snekkek2.x){
+            this.snekkek2.x++;
+        }
+        if(this.asset.y < this.snekkek2.y){
+            this.snekkek2.y--;
+        }
+        if(this.asset.y > this.snekkek2.y){
+            this.snekkek2.y++;
+        }
+
+
+        //collision detection for hitting the enemies
+        if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+            this.game.physics.arcade.overlap(this.sword, this.snekkek1, snekkek1attacked, null, this);
+        }
+        if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+            this.game.physics.arcade.overlap(this.sword2, this.snekkek1, snekkek1attacked, null, this);
+        }
+        if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+            this.game.physics.arcade.overlap(this.sword, this.snekkek2, snekkek2attacked, null, this);
+        }
+        if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+            this.game.physics.arcade.overlap(this.sword2, this.snekkek2, snekkek2attacked, null, this);
+        }
+
+        //check for enemy kill
+        if(snekkek1health == 0){
+            this.snekkek1.visible = false;
+            coins = coins + 10;
+
+        }
+        if(snekkek2health == 0){
+            this.snekkek2.visible = false;
+            coins = coins + 10;
+
+        }
     }
+
 };
 
 function listenerPause () {
 
 }
+
+function snekkek1attacked (){
+    snekkek1health = snekkek1health - 1;
+    alreadyhit1 = 1;
+}
+
+function snekkek2attacked (){
+    snekkek2health = snekkek2health - 1;
+    alreadyhit2 = 1;
+}
+
