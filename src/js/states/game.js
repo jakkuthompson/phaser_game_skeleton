@@ -7,11 +7,17 @@ var Game = function () {
   this.background2 = null;
   this.sword = null;
   this.sword2 = null;
+  this.gui = null;
+  this.heart1 = null;
+  this.heart2 = null;
+  this.heart3 = null;
+  this.coin = null;
+  this.shine = null;
   this.pause = null;
   this.pauseMenu = null;
 };
 
-var Player = require("../models/player");
+var GUI = require("../models/gui");
 
 var enemy1health = 3;
 var enemy2health = 3;
@@ -98,12 +104,25 @@ Game.prototype = {
     this.sword2.visible = false;
     this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
 
-
-
     this.game.camera.follow(this.asset);
 
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.heart1 = this.add.button(0, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart1.fixedToCamera = true;
+    this.heart1.inputEnabled = true;
+
+    this.heart2 = this.add.button(32, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart2.fixedToCamera = true;
+    this.heart2.inputEnabled = true;
+
+    this.heart3 = this.add.button(64, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart3.fixedToCamera = true;
+    this.heart3.inputEnabled = true;
+
+    this.coin = this.add.sprite('coin', 86, 0);
+
 
     this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
     this.pause.fixedToCamera = true;
@@ -381,6 +400,12 @@ function enemy1move(){
 function enemy2move(){
 
 
+}
+
+function listenerHearts () {
+  if (herohealth = 0) {
+    this.hearts.frame(2);
+  }
 }
 
 
