@@ -3,7 +3,7 @@ var Snekkek = function(game, x, y) {
     this.health = 2;
 };
 
-var Zephyr = require("C:/Users/DogeMaster420 (Jack)/WebstormProjects/team_skeltal_game/src/js/models/player.js");
+var Zephyr = require("../player.js");
 
 Snekkek.prototype = Object.create(Phaser.Sprite.prototype);
 Snekkek.prototype.constructor = Snekkek;

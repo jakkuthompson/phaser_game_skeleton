@@ -18,3 +18,4 @@ game.state.add('Settings', require('./states/settings'));
 game.state.add('Shop', require('./states/shop'));
 
 game.state.start('Boot');
+

@@ -9,7 +9,11 @@ var Level1 = function () {
 
 module.exports = Level1;
 
-var Snekkek = require('C:/Users/DogeMaster420 (Jack)/WebstormProjects/team_skeltal_game/src/js/models/Enemies/snekkek');
+// From Alex -> Never use absolute paths for this. Very bad. This obviously won't run on anyone else's computer
+// Should be a const, since value never changes.
+// var Snekkek = require('C:/Users/DogeMaster420 (Jack)/WebstormProjects/team_skeltal_game/src/js/models/Enemies/snekkek');
+const Snekkek = require('../../models/Enemies/snekkek');
+const LayerManager = require('../../common/tilemaps/layer_manager');
 
 var walkmore = true;
 var alreadyhit1 = 0;
@@ -31,22 +35,31 @@ Level1.prototype = {
         this.map = this.add.tilemap('dungeon1-1');
         this.map.addTilesetImage('t1', 'tileset');
 
-        this.layer = this.map.createLayer('entrance');
+        this.layermanager = new LayerManager(this, this.map);
+        this.layermanager.bindTileToLayer(1003, "test", () => {
+            this.asset.x = 1120;
+            this.asset.y = 1632;
+            this.world.bringToTop(this.asset);
+        });
+        
+        this.layermanager.load('entrance');
+
+        // this.layer = this.map.createLayer('entrance');
         this.map.setTileIndexCallback(961, () => {
             this.game.state.start('Game');
             this.music.pause();
         }, this.asset);
 
-        this.map.setTileIndexCallback(1003, () => {
-            this.asset.x = 1120;
-            this.asset.y = 1632;
-            if (this.layer1) {
-                return;
-            }
-            this.layer1 = this.map.createLayer('test');
-            this.layer.destroy();
-            this.world.bringToTop(this.asset);
-        }, this.asset);
+        // this.map.setTileIndexCallback(1003, () => {
+        //     this.asset.x = 1120;
+        //     this.asset.y = 1632;
+        //     if (this.layer1) {
+        //         return;
+        //     }
+        //     this.layer1 = this.map.createLayer('test');
+        //     this.layer.destroy();
+        //     this.world.bringToTop(this.asset);
+        // }, this.asset);
 
         this.map.setCollision(1193); //Barrier
 
@@ -129,10 +142,11 @@ Level1.prototype = {
         var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-        this.physics.arcade.collide(this.asset, this.layer);
-        this.physics.arcade.collide(this.asset, this.layer1);
+        // Only test collision on the active layer.
+        this.physics.arcade.collide(this.asset, this.layermanager.active);
+        
         this.physics.arcade.collide(this.asset, this.snekkek);
-        this.physics.arcade.collide(this.snekkek, this.layer);
+        this.physics.arcade.collide(this.snekkek, this.layermanager.active);
 
         this.asset.body.velocity.set(0);
 
