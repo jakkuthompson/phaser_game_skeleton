@@ -28,17 +28,29 @@ Level1.prototype = {
         this.music.play();
         this.music.volume = .7;
 
-        this.map = this.add.tilemap('dungeon1');
+        this.map = this.add.tilemap('dungeon1-1');
         this.map.addTilesetImage('t1', 'tileset');
 
-        this.layer = this.map.createLayer('t1');
+        this.layer = this.map.createLayer('entrance');
         this.map.setTileIndexCallback(961, () => {
             this.game.state.start('Game');
             this.music.pause();
         }, this.asset);
+
+        this.map.setTileIndexCallback(1003, () => {
+            this.asset.x = 1120;
+            this.asset.y = 1632;
+            if (this.layer1) {
+                return;
+            }
+            this.layer1 = this.map.createLayer('test');
+            this.layer.destroy();
+            this.world.bringToTop(this.asset);
+        }, this.asset);
+
         this.map.setCollision(1193); //Barrier
 
-        this.asset = this.add.sprite(384, 544, 'zephyr');
+        this.asset = this.add.sprite(1568, 1856, 'zephyr');
         this.asset.scale.x = .99;
         this.asset.animations.add('left', [3, 4, 5], 20, true);
         this.asset.animations.add('right', [6, 7, 8], 20, true);
@@ -48,8 +60,14 @@ Level1.prototype = {
         this.physics.enable(this.asset, Phaser.Physics.P2JS);
         this.asset.body.immovable = true;
         this.asset.body.collideWorldBounds = true;
-        this.game.world.setBounds(0, 0, 800, 608);
+        this.game.world.setBounds(0, 0, 3200, 3200);
         this.game.camera.follow(this.asset);
+
+        this.snekkekGroup = this.game.add.group();
+        this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
+        this.snekkekGroup.add(this.snekkek);
+        this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
+        this.physics.enable(this.snekkek, Phaser.Physics.P2JS);
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;
@@ -64,12 +82,6 @@ Level1.prototype = {
         this.sword2.animations.add('swingtwo');
         this.sword2.visible = false;
         this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
-
-        this.snekkekGroup = this.game.add.group();
-        this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
-        this.snekkekGroup.add(this.snekkek);
-        this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
-        this.physics.enable(this.snekkek, Phaser.Physics.P2JS);
 
         //keypad input detectors
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -118,6 +130,7 @@ Level1.prototype = {
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         this.physics.arcade.collide(this.asset, this.layer);
+        this.physics.arcade.collide(this.asset, this.layer1);
         this.physics.arcade.collide(this.asset, this.snekkek);
         this.physics.arcade.collide(this.snekkek, this.layer);
 
