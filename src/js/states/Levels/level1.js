@@ -2,25 +2,22 @@ var Level1 = function () {
     this.map = null;
     this.layer = null;
     this.music = null;
-    this.snekek = null;
+    this.snekkek = null;
+    this.snekkekGroup = null;
     this.enemies = null;
 };
 
 module.exports = Level1;
 
-var snekkek1x = 200;
-var snekkek1y = 400;
+var Snekkek = require('C:/Users/DogeMaster420 (Jack)/WebstormProjects/team_skeltal_game/src/js/models/Enemies/snekkek');
+
 var walkmore = true;
 var alreadyhit1 = 0;
 var snekkek1health = 2;
+var herohealth = 6;
 var coins = 0;
-var snekkek2x = 400;
-var snekkek2y = 200;
 var snekkek2health = 2;
 var alreadyhit2 = 0;
-
-
-
 
 Level1.prototype = {
     create: function () {
@@ -41,7 +38,7 @@ Level1.prototype = {
         }, this.asset);
         this.map.setCollision(1193); //Barrier
 
-        this.asset = this.add.sprite(384, 544, 'maincharacter');
+        this.asset = this.add.sprite(384, 544, 'zephyr');
         this.asset.scale.x = .99;
         this.asset.animations.add('left', [3, 4, 5], 20, true);
         this.asset.animations.add('right', [6, 7, 8], 20, true);
@@ -52,10 +49,7 @@ Level1.prototype = {
         this.asset.body.immovable = true;
         this.asset.body.collideWorldBounds = true;
         this.game.world.setBounds(0, 0, 800, 608);
-
-        this.snekek = this.add.sprite('snekek', this.world.centerX, this.world.centerY);
-        this.snekek.animations.add('snekek1');
-        this.snekek.play('snekek1', 3, true);
+        this.game.camera.follow(this.asset);
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;
@@ -71,29 +65,28 @@ Level1.prototype = {
         this.sword2.visible = false;
         this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
 
-        this.game.camera.follow(this.asset);
-
-        //adding snekkek enimies
-
-        this.snekkek1 = this.add.sprite(snekkek1x,snekkek1y, 'snekkek');
-        this.game.physics.enable(this.snekkek1, Phaser.Physics.ARCADE);
-        this.snekkek1.scale.x = 1.25;
-        this.snekkek1.scale.y = 1.25;
-        this.snekkek1.animations.add('right', [0,1,0], 15, true);
-
-        //adding snekkek enimies
-
-        this.snekkek2 = this.add.sprite(snekkek2x,snekkek2y, 'snekkek');
-        this.game.physics.enable(this.snekkek2, Phaser.Physics.ARCADE);
-        this.snekkek2.scale.x = 1.25;
-        this.snekkek2.scale.y = 1.25;
-        this.snekkek2.animations.add('right', [0,1,0], 15, true);
-
-
-
+        this.snekkekGroup = this.game.add.group();
+        this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
+        this.snekkekGroup.add(this.snekkek);
+        this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
+        this.physics.enable(this.snekkek, Phaser.Physics.P2JS);
 
         //keypad input detectors
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.heart1 = this.add.button(0, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart1.fixedToCamera = true;
+        this.heart1.inputEnabled = true;
+
+        this.heart2 = this.add.button(32, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart2.fixedToCamera = true;
+        this.heart2.inputEnabled = true;
+
+        this.heart3 = this.add.button(64, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart3.fixedToCamera = true;
+        this.heart3.inputEnabled = true;
+
+        this.coin = this.add.sprite('coin', 86, 0);
 
         this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
         this.pause.fixedToCamera = true;
@@ -114,12 +107,6 @@ Level1.prototype = {
             }
         }, self);
 
-
-
-
-        //snekkek1 movement
-
-
     },
 
     update: function () {
@@ -131,6 +118,8 @@ Level1.prototype = {
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         this.physics.arcade.collide(this.asset, this.layer);
+        this.physics.arcade.collide(this.asset, this.snekkek);
+        this.physics.arcade.collide(this.snekkek, this.layer);
 
         this.asset.body.velocity.set(0);
 
@@ -168,9 +157,6 @@ Level1.prototype = {
 
         }
 
-
-
-
         this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
             alreadyhit2 = 0; }, this);
         this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
@@ -182,57 +168,38 @@ Level1.prototype = {
         this.sword2.x = this.asset.x - 20;
         this.sword2.y = this.asset.y;
 
-        //snekkek1 movement
-        if(this.asset.x < this.snekkek1.x){
-            this.snekkek1.x--;
-        }
-        if(this.asset.x > this.snekkek1.x){
-            this.snekkek1.x++;
-        }
-        if(this.asset.y < this.snekkek1.y){
-            this.snekkek1.y--;
-        }
-        if(this.asset.y > this.snekkek1.y){
-            this.snekkek1.y++;
-        }
-
-        //snekkek2 movement
-        if(this.asset.x < this.snekkek2.x){
-            this.snekkek2.x--;
-        }
-        if(this.asset.x > this.snekkek2.x){
-            this.snekkek2.x++;
-        }
-        if(this.asset.y < this.snekkek2.y){
-            this.snekkek2.y--;
-        }
-        if(this.asset.y > this.snekkek2.y){
-            this.snekkek2.y++;
-        }
-
-
         //collision detection for hitting the enemies
         if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.overlap(this.sword, this.snekkek1, snekkek1attacked, null, this);
+            this.game.physics.arcade.overlap(this.sword, this.snekkek, snekkek1attacked, null, this);
         }
         if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.overlap(this.sword2, this.snekkek1, snekkek1attacked, null, this);
+            this.game.physics.arcade.overlap(this.sword2, this.snekkek, snekkek1attacked, null, this);
         }
-        if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.overlap(this.sword, this.snekkek2, snekkek2attacked, null, this);
+
+        this.snekkek.body.velocity.set(0);
+
+        if(this.asset.x < this.snekkek.x){
+            this.snekkek.body.velocity.x = -100;
         }
-        if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.overlap(this.sword2, this.snekkek2, snekkek2attacked, null, this);
+        if(this.asset.x > this.snekkek.x){
+            this.snekkek.body.velocity.x = 100;
+        }
+        if(this.asset.y < this.snekkek.y){
+            this.snekkek.body.velocity.y = -100;
+        }
+        if(this.asset.y > this.snekkek.y){
+            this.snekkek.body.velocity.y = 100;
+        }
+
+        if(this.health == 0){
+            this.visible = false;
+            coins = coins + 10;
+
         }
 
         //check for enemy kill
         if(snekkek1health == 0){
-            this.snekkek1.visible = false;
-            coins = coins + 10;
-
-        }
-        if(snekkek2health == 0){
-            this.snekkek2.visible = false;
+            this.snekkek.visible = false;
             coins = coins + 10;
 
         }
@@ -249,8 +216,9 @@ function snekkek1attacked (){
     alreadyhit1 = 1;
 }
 
-function snekkek2attacked (){
-    snekkek2health = snekkek2health - 1;
-    alreadyhit2 = 1;
-}
 
+function listenerHearts () {
+    if (herohealth = 0) {
+        this.hearts.frame(2);
+    }
+}

@@ -18,6 +18,7 @@ var Game = function () {
 };
 
 var GUI = require("../models/gui");
+var Zephyr = require("../models/player");
 
 var enemy1health = 3;
 var enemy2health = 3;
@@ -44,6 +45,8 @@ Game.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
+    this.game.world.setBounds(0, 0, 2304, 609);
+
     this.music = this.add.audio('overworld');
     this.music.play();
 
@@ -65,7 +68,7 @@ Game.prototype = {
 
     this.background = this.add.tileSprite(0, 0, 2304, 609, 'hubimg');
 
-    this.asset = this.add.sprite(250,300, 'maincharacter');
+    this.asset = this.add.sprite(128, 32, 'zephyr');
     this.asset.scale.x = .99;
     this.asset.animations.add('left', [3, 4, 5], 20, true);
     this.asset.animations.add('right', [6, 7, 8], 20, true);
@@ -75,9 +78,6 @@ Game.prototype = {
     this.physics.enable(this.asset, Phaser.Physics.P2JS);
     this.asset.body.immovable = true;
     this.asset.body.collideWorldBounds = true;
-    this.game.world.setBounds(0, 0, 2304, 609);
-
-
 
     this.background2 = this.add.tileSprite(0, 0, 2304, 609, 'hubimg2');
 
@@ -121,7 +121,10 @@ Game.prototype = {
     this.heart3.fixedToCamera = true;
     this.heart3.inputEnabled = true;
 
-    this.coin = this.add.sprite('coin', 86, 0);
+    this.coin = this.add.sprite(106, 3, 'coin');
+    this.coin.fixedToCamera = true;
+    this.coin.animations.add('shine');
+    this.coin.animations.play('shine', 3, true);
 
 
     this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);

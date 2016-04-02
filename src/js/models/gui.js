@@ -3,10 +3,7 @@ var GUI = function () {
     Phaser.Sprite.call(this, game, x, y, 'hearts');
 };
 
-var coin;
-var hearts;
-
-GUI.prototype = {
+GUI.prototype.preload = {
     preload: function () {
         this.load.spritesheet('coin', '../assets/game/GUI/Coin.png');
     },
@@ -16,5 +13,4 @@ GUI.prototype = {
         hearts = this.add.spritesheet('heart', 0, 0);
 
     }
-}
-;
+};

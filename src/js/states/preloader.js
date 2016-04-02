@@ -25,7 +25,7 @@ Preloader.prototype = {
     this.load.audio('menutheme', 'assets/audio/Kawai Kitsune.mp3');
     this.load.audio('overworld', 'assets/audio/overworld.mp3');
     this.load.audio('dungeon1theme', 'assets/audio/Cyborg Ninja.mp3');
-    this.load.spritesheet('maincharacter', 'assets/game/zephyr.png', 32, 32);
+    this.load.spritesheet('zephyr', 'assets/game/zephyr.png', 32, 32);
     this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
     this.load.image('play', 'assets/game/shop/play_360.png');
     this.load.image('hubimg', 'assets/game/hub.png');
@@ -34,13 +34,13 @@ Preloader.prototype = {
     this.load.tilemap('dungeon1', 'assets/game/Level1/dungeon1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
-    this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64,64);
-    this.load.spritesheet('sword', 'assets/game/Sword.png',192,192,7);
-    this.load.spritesheet('sword2', 'assets/game/sword2.png',192,192,7);
+    this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
+    this.load.spritesheet('sword', 'assets/game/Sword.png', 192, 192, 7);
+    this.load.spritesheet('sword2', 'assets/game/sword2.png', 192, 192, 7);
     this.load.spritesheet('exitstore', 'assets/game/shop/Exit.png');
-    this.load.spritesheet('snekek', 'assets/game/Level1/snekek.png', 32, 32);
+    this.load.spritesheet('snekkek', 'assets/game/Level1/snekek.png', 32, 32);
     this.load.spritesheet('heart', '../assets/game/GUI/heart.png', 32, 32);
-    this.load.spritesheet('coin', '../assets/game/GUI/Coin.png', 32, 32);
+    this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
   },
 
   create: function () {
