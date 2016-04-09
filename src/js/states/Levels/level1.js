@@ -34,9 +34,9 @@ Level1.prototype = {
         this.map.addTilesetImage('t1', 'tileset');
 
         this.layermanager = new LayerManager(this, this.map);
-        this.layermanager.bindTileToLayer(1003, "test", () => {
+        this.layermanager.bindTileToLayer(1003, "left-1", () => {
             this.asset.x = 1120;
-            this.asset.y = 1632;
+            this.asset.y = 2912;
             this.world.bringToTop(this.asset);
         });
         
@@ -53,10 +53,8 @@ Level1.prototype = {
             this.music.pause();
         }, this.asset);
 
-        this.map.setCollision(1193);
-
         this.collisionmanager = new CollisionManager(this, this.map);
-        this.collisionmanager.bindCollisionToLayer(1003);
+        this.collisionmanager.bindCollisionToLayer(1193);
 
         this.asset = this.add.sprite(1568, 3136, 'zephyr');
         this.asset.scale.x = .99;
@@ -65,7 +63,6 @@ Level1.prototype = {
         this.asset.animations.add('down', [0, 1, 2], 20, true);
         this.asset.animations.add('up', [9, 10, 11], 20, true);
         this.physics.enable(this.asset, Phaser.Physics.ARCADE);
-        this.physics.enable(this.asset, Phaser.Physics.P2JS);
         this.asset.body.immovable = true;
         this.asset.body.collideWorldBounds = true;
         this.game.world.setBounds(0, 0, 3200, 3200);
@@ -75,7 +72,6 @@ Level1.prototype = {
         this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
         this.snekkekGroup.add(this.snekkek);
         this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
-        this.physics.enable(this.snekkek, Phaser.Physics.P2JS);
         this.snekkek.body.enable = true;
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');

@@ -35,9 +35,18 @@ Boss1.prototype = {
         this.sword2.visible = false;
         this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
         this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
     },
 
     update: function () {
+        var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        var wKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        var sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        var aKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
         this.asset.body.velocity.set(0);
 
         if (this.cursors.left.isDown || aKey.isDown) {

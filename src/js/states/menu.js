@@ -43,7 +43,7 @@ Menu.prototype = {
 };
 
   function listenerPlay () {
-    this.game.state.start('Boss1');
+    this.game.state.start('Game');
 }
 
   function listenerSet () {
