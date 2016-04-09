@@ -31,7 +31,7 @@ Preloader.prototype = {
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
     this.load.tilemap('hub', 'assets/game/hub.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset.png');
+    this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset_0.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
     this.load.tilemap('dungeon1-1', 'assets/game/Level1/dungeon1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);

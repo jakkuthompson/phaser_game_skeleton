@@ -3,8 +3,6 @@ var Snekkek = function(game, x, y) {
     this.health = 2;
 };
 
-var Zephyr = require("../player.js");
-
 Snekkek.prototype = Object.create(Phaser.Sprite.prototype);
 Snekkek.prototype.constructor = Snekkek;
 
