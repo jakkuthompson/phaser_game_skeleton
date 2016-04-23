@@ -1,6 +1,12 @@
 var Boss1 = function () {
-
+    this.map = null;
+    this.kingsnekkek = null;
 };
+
+
+module.exports = Boss1;
+
+const LayerManager = require('../../common/tilemaps/layer_manager');
 
 Boss1.prototype = {
     create: function () {
@@ -9,12 +15,21 @@ Boss1.prototype = {
 
         this.game.world.setBounds(0, 0, 1600, 1600);
 
-        this.asset = this.add.sprite(1568, 3136, 'zephyr');
+        this.map = this.add.tilemap('boss-1');
+        this.map.addTilesetImage('t1', 'tileset');
+
+        this.layermanager = new LayerManager(this, this.map);
+        this.layermanager.load('room');
+
+        this.map.setCollision(1193);
+
+        this.asset = this.add.sprite(this.world.centerX, this.world.centerY, 'zephyr');
         this.asset.scale.x = .99;
         this.asset.animations.add('left', [3, 4, 5], 20, true);
         this.asset.animations.add('right', [6, 7, 8], 20, true);
         this.asset.animations.add('down', [0, 1, 2], 20, true);
         this.asset.animations.add('up', [9, 10, 11], 20, true);
+        this.asset.animations.add('warp', [9, 6, 3, 0], 4, true);
         this.physics.enable(this.asset, Phaser.Physics.ARCADE);
         this.physics.enable(this.asset, Phaser.Physics.P2JS);
         this.asset.body.immovable = true;
@@ -37,6 +52,10 @@ Boss1.prototype = {
         this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.kingsnekkek = this.add.sprite(this.world.centerX, 64, 'kingsnekkek');
+        this.kingsnekkek.animations.add('slither', [0, 1, 2, 3, 4], 5, true);
+        this.kingsnekkek.play('slither');
     },
 
     update: function () {
@@ -46,6 +65,8 @@ Boss1.prototype = {
         var aKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+        this.physics.arcade.collide(this.asset, this.layermanager.active);
 
         this.asset.body.velocity.set(0);
 

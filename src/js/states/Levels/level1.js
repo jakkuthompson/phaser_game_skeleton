@@ -17,6 +17,7 @@ var walkmore = true;
 var alreadyhit1 = 0;
 var snekkek1health = 2;
 var herohealth = 6;
+var herodied = 0;
 var coins = 0;
 var snekkek2health = 2;
 var alreadyhit2 = 0;
@@ -62,11 +63,18 @@ Level1.prototype = {
         this.asset.animations.add('right', [6, 7, 8], 20, true);
         this.asset.animations.add('down', [0, 1, 2], 20, true);
         this.asset.animations.add('up', [9, 10, 11], 20, true);
+        this.asset.animations.add('warp', [9, 6, 3, 0], 4, true);
         this.physics.enable(this.asset, Phaser.Physics.ARCADE);
+        this.physics.enable(this.asset, Phaser.Physics.P2JS);
         this.asset.body.immovable = true;
         this.asset.body.collideWorldBounds = true;
         this.game.world.setBounds(0, 0, 3200, 3200);
         this.game.camera.follow(this.asset);
+
+        this.map.setTileIndexCallback(2710, () => {
+            this.asset.play('warp');
+            this.music.pause();
+        }, this.asset);
 
         this.snekkekGroup = this.game.add.group();
         this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
@@ -91,30 +99,22 @@ Level1.prototype = {
         //keypad input detectors
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.heart1 = this.add.button(0, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart1 = this.add.sprite(0, 0, 'heart', 0);
         this.heart1.fixedToCamera = true;
-        this.heart1.inputEnabled = true;
 
-        this.heart2 = this.add.button(32, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart2 = this.add.sprite(32, 0, 'heart', 0);
         this.heart2.fixedToCamera = true;
-        this.heart2.inputEnabled = true;
 
-        this.heart3 = this.add.button(64, 0, 'heart', listenerHearts, this, 1, 0, 2);
+        this.heart3 = this.add.sprite(64, 0, 'heart', 0);
         this.heart3.fixedToCamera = true;
-        this.heart3.inputEnabled = true;
 
-        this.coin = this.add.sprite('coin', 86, 0);
+        this.coin = this.add.sprite(86, 0, 'coin');
 
         this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
         this.pause.fixedToCamera = true;
         this.pause.scale.x = .1;
         this.pause.scale.y = .1;
         this.pause.inputEnabled = true;
-        this.pause.events.onInputDown.add(() => {
-            this.game.paused = true;
-            this.music.pause();
-        });
-
         this.game.input.onDown.add(() => {
             if(this.game.paused) {
                 this.game.paused = false;
@@ -226,7 +226,8 @@ Level1.prototype = {
 };
 
 function listenerPause () {
-
+    this.game.paused = true;
+    this.music.pause();
 }
 
 function snekkek1attacked (){
@@ -234,9 +235,30 @@ function snekkek1attacked (){
     alreadyhit1 = 1;
 }
 
+function heroattacked (){
+    if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
+        herohealth = herohealth - 1;
+    }
+}
 
 function listenerHearts () {
-    if (herohealth = 0) {
-        this.hearts.frame(2);
+    if (herohealth !== 5) {
+        this.heart3.frame(0);
+    }
+    if (herohealth !== 4) {
+        this.heart3.frame(2);
+    }
+    if (herohealth !== 3) {
+        this.heart2.frame(0);
+    }
+    if (herohealth !== 2) {
+        this.heart3.frame(2);
+    }
+    if (herohealth !== 1) {
+        this.heart3.frame(0);
+    }
+    if (herohealth !== herodied) {
+        this.heart3.frame(2);
+        this.asset.play('died');
     }
 }

@@ -12,13 +12,12 @@ var Game = function () {
   this.heart2 = null;
   this.heart3 = null;
   this.coin = null;
-  this.shine = null;
   this.pause = null;
   this.pauseMenu = null;
+  this.save = null;
 };
 
-var GUI = require("../models/gui");
-var Zephyr = require("../models/player");
+const Zephyr = require("../models/player_models/player");
 
 var enemy1health = 3;
 var enemy2health = 3;
@@ -33,9 +32,7 @@ var walkmore = true;
 var enemy2x = 200;
 var enemy2y = 300;
 var walkmore2 = true;
-
-
-
+var herodied = 0;
 
 module.exports = Game;
 
@@ -59,10 +56,14 @@ Game.prototype = {
     this.map.setTileIndexCallback(979, () => {
       this.game.state.start('Level1');
       this.music.pause();
+      enemy1health = 3;
+      enemy2health = 3;
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
       this.game.state.start('Shop');
       this.music.pause(); //bruh
+      enemy1health = 3;
+      enemy2health = 3;
     }, this.asset);
     this.map.setCollision(1193); //Barrier for D1
 
@@ -109,44 +110,35 @@ Game.prototype = {
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.heart1 = this.add.button(0, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart1 = this.add.sprite(0, 0, 'heart', 0);
     this.heart1.fixedToCamera = true;
-    this.heart1.inputEnabled = true;
 
-    this.heart2 = this.add.button(32, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart2 = this.add.sprite(32, 0, 'heart', 0);
     this.heart2.fixedToCamera = true;
-    this.heart2.inputEnabled = true;
 
-    this.heart3 = this.add.button(64, 0, 'heart', listenerHearts, this, 1, 0, 2);
+    this.heart3 = this.add.sprite(64, 0, 'heart', 0);
     this.heart3.fixedToCamera = true;
-    this.heart3.inputEnabled = true;
 
-    this.coin = this.add.sprite(106, 3, 'coin');
+    this.coin = this.add.sprite(96, 2, 'coin');
+    this.coin.animations.add('shine', [0, 1], 5, true);
+    this.coin.play('shine');
     this.coin.fixedToCamera = true;
-    this.coin.animations.add('shine');
-    this.coin.animations.play('shine', 3, true);
 
+    this.save = this.add.sprite(120, 0, 'save');
 
     this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
     this.pause.fixedToCamera = true;
     this.pause.scale.x = .1;
     this.pause.scale.y = .1;
     this.pause.inputEnabled = true;
-    this.pause.events.onInputDown.add(() => {
-      this.game.paused = true;
-      this.music.pause();
-    });
-
     this.game.input.onDown.add(() => {
       if(this.game.paused) {
-      this.game.paused = false;
-      this.music.resume();
+        this.game.paused = false;
+        this.music.resume();
       }
       else {
-        }
+      }
     }, self);
-
-
 
     if(this.enemy1.x == 500 && this.enemy1.y == 250){
       console.log("Change Frame");
@@ -300,12 +292,35 @@ Game.prototype = {
     this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
     this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
 
-
-
-
-    //check for hero death
-    if(herohealth == 0){
+    if (herohealth == 5) {
+      this.heart3.frame = 1;
+      console.log(5);
+      return;
+    }
+    if (herohealth == 4) {
+      this.heart3.frame = 2;
+      console.log(4);
+      return;
+    }
+    if (herohealth == 3) {
+      this.heart2.frame = 1;
+      console.log(3);
+      return;
+    }
+    if (herohealth == 2) {
+      this.heart2.frame = 2;
+      console.log(2);
+      return;
+    }
+    if (herohealth == 1) {
+      this.heart1.frame = 1;
+      console.log(1);
+      return;
+    }
+    if (herohealth == 0) {
+      this.heart1.frame = 2;
       console.log("Hero Died");
+      return;
     }
 
     //enemy2 movement
@@ -355,17 +370,7 @@ Game.prototype = {
         }
       }
     }
-
-
-
-
-
-
   }
-
-
-
-
 };
 
 
@@ -386,14 +391,12 @@ function enemy2attacked (){
 function heroattacked (){
   if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
     herohealth = herohealth - 1;
-
   }
-
-
 }
 
 function listenerPause () {
-
+  this.game.paused = true;
+  this.music.pause();
 }
 
 function enemy1move(){
@@ -401,15 +404,8 @@ function enemy1move(){
 }
 
 function enemy2move(){
-
-
 }
 
-function listenerHearts () {
-  if (herohealth = 0) {
-    this.hearts.frame(2);
-  }
-}
 
 
 

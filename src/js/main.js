@@ -13,7 +13,7 @@ game.state.add('Preloader', require('./states/preloader'));
 game.state.add('Menu', require('./states/menu'));
 game.state.add('Game', require('./states/game'));
 game.state.add('Level1', require('./states/Levels/level1'));
-game.state.add('Boss1', require('./states/levels/Boss1'));
+game.state.add('Boss1', require('./states/Levels/Boss1'));
 game.state.add('Credits', require('./states/credits'));
 game.state.add('Settings', require('./states/settings'));
 game.state.add('Shop', require('./states/shop'));

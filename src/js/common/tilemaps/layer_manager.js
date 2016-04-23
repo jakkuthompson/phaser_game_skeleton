@@ -27,7 +27,6 @@ LayerManager.prototype = {
 
         // Load new layer and set it as the active layer
         this._active = this._tilemap.createLayer(name);
-        this._active.debug = true;
     },
     
     // Method to bind a particular tile to load a different layer
