@@ -1,6 +1,9 @@
 var Level1 = function () {
     this.map = null;
     this.layer = null;
+    this.room1 = null;
+    this.room2 = null;
+    this.room3 = null;
     this.music = null;
     this.snekkek = null;
     this.snekkekGroup = null;
@@ -34,20 +37,28 @@ Level1.prototype = {
         this.map = this.add.tilemap('dungeon1-1');
         this.map.addTilesetImage('t1', 'tileset');
 
-        this.layermanager = new LayerManager(this, this.map);
-        this.layermanager.bindTileToLayer(1003, "left-1", () => {
-            this.asset.x = 1120;
-            this.asset.y = 2912;
-            this.world.bringToTop(this.asset);
-        });
-        
-        this.layermanager.load('entrance');
+        this.layer = this.map.createLayer('entrance');
+        this.layer.visible = false;
 
-        this.layermanager.bindTileToLayer(1002, "entrance", () => {
-            this.asset.x = 1248;
-            this.asset.y = 1632;
-            this.world.bringToTop(this.asset);
-        });
+        this.room1 = this.add.sprite(0, 0, 'dungeon1');
+        this.room2 = this.add.sprite(0, 0, 'dungeon2');
+        this.room2.visible = false;
+        this.room3 = this.add.sprite(0, 0, 'dungeon3');
+        this.room3.visible = false;
+
+        this.map.setTileIndexCallback(1003, () => {
+            this.asset.x = 1056;
+            this.asset.y = 2912;
+            this.room1.visible = false;
+            this.room2.visible = true;
+        }, this.asset);
+
+        this.map.setTileIndexCallback(1002, () => {
+            this.asset.x = 1056;
+            this.asset.y = 2192;
+            this.room1.visible = true;
+            this.room2.visible = false;
+        }, this.asset);
 
         this.map.setTileIndexCallback(961, () => {
             this.game.state.start('Game');
@@ -135,9 +146,9 @@ Level1.prototype = {
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         // Only test collision on the active layer.
-        this.physics.arcade.collide(this.asset, this.layermanager.active);
+        this.physics.arcade.collide(this.asset, this.layer);
         this.physics.arcade.collide(this.asset, this.snekkek);
-        this.physics.arcade.collide(this.snekkek, this.layermanager.active);
+        this.physics.arcade.collide(this.snekkek, this.layer);
 
         this.asset.body.velocity.set(0);
 
