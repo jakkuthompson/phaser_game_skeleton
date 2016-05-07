@@ -27,6 +27,7 @@ Preloader.prototype = {
     this.load.audio('dungeon1theme', 'assets/audio/Cyborg Ninja.mp3');
     this.load.spritesheet('zephyr', 'assets/game/zephyr.png', 32, 32);
     this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
+    this.load.image('pausemenu', '../assets/game/pausemenu.png');
     this.load.image('play', 'assets/game/shop/play_360.png');
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
@@ -40,10 +41,12 @@ Preloader.prototype = {
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
     this.load.spritesheet('sword', 'assets/game/Sword.png', 192, 192, 7);
     this.load.spritesheet('sword2', 'assets/game/sword2.png', 192, 192, 7);
-    this.load.spritesheet('exitstore', 'assets/game/shop/Exit.png');
+    this.load.spritesheet('exitstore', 'assets/game/shop/Exit.png', 32, 32);
     this.load.spritesheet('snekkek', 'assets/game/Level1/snekek.png', 32, 32);
     this.load.spritesheet('heart', '../assets/game/GUI/heart.png', 32, 32);
     this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
+    this.load.spritesheet('youlose', '../assets/game/youlose.png', 128, 128);
+    this.load.spritesheet('skip', '../assets/game/skip.png', 32, 32);
   },
 
   create: function () {

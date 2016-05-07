@@ -124,19 +124,23 @@ Game.prototype = {
     this.coin.play('shine');
     this.coin.fixedToCamera = true;
 
-    this.save = this.add.sprite(120, 0, 'save');
-
-    this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
+    this.pause = this.add.button(775, 0, 'pause', listenerPause(), this, 1, 0, 2);
     this.pause.fixedToCamera = true;
     this.pause.scale.x = .1;
     this.pause.scale.y = .1;
     this.pause.inputEnabled = true;
-    this.game.input.onDown.add(() => {
+    this.pause.events.onInputDown.add(() => {
       if(this.game.paused) {
         this.game.paused = false;
         this.music.resume();
       }
       else {
+        this.game.paused = true;
+        this.music.pause();
+        this.pausemenu = this.add.sprite(400, 300, 'menu');
+        this.pausemenu.fixedToCamera = true;
+        this.resume = this.add.button(400, 400, 'resume', listenerResume, true, 1, 0, 2);
+        this.menuexit = this.add.button(400, 500, 'menuexit', listenerExit, true, 1, 0, 2);
       }
     }, self);
 
@@ -240,14 +244,8 @@ Game.prototype = {
       if(this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5){
         this.sword2.visible = true;
         this.sword2.animations.play('swingtwo', 13, false);
-
-
       }
-
     }
-
-
-
     this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
       alreadyhit2 = 0; }, this);
     this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
@@ -384,8 +382,6 @@ function enemy2attacked (){
     enemy2health = enemy2health - 1;
     alreadyhit2 = 1;
   console.log(enemy2health);
-
-
 }
 
 function heroattacked (){
@@ -395,8 +391,14 @@ function heroattacked (){
 }
 
 function listenerPause () {
-  this.game.paused = true;
-  this.music.pause();
+}
+
+function listenerResume () {
+
+}
+
+function listenerExit () {
+  this.game.state.start('Menu');
 }
 
 function enemy1move(){

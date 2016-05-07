@@ -16,7 +16,8 @@ game.state.add('Level1', require('./states/Levels/level1'));
 game.state.add('Boss1', require('./states/Levels/Boss1'));
 game.state.add('Credits', require('./states/credits'));
 game.state.add('Settings', require('./states/settings'));
-game.state.add('Shop', require('./states/shop'));
+game.state.add('Shop', require('./states/shop'))
+game.state.add('GameOver', require('./states/gameover'));
 
 game.state.start('Boot');
 

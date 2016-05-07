@@ -32,8 +32,6 @@ Menu.prototype = {
 
   update: function () {
 
-
-
   },
 
   onDown: function () {
@@ -44,7 +42,7 @@ Menu.prototype = {
 
   function listenerPlay () {
     this.game.state.start('Game');
-}
+  }
 
   function listenerSet () {
     this.game.state.start('Settings');
