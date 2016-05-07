@@ -21,7 +21,7 @@ const Zephyr = require("../models/player_models/player");
 
 var enemy1health = 3;
 var enemy2health = 3;
-var herohealth = 100;
+var herohealth = 201;
 var money = 0;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
@@ -33,6 +33,8 @@ var enemy2x = 200;
 var enemy2y = 300;
 var walkmore2 = true;
 var herodied = 0;
+var sectimer = 0;
+var testvar = 1;
 
 module.exports = Game;
 
@@ -200,6 +202,12 @@ Game.prototype = {
 
   update: function () {
 
+      if(sectimer == 60){
+          secstimer = 0;
+      }
+      sectimer++;
+
+
     var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     var wKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     var sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -290,27 +298,27 @@ Game.prototype = {
     this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
     this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
 
-    if (herohealth == 5) {
+    if (herohealth == 200) {
       this.heart3.frame = 1;
       console.log(5);
       return;
     }
-    if (herohealth == 4) {
+    if (herohealth == 160) {
       this.heart3.frame = 2;
       console.log(4);
       return;
     }
-    if (herohealth == 3) {
+    if (herohealth == 120) {
       this.heart2.frame = 1;
       console.log(3);
       return;
     }
-    if (herohealth == 2) {
+    if (herohealth == 80) {
       this.heart2.frame = 2;
       console.log(2);
       return;
     }
-    if (herohealth == 1) {
+    if (herohealth == 40) {
       this.heart1.frame = 1;
       console.log(1);
       return;
@@ -385,10 +393,24 @@ function enemy2attacked (){
 }
 
 function heroattacked (){
-  if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
-    herohealth = herohealth - 1;
+  if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false) {
+      if (sectimer = 1) {
+
+          herohealth = herohealth - 1;
+          tween11 = this.game.add.tween(this.asset);
+          tween11.to({x: [this.asset.x + 50], y: [this.asset.y]}, 200, "Linear");
+
+
+
+
+
+      }
+
+
   }
 }
+
+
 
 function listenerPause () {
 }
