@@ -77,7 +77,7 @@ Level1.prototype = {
         }, this.asset);
 
         this.snekkekGroup = this.game.add.group();
-        this.snekkek = new Snekkek(this.game, this.world.centerX, this.world.centerY);
+        this.snekkek = new Snekkek(this.game, 1500, 2700);
         this.snekkekGroup.add(this.snekkek);
         this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
         this.snekkek.body.enable = true;
