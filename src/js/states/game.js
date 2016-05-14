@@ -133,17 +133,22 @@ Game.prototype = {
     this.pause.scale.y = .1;
     this.pause.inputEnabled = true;
     this.pause.events.onInputDown.add(() => {
-      if(this.game.paused) {
+      if(this.pausething == 0) {
         this.game.paused = false;
         this.music.resume();
+        this.pausething = 1;
       }
-      else {
-        this.game.paused = true;
-        this.music.pause();
-        this.pausemenu = this.add.sprite(400, 300, 'menu');
-        this.pausemenu.fixedToCamera = true;
-        this.resume = this.add.button(400, 400, 'resume', listenerResume, true, 1, 0, 2);
-        this.menuexit = this.add.button(400, 500, 'menuexit', listenerExit, true, 1, 0, 2);
+        else {
+          this.input.disabled = true;
+          this.asset.body.velocity.x = 0;
+          this.asset.body.velocity.y = 0;
+          this.pausemenu = this.add.sprite(400, 300, 'menu');
+          this.pausemenu.fixedToCamera = true;
+          this.resume = this.add.button(400, 400, 'resume', listenerResume(), true, 1, 0, 2);
+          this.menuexit = this.add.button(400, 500, 'menuexit', listenerExit(), true, 1, 0, 2);
+          this.game.paused = true;
+          this.music.pause();
+        this.pausething = 0;
       }
     }, self);
 

@@ -28,13 +28,18 @@ Preloader.prototype = {
     this.load.spritesheet('zephyr', 'assets/game/zephyr.png', 32, 32);
     this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
     this.load.image('pausemenu', '../assets/game/pausemenu.png');
+    this.load.spritesheet('options', '../assets/game//GUI/options_720.png', 240, 240);
     this.load.image('play', 'assets/game/shop/play_360.png');
+    this.load.spritesheet('resume', '../assets/game/GUI/resume__1__720.png', 240, 240);
     this.load.image('hubimg', 'assets/game/hub.png');
     this.load.image('hubimg2', 'assets/game/hub2.png');
     this.load.tilemap('hub', 'assets/game/hub.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('tileset', 'assets/DungeonCrawl_ProjectUtumnoTileset_0.png');
     this.load.image('tileset1', 'assets/Hanzo-TownSet01VS-1.png');
     this.load.tilemap('dungeon1-1', 'assets/game/Level1/dungeon1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.image('dungeon1', 'assets/game/Level1/dungeon1.png');
+    this.load.image('dungeon2', 'assets/game/Level1/dungeon2.png');
+    this.load.image('dungeon3', 'assets/game/Level1/dungeon3.png');
     this.load.tilemap('boss-1', 'assets/game/Level1/boss1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.spritesheet('warptile', 'assets/game/gotoboss.png', 32, 32);
     this.load.spritesheet('kingsnekkek', 'assets/game/Level1/Enemies/King_Snekkek.png', 300, 300);
@@ -46,7 +51,7 @@ Preloader.prototype = {
     this.load.spritesheet('heart', '../assets/game/GUI/heart.png', 32, 32);
     this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
     this.load.spritesheet('youlose', '../assets/game/youlose.png', 128, 128);
-    this.load.spritesheet('skip', '../assets/game/skip.png', 32, 32);
+    this.load.spritesheet('skip', '../assets/game/GUI/skip__1__360.png', 32, 32);
   },
 
   create: function () {
