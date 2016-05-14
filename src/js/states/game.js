@@ -34,7 +34,8 @@ var enemy2y = 300;
 var walkmore2 = true;
 var herodied = 0;
 var sectimer = 0;
-var testvar = 1;
+
+
 
 module.exports = Game;
 
@@ -295,8 +296,13 @@ Game.prototype = {
     }
 
     //collision detection for hero getting attacked
-    this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
-    this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+    if(enemy1health > 0) {
+      this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
+    }
+    if(enemy2health > 0) {
+      this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+    }
+
 
     if (herohealth == 200) {
       this.heart3.frame = 1;
