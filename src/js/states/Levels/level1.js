@@ -16,7 +16,7 @@ const Snekkek = require('../../models/Enemies/snekkek');
 const LayerManager = require('../../common/tilemaps/layer_manager');
 const CollisionManager = require('../../common/collisions/collision_manager');
 
-var walkmore = true;
+
 var alreadyhit1 = 0;
 var snekkek1health = 2;
 var herohealth = 6;
@@ -47,14 +47,14 @@ Level1.prototype = {
         this.room3.visible = false;
 
         this.map.setTileIndexCallback(1003, () => {
-            this.asset.x = 1056;
+            this.asset.x = 1120;
             this.asset.y = 2912;
             this.room1.visible = false;
             this.room2.visible = true;
         }, this.asset);
 
         this.map.setTileIndexCallback(1002, () => {
-            this.asset.x = 1056;
+            this.asset.x = 1248;
             this.asset.y = 2192;
             this.room1.visible = true;
             this.room2.visible = false;
@@ -63,6 +63,9 @@ Level1.prototype = {
         this.map.setTileIndexCallback(961, () => {
             this.game.state.start('Game');
             this.music.pause();
+        walkmore = true;
+        walkmore2 = true;
+
         }, this.asset);
 
         this.collisionmanager = new CollisionManager(this, this.map);
