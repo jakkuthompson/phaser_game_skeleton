@@ -25,22 +25,25 @@ var herohealth = 201;
 var money = 0;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
-var counter = 0;
 var enemy1x = 400;
 var enemy1y = 250;
-var walkmore = true;
 var enemy2x = 200;
 var enemy2y = 300;
-var walkmore2 = true;
-var herodied = 0;
 var sectimer = 0;
-var testvar = 1;
+var walkmore = true;
+var walkmore2 = true;
+var test = true;
+
+
+
+
 
 module.exports = Game;
 
 Game.prototype = {
 
   create: function () {
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -58,14 +61,15 @@ Game.prototype = {
     this.map.setTileIndexCallback(979, () => {
       this.game.state.start('Level1');
       this.music.pause();
-      enemy1health = 3;
-      enemy2health = 3;
+      test = true;
+
+
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
       this.game.state.start('Shop');
       this.music.pause(); //bruh
-      enemy1health = 3;
-      enemy2health = 3;
+      test = true;
+
     }, this.asset);
     this.map.setCollision(1193); //Barrier for D1
 
@@ -168,7 +172,6 @@ Game.prototype = {
       this.enemy1.frame = 1;
 
     }
-    //enemy1 movement
 
     tween1 = this.game.add.tween(this.enemy1);
     tween1.to({x: [enemy1x + 100], y: [enemy1y]}, 500, "Linear");
@@ -203,14 +206,26 @@ Game.prototype = {
     tween8 = this.game.add.tween(this.enemy2);
     tween8.to({x: [enemy2x+100], y: [enemy2y]}, 500, "Linear");
     enemy2x = enemy2x + 100;
+
+
+
   },
 
   update: function () {
 
-      if(sectimer == 60){
-          secstimer = 0;
-      }
-      sectimer++;
+
+    if (sectimer == 60) {
+      secstimer = 0;
+    }
+    sectimer++;
+
+    if(test == true){
+      walkmore = true;
+      walkmore2 = true;
+      test = false;
+    }
+
+
 
 
     var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -238,31 +253,37 @@ Game.prototype = {
     }
     else if (this.cursors.up.isDown || wKey.isDown) {
       this.asset.body.velocity.y = -200;
-        this.asset.play('up');
+      this.asset.play('up');
     }
     else if (this.cursors.down.isDown || sKey.isDown) {
       this.asset.body.velocity.y = 200;
-        this.asset.play('down');
+      this.asset.play('down');
     }
     else {
       this.asset.animations.stop();
     }
 
     //sword attack
-    if(attackKey.isDown || spacebar.isDown){
-      if(this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8){
+    if (attackKey.isDown || spacebar.isDown) {
+      if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
         this.sword.visible = true;
         this.sword.animations.play('swing', 13, false);
       }
-      if(this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5){
+      if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
         this.sword2.visible = true;
         this.sword2.animations.play('swingtwo', 13, false);
       }
     }
-    this.sword.animations.currentAnim.onComplete.add(function () {	this.sword.visible = false; alreadyhit1 = 0;
-      alreadyhit2 = 0; }, this);
-    this.sword2.animations.currentAnim.onComplete.add(function () {	this.sword2.visible = false; alreadyhit1 = 0;
-      alreadyhit2 = 0;}, this);
+    this.sword.animations.currentAnim.onComplete.add(function () {
+      this.sword.visible = false;
+      alreadyhit1 = 0;
+      alreadyhit2 = 0;
+    }, this);
+    this.sword2.animations.currentAnim.onComplete.add(function () {
+      this.sword2.visible = false;
+      alreadyhit1 = 0;
+      alreadyhit2 = 0;
+    }, this);
 
 
     //keep the sword by the main character
@@ -272,36 +293,41 @@ Game.prototype = {
     this.sword2.y = this.asset.y;
 
     //collision detection for hitting the enemies
-    if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+    if (this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
       this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
     }
-    if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
+    if (this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
       this.game.physics.arcade.overlap(this.sword2, this.enemy1, enemy1attacked, null, this);
     }
 
-    if(this.sword.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
+    if (this.sword.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
       this.game.physics.arcade.overlap(this.sword, this.enemy2, enemy2attacked, null, this);
     }
-    if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
+    if (this.sword2.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
       this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
     }
 
 
     //check for enemy kill
-    if(enemy1health == 0){
+    if (enemy1health <= 0) {
       this.enemy1.visible = false;
       money = money + 10;
 
     }
 
-    if(enemy2health == 0){
+    if (enemy2health <= 0) {
       this.enemy2.visible = false;
       money = money + 10;
     }
 
     //collision detection for hero getting attacked
-    this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
-    this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+    if (enemy1health > 0) {
+      this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
+    }
+    if (enemy2health > 0) {
+      this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+    }
+
 
     if (herohealth == 200) {
       this.heart3.frame = 1;
@@ -334,8 +360,15 @@ Game.prototype = {
       return;
     }
 
+
     //enemy2 movement
-    if(walkmore2 == true)  { walkmore2 = false;
+
+
+
+    if (walkmore2 == true) {
+
+
+      walkmore2 = false;
       this.enemy2.frame = 1;
       tween2.start();
       tween2.onComplete.add(doSomething, this);
@@ -344,19 +377,26 @@ Game.prototype = {
         tween6.start();
         tween6.onComplete.add(doSomething, this);
         function doSomething() {
-          this.enemy2.frame = 5;tween7.start();
+          this.enemy2.frame = 5;
+          tween7.start();
           tween7.onComplete.add(doSomething, this);
           function doSomething() {
-            this.enemy2.frame = 9;tween8.start();
+            this.enemy2.frame = 9;
+            tween8.start();
             tween8.onComplete.add(doSomething, this);
-            function doSomething() {walkmore2 = true;
+            function doSomething() {
+              walkmore2 = true;
             }
           }
         }
       }
     }
+
+
     //enemy1 movement
-    if(walkmore == true) {
+
+
+    if (walkmore == true) {
 
       this.enemy1.frame = 9;
       tween1.start();
@@ -382,6 +422,7 @@ Game.prototype = {
       }
     }
   }
+
 };
 
 
@@ -428,12 +469,7 @@ function listenerExit () {
   this.game.state.start('Menu');
 }
 
-function enemy1move(){
 
-}
-
-function enemy2move(){
-}
 
 
 
