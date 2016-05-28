@@ -79,6 +79,7 @@ Level1.prototype = {
             this.asset.y = 2912;
             this.room1.visible = true;
             this.entrancedecor.visible = true;
+            this.snekkekGroup.create(this.snekkek);
             this.room2.visible = false;
         }, this.asset);
 
