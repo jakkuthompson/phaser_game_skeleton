@@ -66,7 +66,7 @@ Level1.prototype = {
         this.entrancedecor = this.add.tileSprite(0, 0, 3200, 3200, 'entrancedecor');
 
         this.map.setTileIndexCallback(850, () => {
-            this.asset.x = 1108;
+            this.asset.x = 1120;
             this.asset.y = 2912;
             this.room1.visible = false;
             this.room2.visible = true;
@@ -79,8 +79,15 @@ Level1.prototype = {
             this.asset.y = 2912;
             this.room1.visible = true;
             this.entrancedecor.visible = true;
-            this.snekkekGroup.create(this.snekkek);
+            this.snekkek.revive();
             this.room2.visible = false;
+        }, this.asset);
+
+        this.map.setTileIndexCallback(3009, () => {
+            this.asset.x = 3136;
+            this.asset.y = 2944;
+            this.room2.visible = false;
+            this.rightroom1.visible = false;
         }, this.asset);
 
         this.map.setTileIndexCallback(961, () => {
