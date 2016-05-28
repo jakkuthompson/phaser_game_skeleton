@@ -30,10 +30,11 @@ Level1.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 
+        this.game.world.setBounds(0, 0, 3200, 3200);
+
         this.music = this.add.audio('dungeon1theme');
         this.music.play();
         this.music.volume = .7;
-
         this.map = this.add.tilemap('dungeon1-1');
         this.map.addTilesetImage('t1', 'tileset');
 
@@ -45,18 +46,39 @@ Level1.prototype = {
         this.room2.visible = false;
         this.room3 = this.add.sprite(0, 0, 'dungeon3');
         this.room3.visible = false;
+        this.hallway = this.add.sprite(0, 0, 'hallway');
+        this.hallway.visible = false;
+        this.rightroom1 = this.add.sprite(0, 0, 'rightroom1');
+        this.rightroom1.visible = false;
+        this.rightroom2 = this.add.sprite(0, 0, 'rightroom2');
+        this.rightroom2.visible = false;
+        this.rightroom3 = this.add.sprite(0, 0, 'rightroom3');
+        this.rightroom3.visible = false;
+        this.rightroom4 = this.add.sprite(0, 0, 'rightroom4');
+        this.rightroom4.visible = false;
+        this.rightroom5 = this.add.sprite(0, 0, 'rightroom5');
+        this.rightroom5.visible = false;
+        this.rightroom6 = this.add.sprite(0, 0, 'rightroom6');
+        this.rightroom6.visible = false;
+        this.rightroom7 = this.add.sprite(0, 0, 'rightroom7');
+        this.rightroom7.visible = false;
 
-        this.map.setTileIndexCallback(1003, () => {
-            this.asset.x = 1056;
+        this.entrancedecor = this.add.tileSprite(0, 0, 3200, 3200, 'entrancedecor');
+
+        this.map.setTileIndexCallback(850, () => {
+            this.asset.x = 1108;
             this.asset.y = 2912;
             this.room1.visible = false;
             this.room2.visible = true;
+            this.snekkek.kill();
+            this.entrancedecor.visible = false;
         }, this.asset);
 
         this.map.setTileIndexCallback(1002, () => {
-            this.asset.x = 1056;
-            this.asset.y = 2192;
+            this.asset.x = 1248;
+            this.asset.y = 2912;
             this.room1.visible = true;
+            this.entrancedecor.visible = true;
             this.room2.visible = false;
         }, this.asset);
 
@@ -81,11 +103,6 @@ Level1.prototype = {
         this.asset.body.collideWorldBounds = true;
         this.game.world.setBounds(0, 0, 3200, 3200);
         this.game.camera.follow(this.asset);
-
-        this.map.setTileIndexCallback(2710, () => {
-            this.asset.play('warp');
-            this.music.pause();
-        }, this.asset);
 
         this.snekkekGroup = this.game.add.group();
         this.snekkek = new Snekkek(this.game, 1500, 2700);
@@ -148,8 +165,7 @@ Level1.prototype = {
         // Only test collision on the active layer.
         this.physics.arcade.collide(this.asset, this.layer);
         this.physics.arcade.collide(this.asset, this.snekkek);
-        this.physics.arcade.collide(this.snekkek, this.layer);
-
+        
         this.asset.body.velocity.set(0);
 
         if (this.cursors.left.isDown || aKey.isDown) {
@@ -204,33 +220,29 @@ Level1.prototype = {
         if(this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
             this.game.physics.arcade.overlap(this.sword2, this.snekkek, snekkek1attacked, null, this);
         }
-
-        this.snekkek.body.velocity.set(0);
-
-        if(this.asset.x < this.snekkek.x){
-            this.snekkek.body.velocity.x = -100;
+        //check for enemy kill
+        else {
+            if (this.asset.x < this.snekkek.x) {
+                this.snekkek.body.velocity.x = -100;
+            }
+            if (this.asset.x > this.snekkek.x) {
+                this.snekkek.body.velocity.x = 100;
+            }
+            if (this.asset.y < this.snekkek.y) {
+                this.snekkek.body.velocity.y = -100;
+            }
+            if (this.asset.y > this.snekkek.y) {
+                this.snekkek.body.velocity.y = 100;
+            }
         }
-        if(this.asset.x > this.snekkek.x){
-            this.snekkek.body.velocity.x = 100;
-        }
-        if(this.asset.y < this.snekkek.y){
-            this.snekkek.body.velocity.y = -100;
-        }
-        if(this.asset.y > this.snekkek.y){
-            this.snekkek.body.velocity.y = 100;
-        }
-
         if(this.health == 0){
             this.visible = false;
             coins = coins + 10;
 
         }
-
-        //check for enemy kill
         if(snekkek1health == 0){
-            this.snekkek.visible = false;
+            this.snekkek.kill();
             coins = coins + 10;
-
         }
     }
 //please push
