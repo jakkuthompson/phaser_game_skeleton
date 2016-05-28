@@ -293,4 +293,3 @@ function listenerHearts () {
         this.asset.play('died');
     }
 }
-//swank memes
