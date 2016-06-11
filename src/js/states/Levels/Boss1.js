@@ -7,6 +7,7 @@ var Boss1 = function () {
 module.exports = Boss1;
 
 const LayerManager = require('../../common/tilemaps/layer_manager');
+const KingSnekkek = require('../../models/Enemies/Level1/kingsnekkek.js');
 
 Boss1.prototype = {
     create: function () {
@@ -53,9 +54,8 @@ Boss1.prototype = {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.kingsnekkek = this.add.sprite(this.world.centerX, 64, 'kingsnekkek');
-        this.kingsnekkek.animations.add('slither', [0, 1, 2, 3, 4], 5, true);
-        this.kingsnekkek.play('slither');
+        this.kingsnekkek = new KingSnekkek(this.game);
+        console.log(this.kingsnekkek);
     },
 
     update: function () {
@@ -66,7 +66,10 @@ Boss1.prototype = {
         var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+        this.kingsnekkek.update();
+
         this.physics.arcade.collide(this.asset, this.layermanager.active);
+        this.physics.arcade.collide(this.asset, this.kingsnekkek);
 
         this.asset.body.velocity.set(0);
 

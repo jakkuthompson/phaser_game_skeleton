@@ -6,7 +6,4 @@ Player.prototype = {
 
 };
 
-Player.prototype = Object.create(Phaser.Sprite.prototype);
-Player.prototype.constructor = Player;
-
 module.exports = Player;

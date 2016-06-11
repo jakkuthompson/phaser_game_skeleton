@@ -12,8 +12,8 @@ var Level1 = function () {
 
 module.exports = Level1;
 
-const Snekkek = require('../../models/Enemies/snekkek');
-const LayerManager = require('../../common/tilemaps/layer_manager');
+const Snekkek = require('../../models/Enemies/Level1/snekkek');
+const GUI = require('../../models/player_models/healthbar');
 const CollisionManager = require('../../common/collisions/collision_manager');
 
 var walkmore = true;
@@ -64,12 +64,27 @@ Level1.prototype = {
         this.rightroom7.visible = false;
 
         this.entrancedecor = this.add.tileSprite(0, 0, 3200, 3200, 'entrancedecor');
-
+        this.warppad = this.add.sprite(864, 2688, 'warptile');
+        this.warppad.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad.play('flash');
+        this.warppad.visible = false;
+        this.warppad1 = this.add.sprite(576, 2912, 'warptile');
+        this.warppad1.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad1.play('flash');
+        this.warppad1.visible = false;
+        this.warppad2 = this.add.sprite(864, 3136, 'warptile');
+        this.warppad2.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad2.play('flash');
+        this.warppad2.visible = false;
+        this.warppad3 = this.add.sprite(0, 0, 'warptile');
         this.map.setTileIndexCallback(850, () => {
             this.asset.x = 1120;
             this.asset.y = 2912;
             this.room1.visible = false;
             this.room2.visible = true;
+            this.warppad.visible = true;
+            this.warppad1.visible = true;
+            this.warppad2.visible = true;
             this.snekkek.kill();
             this.entrancedecor.visible = false;
         }, this.asset);
@@ -87,7 +102,11 @@ Level1.prototype = {
             this.asset.x = 3136;
             this.asset.y = 2944;
             this.room2.visible = false;
-            this.rightroom1.visible = false;
+            this.rightroom1.visible = true;
+        }, this.asset);
+
+        this.map.setTileIndexCallback(3012, () => {
+
         }, this.asset);
 
         this.map.setTileIndexCallback(961, () => {
@@ -135,16 +154,7 @@ Level1.prototype = {
         //keypad input detectors
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.heart1 = this.add.sprite(0, 0, 'heart', 0);
-        this.heart1.fixedToCamera = true;
-
-        this.heart2 = this.add.sprite(32, 0, 'heart', 0);
-        this.heart2.fixedToCamera = true;
-
-        this.heart3 = this.add.sprite(64, 0, 'heart', 0);
-        this.heart3.fixedToCamera = true;
-
-        this.coin = this.add.sprite(86, 0, 'coin');
+        this.GUI = new GUI(this.game);
 
         this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
         this.pause.fixedToCamera = true;
@@ -173,6 +183,8 @@ Level1.prototype = {
         // Only test collision on the active layer.
         this.physics.arcade.collide(this.asset, this.layer);
         this.physics.arcade.collide(this.asset, this.snekkek);
+
+        this.GUI.update();
         
         this.asset.body.velocity.set(0);
 
@@ -269,27 +281,5 @@ function snekkek1attacked (){
 function heroattacked (){
     if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
         herohealth = herohealth - 1;
-    }
-}
-
-function listenerHearts () {
-    if (herohealth !== 5) {
-        this.heart3.frame(0);
-    }
-    if (herohealth !== 4) {
-        this.heart3.frame(2);
-    }
-    if (herohealth !== 3) {
-        this.heart2.frame(0);
-    }
-    if (herohealth !== 2) {
-        this.heart3.frame(2);
-    }
-    if (herohealth !== 1) {
-        this.heart3.frame(0);
-    }
-    if (herohealth !== herodied) {
-        this.heart3.frame(2);
-        this.asset.play('died');
     }
 }

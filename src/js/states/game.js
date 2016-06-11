@@ -18,10 +18,11 @@ var Game = function () {
 };
 
 const Zephyr = require("../models/player_models/player");
+const GUI = require('../models/player_models/healthbar');
 
 var enemy1health = 3;
 var enemy2health = 3;
-var herohealth = 201;
+var herohealth = 6;
 var money = 0;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
@@ -33,10 +34,6 @@ var sectimer = 0;
 var walkmore = true;
 var walkmore2 = true;
 var test = true;
-
-
-
-
 
 module.exports = Game;
 
@@ -62,14 +59,11 @@ Game.prototype = {
       this.game.state.start('Level1');
       this.music.pause();
       test = true;
-
-
     }, this.asset);
     this.map.setTileIndexCallback(1005, () => {
       this.game.state.start('Shop');
       this.music.pause(); //bruh
       test = true;
-
     }, this.asset);
     this.map.setCollision(1193); //Barrier for D1
 
@@ -116,19 +110,7 @@ Game.prototype = {
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.heart1 = this.add.sprite(0, 0, 'heart', 0);
-    this.heart1.fixedToCamera = true;
-
-    this.heart2 = this.add.sprite(32, 0, 'heart', 0);
-    this.heart2.fixedToCamera = true;
-
-    this.heart3 = this.add.sprite(64, 0, 'heart', 0);
-    this.heart3.fixedToCamera = true;
-
-    this.coin = this.add.sprite(96, 2, 'coin');
-    this.coin.animations.add('shine', [0, 1], 5, true);
-    this.coin.play('shine');
-    this.coin.fixedToCamera = true;
+    this.GUI = new GUI(this.game);
 
     this.pause = this.add.button(775, 0, 'pause', listenerPause(), this, 1, 0, 2);
     this.pause.fixedToCamera = true;
@@ -212,8 +194,6 @@ Game.prototype = {
   },
 
   update: function () {
-
-
     if (sectimer == 60) {
       secstimer = 0;
     }
@@ -225,9 +205,6 @@ Game.prototype = {
       test = false;
     }
 
-
-
-
     var attackKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     var wKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     var sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -235,10 +212,11 @@ Game.prototype = {
     var dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-
     this.physics.arcade.collide(this.asset, this.layer);
     this.physics.arcade.collide(this.enemy1, this.enemy2);
     this.physics.arcade.collide(this.enemy2, this.enemy1);
+
+    this.GUI.update();
 
     //main character movement
     this.asset.body.velocity.set(0);
@@ -307,16 +285,15 @@ Game.prototype = {
       this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
     }
 
-
     //check for enemy kill
     if (enemy1health <= 0) {
-      this.enemy1.visible = false;
+      this.enemy1.kill();
       money = money + 10;
 
     }
 
     if (enemy2health <= 0) {
-      this.enemy2.visible = false;
+      this.enemy2.kill();
       money = money + 10;
     }
 
@@ -328,46 +305,9 @@ Game.prototype = {
       this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
     }
 
-
-    if (herohealth == 200) {
-      this.heart3.frame = 1;
-      console.log(5);
-      return;
-    }
-    if (herohealth == 160) {
-      this.heart3.frame = 2;
-      console.log(4);
-      return;
-    }
-    if (herohealth == 120) {
-      this.heart2.frame = 1;
-      console.log(3);
-      return;
-    }
-    if (herohealth == 80) {
-      this.heart2.frame = 2;
-      console.log(2);
-      return;
-    }
-    if (herohealth == 40) {
-      this.heart1.frame = 1;
-      console.log(1);
-      return;
-    }
-    if (herohealth == 0) {
-      this.heart1.frame = 2;
-      console.log("Hero Died");
-      return;
-    }
-
-
     //enemy2 movement
 
-
-
     if (walkmore2 == true) {
-
-
       walkmore2 = false;
       this.enemy2.frame = 1;
       tween2.start();
