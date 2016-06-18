@@ -61,6 +61,11 @@ Preloader.prototype = {
     this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
     this.load.spritesheet('youlose', '../assets/game/youlose.png', 128, 128);
     this.load.spritesheet('skip', '../assets/game/GUI/skip__1__360.png', 32, 32);
+    this.load.image('healthbar', '../assets/game/Level1/Boss/Healthbar.png');
+
+
+
+    this.game.time.advancedTiming = true;
   },
 
   create: function () {
