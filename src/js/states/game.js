@@ -1,4 +1,4 @@
-var Game = function () {
+Game = function () {
   this.map = null;
   this.layer = null;
   this.cursors = null;
@@ -15,17 +15,18 @@ var Game = function () {
   this.pause = null;
   this.pauseMenu = null;
   this.save = null;
+  this.save = null;
 };
 
-const Zephyr = require("../models/player_models/player");
 const GUI = require('../models/player_models/healthbar');
+const Main = require('../main');
 
 var enemy1health = 3;
 var enemy2health = 3;
-var herohealth = 6;
-var money = 0;
+var herohealth = 1;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
+var coins = 0;
 var enemy1x = 400;
 var enemy1y = 250;
 var enemy2x = 200;
@@ -110,7 +111,22 @@ Game.prototype = {
     //keypad input detectors
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.GUI = new GUI(this.game);
+    this.heart1 = this.game.add.sprite(0, 0, 'heart');
+    this.heart1.fixedToCamera = true;
+
+    this.heart2 = this.game.add.sprite(32, 0, 'heart');
+    this.heart2.fixedToCamera = true;
+
+    this.heart3 = this.game.add.sprite(64, 0, 'heart');
+    this.heart3.fixedToCamera = true;
+
+    this.coin = this.game.add.sprite(256, 2, 'coin');
+    this.coin.animations.add('shine', [0, 1], 5, true);
+    this.coin.play('shine');
+    this.coin.fixedToCamera = true;
+
+    this.text = this.add.text(290, 5, coins, {font: "20px Arial", fill: "#ffffff"});
+    this.text.fixedToCamera = true;
 
     this.pause = this.add.button(775, 0, 'pause', listenerPause(), this, 1, 0, 2);
     this.pause.fixedToCamera = true;
@@ -130,10 +146,12 @@ Game.prototype = {
           this.pausemenu = this.add.sprite(400, 300, 'menu');
           this.pausemenu.fixedToCamera = true;
           this.resume = this.add.button(400, 400, 'resume', listenerResume(), true, 1, 0, 2);
+          this.resume.fixedToCamera = true;
           this.menuexit = this.add.button(400, 500, 'menuexit', listenerExit(), true, 1, 0, 2);
+          this.menuexit.fixedToCamera = true;
           this.game.paused = true;
           this.music.pause();
-        this.pausething = 0;
+          this.pausething = 0;
       }
     }, self);
 
@@ -216,8 +234,6 @@ Game.prototype = {
     this.physics.arcade.collide(this.enemy1, this.enemy2);
     this.physics.arcade.collide(this.enemy2, this.enemy1);
 
-    this.GUI.update();
-
     //main character movement
     this.asset.body.velocity.set(0);
 
@@ -285,10 +301,30 @@ Game.prototype = {
       this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
     }
 
+    if (herohealth == 5) {
+      this.heart3.frame = 1;
+    }
+    if (herohealth == 4) {
+      this.heart3.frame = 2;
+    }
+    if (herohealth == 3) {
+      this.heart2.frame = 1;
+    }
+    if (herohealth == 2) {
+      this.heart2.frame = 2;
+    }
+    if (herohealth == 1) {
+      this.heart1.frame = 1;
+    }
+    if (herohealth == 0) {
+      this.heart1.frame = 2;
+    }
+
     //check for enemy kill
-    if (enemy1health <= 0) {
+    if (enemy1health == 0) {
       this.enemy1.kill();
-      money = money + 10;
+      coins += 10;
+      this.text.setText(coins);
 
     }
 
@@ -299,10 +335,10 @@ Game.prototype = {
 
     //collision detection for hero getting attacked
     if (enemy1health > 0) {
-      this.game.physics.arcade.overlap(this.asset, this.enemy1, heroattacked, null, this);
+      this.game.physics.arcade.collide(this.asset, this.enemy1, heroattacked, null, this);
     }
     if (enemy2health > 0) {
-      this.game.physics.arcade.overlap(this.asset, this.enemy2, heroattacked, null, this);
+      this.game.physics.arcade.collide(this.asset, this.enemy2, heroattacked, null, this);
     }
 
     //enemy2 movement
@@ -382,7 +418,7 @@ function heroattacked (){
   if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false) {
       if (sectimer = 1) {
 
-          herohealth = herohealth - 1;
+          herohealth--;
           tween11 = this.game.add.tween(this.asset);
           tween11.to({x: [this.asset.x + 50], y: [this.asset.y]}, 200, "Linear");
 
@@ -406,13 +442,5 @@ function listenerResume () {
 }
 
 function listenerExit () {
-  this.game.state.start('Menu');
+  this.state.start('Menu');
 }
-
-
-
-
-
-
-
-

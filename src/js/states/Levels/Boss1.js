@@ -1,16 +1,20 @@
 var Boss1 = function () {
     this.map = null;
     this.kingsnekkek = null;
+    this.healthbar = null;
 };
 
 
 module.exports = Boss1;
 
 const LayerManager = require('../../common/tilemaps/layer_manager');
+const GUI = require('../../models/player_models/healthbar');
+
 
 
 var bosshealth = 100;
-this.healthbar;
+var alreadyhit1 = 0;
+var alreadyhit2 = 0;
 
 Boss1.prototype = {
 
@@ -43,6 +47,7 @@ Boss1.prototype = {
         this.asset.body.collideWorldBounds = true;
         this.game.camera.follow(this.asset);
 
+        this.GUI = new GUI(this.game);
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;
@@ -66,6 +71,7 @@ Boss1.prototype = {
         this.kingsnekkek.play('slither');
 
         this.healthbar = this.add.bitmapData(400, 20);
+        this.healthbar.fixedToCamera = true;
 
         this.game.add.sprite(this.game.world.centerX - (this.healthbar.width * 0.5), this.game.world.centerY, this.healthbar);
 
@@ -73,7 +79,6 @@ Boss1.prototype = {
 
 
         this.game.add.tween(this).to({barProgress: 0}, 2000, null, true, 0, Infinity);
-
 
         this.healthbar.fixedToCamera = true;
 
@@ -114,19 +119,31 @@ Boss1.prototype = {
             this.asset.animations.stop();
         }
 
-        //sword attack
         if (attackKey.isDown || spacebar.isDown) {
             if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
-                this.sword.visible = true;
+                this.sword.revive();
                 this.sword.animations.play('swing', 13, false);
             }
             if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
-                this.sword2.visible = true;
+                this.sword2.revive();
                 this.sword2.animations.play('swingtwo', 13, false);
-
-
             }
         }
+        this.sword.animations.currentAnim.onComplete.add(function () {
+            this.sword.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+        this.sword2.animations.currentAnim.onComplete.add(function () {
+            this.sword2.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+
+        this.sword.x = this.asset.x;
+        this.sword.y = this.asset.y;
+        this.sword2.x = this.asset.x - 20;
+        this.sword2.y = this.asset.y;
 
 
 

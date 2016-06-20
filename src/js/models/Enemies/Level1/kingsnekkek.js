@@ -1,4 +1,4 @@
-const KingSnekkek = function (game) {
+var KingSnekkek = function (game) {
     this._game = game;
     this._boss = this._game.add.sprite(0, 0, 'kingsnekkek');
     this._game.physics.enable(this._boss, Phaser.Physics.ARCADE);
