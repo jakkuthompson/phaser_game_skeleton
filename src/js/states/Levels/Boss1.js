@@ -10,16 +10,12 @@ module.exports = Boss1;
 const LayerManager = require('../../common/tilemaps/layer_manager');
 const GUI = require('../../models/player_models/healthbar');
 
-
-
 var bosshealth = 100;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
+var herohealth = 6;
 
 Boss1.prototype = {
-
-
-
     create: function () {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -47,7 +43,62 @@ Boss1.prototype = {
         this.asset.body.collideWorldBounds = true;
         this.game.camera.follow(this.asset);
 
-        this.GUI = new GUI(this.game);
+        this.heart1.fixedToCamera = true;
+
+        this.heart2 = this.game.add.sprite(32, 0, 'heart');
+        this.heart2.fixedToCamera = true;
+
+        this.heart3 = this.game.add.sprite(64, 0, 'heart');
+        this.heart3.fixedToCamera = true;
+
+        this.coin = this.game.add.sprite(256, 2, 'coin');
+        this.coin.animations.add('shine', [0, 1], 5, true);
+        this.coin.play('shine');
+        this.coin.fixedToCamera = true;
+
+        this.text = this.add.text(290, 5, coins, {font: "20px Arial", fill: "#ffffff"});
+        this.text.fixedToCamera = true;
+
+        this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
+        this.pause.fixedToCamera = true;
+        this.pause.scale.x = .1;
+        this.pause.scale.y = .1;
+        this.pause.inputEnabled = true;
+
+        this.pause.events.onInputUp.add(() => {
+            this.pause.kill();
+
+            this.asset.body.moves = false;
+
+            this.enemy1.body.moves = true;
+            this.enemy2.body.moves = true;
+
+            this.music.pause();
+
+            this.pauseMenu = this.add.sprite(0, 0, 'pausemenu');
+            this.pauseMenu.animations.add('spiralin', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, false);
+            this.pauseMenu.animations.add('spiralout', [8, 7, 6, 5, 4 ,3, 2, 1, 0], 10, false);
+            this.pauseMenu.animations.play('spiralin');
+            this.pauseMenu.fixedToCamera = true;
+
+            this.time.events.add(1000, () => {
+                this.resume = this.add.button(275, 0, 'resume', listenerResume(), true, 1, 0, 2);
+                this.resume.fixedToCamera = true;
+                this.resume.events.onInputUp.add(() => {
+                    this.resume.destroy();
+                    this.options.destroy();
+                    this.pause.revive();
+                    this.pauseMenu.animations.play('spiralout');
+                    this.time.events.add(1000, () => {
+                        this.pauseMenu.destroy();
+                        this.music.resume();
+                        this.asset.body.moves = true;
+                        this.enemy1.body.moves = true;
+                        this.enemy2.body.moves = true;
+                    });
+                });
+            }, this);
+        });
 
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;
@@ -77,14 +128,9 @@ Boss1.prototype = {
 
         this.barProgress = bosshealth * 4;
 
-
         this.game.add.tween(this).to({barProgress: 0}, 2000, null, true, 0, Infinity);
 
         this.healthbar.fixedToCamera = true;
-
-
-
-
     },
 
     update: function () {
@@ -117,6 +163,25 @@ Boss1.prototype = {
         }
         else {
             this.asset.animations.stop();
+        }
+
+        if (herohealth == 5) {
+            this.heart3.frame = 1;
+        }
+        if (herohealth == 4) {
+            this.heart3.frame = 2;
+        }
+        if (herohealth == 3) {
+            this.heart2.frame = 1;
+        }
+        if (herohealth == 2) {
+            this.heart2.frame = 2;
+        }
+        if (herohealth == 1) {
+            this.heart1.frame = 1;
+        }
+        if (herohealth == 0) {
+            this.heart1.frame = 2;
         }
 
         if (attackKey.isDown || spacebar.isDown) {
@@ -164,5 +229,18 @@ Boss1.prototype = {
 
     }
 };
+
+function listenerPause () {
+}
+
+function listenerResume () {
+}
+
+function listenerOptions () {
+}
+
+function listenerExit () {
+    this.game.state.start('Menu');
+}
 
 module.exports = Boss1;

@@ -1,4 +1,4 @@
-Game = function () {
+var Game = function () {
   this.map = null;
   this.layer = null;
   this.cursors = null;
@@ -13,8 +13,6 @@ Game = function () {
   this.heart3 = null;
   this.coin = null;
   this.pause = null;
-  this.pauseMenu = null;
-  this.save = null;
   this.save = null;
 };
 
@@ -23,7 +21,7 @@ const Main = require('../main');
 
 var enemy1health = 3;
 var enemy2health = 3;
-var herohealth = 1;
+var herohealth = 6;
 var alreadyhit1 = 0;
 var alreadyhit2 = 0;
 var coins = 0;
@@ -90,7 +88,6 @@ Game.prototype = {
     this.enemy2 = this.add.sprite(enemy2x,enemy2y, 'enemy');
     this.game.physics.enable(this.enemy2, Phaser.Physics.ARCADE);
 
-
     //sword sprite
     this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
     this.sword.scale.x = 0.25;
@@ -128,32 +125,45 @@ Game.prototype = {
     this.text = this.add.text(290, 5, coins, {font: "20px Arial", fill: "#ffffff"});
     this.text.fixedToCamera = true;
 
-    this.pause = this.add.button(775, 0, 'pause', listenerPause(), this, 1, 0, 2);
+    this.pause = this.add.button(775, 0, 'pause', listenerPause, this, 1, 0, 2);
     this.pause.fixedToCamera = true;
     this.pause.scale.x = .1;
     this.pause.scale.y = .1;
     this.pause.inputEnabled = true;
-    this.pause.events.onInputDown.add(() => {
-      if(this.pausething == 0) {
-        this.game.paused = false;
-        this.music.resume();
-        this.pausething = 1;
-      }
-        else {
-          this.input.disabled = true;
-          this.asset.body.velocity.x = 0;
-          this.asset.body.velocity.y = 0;
-          this.pausemenu = this.add.sprite(400, 300, 'menu');
-          this.pausemenu.fixedToCamera = true;
-          this.resume = this.add.button(400, 400, 'resume', listenerResume(), true, 1, 0, 2);
-          this.resume.fixedToCamera = true;
-          this.menuexit = this.add.button(400, 500, 'menuexit', listenerExit(), true, 1, 0, 2);
-          this.menuexit.fixedToCamera = true;
-          this.game.paused = true;
-          this.music.pause();
-          this.pausething = 0;
-      }
-    }, self);
+
+    this.pause.events.onInputUp.add(() => {
+      this.pause.kill();
+
+      this.asset.body.moves = false;
+
+      this.enemy1.body.moves = true;
+      this.enemy2.body.moves = true;
+
+      this.music.pause();
+
+      this.pauseMenu = this.add.sprite(0, 0, 'pausemenu');
+      this.pauseMenu.animations.add('spiralin', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, false);
+      this.pauseMenu.animations.add('spiralout', [8, 7, 6, 5, 4 ,3, 2, 1, 0], 10, false);
+      this.pauseMenu.animations.play('spiralin');
+      this.pauseMenu.fixedToCamera = true;
+
+      this.time.events.add(1000, () => {
+        this.resume = this.add.button(275, 0, 'resume', listenerResume(), true, 1, 0, 2);
+        this.resume.fixedToCamera = true;
+        this.resume.events.onInputUp.add(() => {
+          this.resume.destroy();
+          this.pause.revive();
+          this.pauseMenu.animations.play('spiralout');
+          this.time.events.add(1000, () => {
+            this.pauseMenu.destroy();
+            this.music.resume();
+            this.asset.body.moves = true;
+            this.enemy1.body.moves = true;
+            this.enemy2.body.moves = true;
+          });
+        });
+      }, this);
+    });
 
     if(this.enemy1.x == 500 && this.enemy1.y == 250){
       console.log("Change Frame");
@@ -401,46 +411,37 @@ Game.prototype = {
 
 };
 
-
 function enemy1attacked () {
-    enemy1health = enemy1health - 1;
-    alreadyhit1 = 1;
+  enemy1health = enemy1health - 1;
+  alreadyhit1 = 1;
   console.log(enemy1health);
 }
 
-function enemy2attacked (){
-    enemy2health = enemy2health - 1;
-    alreadyhit2 = 1;
+function enemy2attacked () {
+  enemy2health = enemy2health - 1;
+  alreadyhit2 = 1;
   console.log(enemy2health);
 }
 
-function heroattacked (){
+function heroattacked () {
   if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false) {
-      if (sectimer = 1) {
-
-          herohealth--;
-          tween11 = this.game.add.tween(this.asset);
-          tween11.to({x: [this.asset.x + 50], y: [this.asset.y]}, 200, "Linear");
-
-
-
-
-
-      }
-
-
+    if (sectimer = 1) {
+      herohealth--;
+      tween11 = this.game.add.tween(this.asset);
+      tween11.to({x: [this.asset.x + 50], y: [this.asset.y]}, 200, "Linear");
+    }
   }
 }
-
-
 
 function listenerPause () {
 }
 
 function listenerResume () {
+}
 
+function listenerOptions () {
 }
 
 function listenerExit () {
-  this.state.start('Menu');
+  this.game.state.start('Menu');
 }

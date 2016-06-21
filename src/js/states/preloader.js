@@ -27,8 +27,8 @@ Preloader.prototype = {
     this.load.audio('dungeon1theme', 'assets/audio/Cyborg Ninja.mp3');
     this.load.spritesheet('zephyr', 'assets/game/zephyr.png', 32, 32);
     this.load.spritesheet('pause', 'assets/game/shop/pause.png', 240, 240);
-    this.load.image('pausemenu', '../assets/game/pausemenu.png');
-    this.load.spritesheet('options', '../assets/game//GUI/options_720.png', 240, 240);
+    this.load.spritesheet('pausemenu', '../assets/game/pausemenu.png', 800, 600);
+    this.load.spritesheet('options', '../assets/game//GUI/options_720.png', 720, 720);
     this.load.image('play', 'assets/game/shop/play_360.png');
     this.load.spritesheet('resume', '../assets/game/GUI/resume__1__720.png', 240, 240);
     this.load.image('hubimg', 'assets/game/hub.png');

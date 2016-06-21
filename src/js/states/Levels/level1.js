@@ -18,13 +18,15 @@ const CollisionManager = require('../../common/collisions/collision_manager');
 const Snekkek = require('../../models/Enemies/Level1/snekkek');
 var walkmore = true;
 var alreadyhit1 = 0;
-var snekkek1health = 2;
+var snekkekhealth = 2;
+var snekkekKilled = false;
 var herohealth = 6;
 var herodied = 0;
 var coins = 0;
 var enemykilled = -1;
 var alreadyhit2 = 0;
 var playerhit = 0;
+var knockedTo;
 
 Level1.prototype = {
     create: function () {
@@ -62,22 +64,39 @@ Level1.prototype = {
         this.rightroom6 = this.add.sprite(0, 0, 'rightroom6');
         this.rightroom6.visible = false;
         this.rightroom7 = this.add.sprite(0, 0, 'rightroom7');
-        this.rightroom7.visible = false;
 
         this.entrancedecor = this.add.tileSprite(0, 0, 3200, 3200, 'entrancedecor');
         this.warppad = this.add.sprite(864, 2688, 'warptile');
+        this.physics.enable(this.warppad, Phaser.Physics.ARCADE);
         this.warppad.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
         this.warppad.play('flash');
         this.warppad.visible = false;
         this.warppad1 = this.add.sprite(576, 2912, 'warptile');
+        this.physics.enable(this.warppad1, Phaser.Physics.ARCADE);
         this.warppad1.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
         this.warppad1.play('flash');
         this.warppad1.visible = false;
         this.warppad2 = this.add.sprite(864, 3136, 'warptile');
+        this.physics.enable(this.warppad2, Phaser.Physics.ARCADE);
         this.warppad2.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
         this.warppad2.play('flash');
         this.warppad2.visible = false;
-        this.warppad3 = this.add.sprite(0, 0, 'warptile');
+        this.warppad3 = this.add.sprite(2944, 2784, 'warptile');
+        this.physics.enable(this.warppad3, Phaser.Physics.ARCADE);
+        this.warppad3.visible = false;
+        this.warppad3.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad3.play('flash');
+        this.warppad4 = this.add.sprite(2752, 2944, 'warptile');
+        this.physics.enable(this.warppad4, Phaser.Physics.ARCADE);
+        this.warppad4.visible = false;
+        this.warppad4.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad4.play('flash');
+        this.warppad5 = this.add.sprite(2944, 3136, 'warptile');
+        this.physics.enable(this.warppad5, Phaser.Physics.ARCADE);
+        this.warppad5.visible = false;
+        this.warppad5.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
+        this.warppad5.play('flash');
+
         this.map.setTileIndexCallback(850, () => {
             this.asset.x = 1120;
             this.asset.y = 2912;
@@ -96,7 +115,11 @@ Level1.prototype = {
             this.room1.visible = true;
             this.entrancedecor.visible = true;
             this.snekkek.revive();
+            snekkekhealth = 2;
             this.room2.visible = false;
+            this.warppad.visible = false;
+            this.warppad1.visible = false;
+            this.warppad2.visible = false;
         }, this.asset);
 
         this.map.setTileIndexCallback(3009, () => {
@@ -104,10 +127,12 @@ Level1.prototype = {
             this.asset.y = 2944;
             this.room2.visible = false;
             this.rightroom1.visible = true;
+            this.warppad3.visible = true;
+            this.warppad4.visible = true;
+            this.warppad5.visible = true;
         }, this.asset);
 
         this.map.setTileIndexCallback(3012, () => {
-
         }, this.asset);
 
         this.map.setTileIndexCallback(961, () => {
@@ -177,14 +202,37 @@ Level1.prototype = {
         this.pause.scale.x = .1;
         this.pause.scale.y = .1;
         this.pause.inputEnabled = true;
-        this.game.input.onDown.add(() => {
-            if(this.game.paused) {
-                this.game.paused = false;
-                this.music.resume();
-            }
-            else {
-            }
-        }, self);
+
+        this.pause.events.onInputUp.add(() => {
+            this.pause.kill();
+
+            this.asset.body.moves = false;
+
+            this.snekkek.body.moves = false;
+            this.music.pause();
+
+            this.pauseMenu = this.add.sprite(0, 0, 'pausemenu');
+            this.pauseMenu.animations.add('spiralin', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, false);
+            this.pauseMenu.animations.add('spiralout', [8, 7, 6, 5, 4 ,3, 2, 1, 0], 10, false);
+            this.pauseMenu.animations.play('spiralin');
+            this.pauseMenu.fixedToCamera = true;
+
+            this.time.events.add(1000, () => {
+                this.resume = this.add.button(275, 0, 'resume', listenerResume(), true, 1, 0, 2);
+                this.resume.fixedToCamera = true;
+                this.resume.events.onInputUp.add(() => {
+                    this.resume.destroy();
+                    this.pause.revive();
+                    this.pauseMenu.animations.play('spiralout');
+                    this.time.events.add(1000, () => {
+                        this.pauseMenu.destroy();
+                        this.music.resume();
+                        this.asset.body.moves = true;
+                        this.snekkek.body.moves = true;
+                    });
+                });
+            }, this);
+        });
     },
 
     update: function () {
@@ -196,8 +244,14 @@ Level1.prototype = {
         var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         // Only test collision on the active layer.
-        this.physics.arcade.collide(this.asset, this.layer);
-        this.physics.arcade.collide(this.layer, this.snekkek);
+        this.game.physics.arcade.collide(this.asset, this.layer);
+        this.game.physics.arcade.collide(this.asset, this.snekkek, heroattacked, null, this);
+        this.game.physics.arcade.collide(this.layer, this.snekkek);
+        this.game.physics.arcade.overlap(this.asset, this.warppad1, warpBack, null, this);
+        this.game.physics.arcade.collide(this.asset, this.warppad2, warpBack, null, this);
+        this.game.physics.arcade.collide(this.asset, this.warppad4, warpBack, null, this);
+        this.game.physics.arcade.collide(this.asset, this.warppad5, warpBack, null, this);
+        this.game.physics.arcade.overlap(this.asset, this.heart, heal, null, this);
 
         this.asset.body.velocity.set(0);
 
@@ -249,39 +303,18 @@ Level1.prototype = {
         this.sword2.x = this.asset.x - 20;
         this.sword2.y = this.asset.y;
 
-        this.game.physics.arcade.collide(this.asset, this.snekkek, () => {
-            herohealth -= 1;
-            this.asset.y -= 32;
-            }, null, this);
-
-
         console.log(herohealth);
-
-        if (playerhit == 0 && this.asset.frame == [3, 4, 5]) {
-            this.game.physics.arcade.collide(this.asset, this.snekkek, () => {
-                this.asset.x -= 40;
-                this.asset.body.velocity = 0;
-                playerhit = 1;
-            }, null, this)
-        }
-
-        if (playerhit == 0 && this.asset.frame == [6, 7, 8]) {
-            this.game.physics.arcade.collide(this.asset, this.snekkek, () => {
-                this.asset.x += 40;
-                this.asset.body.velocity = 0;
-            }, null, this)
-        }
 
         //collision detection for hitting the enemies
         if (this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.collide(this.sword, this.snekkek, snekkekattacked1, null, this);
+            this.game.physics.arcade.overlap(this.sword, this.snekkek, snekkekattacked1, null, this);
         }
         if (this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-            this.game.physics.arcade.collide(this.sword2, this.snekkek, snekkekattacked2, null, this);
+            this.game.physics.arcade.overlap(this.sword2, this.snekkek, snekkekattacked2, null, this);
         }
 
         //check for enemy kill
-        else {
+        if (snekkekKilled == false) {
             if (this.asset.x < this.snekkek.x) {
                 this.snekkek.body.velocity.x = -100;
             }
@@ -296,58 +329,164 @@ Level1.prototype = {
             }
         }
 
+        if (herohealth == 6) {
+            this.heart3.frame = 0;
+            this.heart2.frame = 0;
+            this.heart1.frame = 0;
+        }
         if (herohealth == 5) {
             this.heart3.frame = 1;
+            this.heart2.frame = 0;
+            this.heart1.frame = 0;
         }
         if (herohealth == 4) {
             this.heart3.frame = 2;
+            this.heart2.frame = 0;
+            this.heart1.frame = 0;
         }
         if (herohealth == 3) {
+            this.heart3.frame = 2;
             this.heart2.frame = 1;
+            this.heart1.frame = 0;
         }
         if (herohealth == 2) {
+            this.heart3.frame = 2;
             this.heart2.frame = 2;
+            this.heart1.frame = 0;
         }
         if (herohealth == 1) {
+            this.heart3.frame = 2;
+            this.heart2.frame = 2;
             this.heart1.frame = 1;
         }
         if (herohealth == 0) {
+            this.heart3.frame = 2;
+            this.heart2.frame = 2;
             this.heart1.frame = 2;
             this.asset.kill();
         }
-        if (snekkek1health == 0) {
-            this.game.physics.arcade.collide(this.sword, this.snekkek, snekkekKill, null, this);
-            this.game.physics.arcade.collide(this.sword2, this.snekkek, snekkekKill, null, this);
+
+        if (snekkekhealth == 0) {
+            this.physics.arcade.collide(this.sword, this.snekkek, snekkekKill, null, this);
+            this.physics.arcade.collide(this.sword2, this.snekkek, snekkekKill, null, this);
         }
     }
 //please push
 };
 
-function listenerPause () {
-    this.game.paused = true;
-    this.music.pause();
-}
-
 function snekkekattacked1 (){
-    this.snekkek.x += 40;
-    snekkek1health = snekkek1health - 1;
+    this.snekkek.x += 32;
+    snekkekhealth = snekkekhealth - 1;
     alreadyhit1 = 1;
 }
 
 function snekkekattacked2 (){
-    this.snekkek.x -= 40;
-    snekkek1health = snekkek1health - 1;
+    this.snekkek.x -= 32;
+    snekkekhealth = snekkekhealth - 1;
     alreadyhit1 = 1;
 }
 
 function snekkekKill () {
-    this.snekkek.kill();
     coins += 10;
     this.text.setText(coins);
+    var spawnchance = Math.ceil(Math.random() * 2);
+    if (spawnchance == 1) {
+        this.heart = this.add.sprite(this.snekkek.x, this.snekkek.y, 'heart');
+        this.physics.enable(this.heart, Phaser.Physics.ARCADE);
+        this.world.swap(this.asset, this.heart);
+    }
+    this.snekkek.kill();
 }
 
-function heroattacked (){
-    if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false){
-        herohealth--;
+function heroattacked () {
+    herohealth--;
+    if (this.asset.x < this.snekkek.x) {
+        this.asset.x -= 32;
     }
+    if (this.asset.x > this.snekkek.x) {
+        this.asset.x += 32;
+    }
+    if (this.asset.y < this.snekkek.y) {
+        this.asset.y -= 32;
+    }
+    if (this.asset.y > this.snekkek.y) {
+        this.asset.y += 32;
+    }
+
+}
+
+function heal () {
+    if (herohealth < 5) {
+        herohealth += 2;
+        this.heart.kill();
+    }
+    if (herohealth == 5) {
+        herohealth++;
+        this.heart.kill();
+    }
+    else {
+        this.heart.kill();
+    }
+}
+
+
+function warp1 () {
+
+}
+
+function warp2 () {
+
+}
+
+function warp3 () {
+
+}
+
+function warp4 () {
+
+}
+
+function warp5 () {
+
+}
+
+function warp6 () {
+
+}
+
+function warp7 () {
+
+}
+
+function warp8 () {
+
+}
+
+function warpBack () {
+    this.asset.x = 1568;
+    this.asset.y = 2912;
+    this.room1.visible = true;
+    this.entrancedecor.visible = true;
+    this.snekkek.revive();
+    snekkekhealth = 2;
+    this.room2.visible = false;
+    this.warppad.visible = false;
+    this.warppad1.visible = false;
+    this.warppad2.visible = false;
+    this.warppad3.visible = false;
+    this.warppad4.visible = false;
+    this.warppad5.visible = false;
+}
+
+function listenerPause () {
+}
+
+function listenerResume () {
+}
+
+function listenerOptions () {
+}
+
+function listenerExit () {
+    this.game.state.start('Menu');
 }
