@@ -10,7 +10,9 @@ const LayerManager = require('../../common/tilemaps/layer_manager');
 
 
 var bosshealth = 100;
-this.healthbar;
+var alreadyhit1 = 1;
+var alreadyhit2 = 1;
+
 
 Boss1.prototype = {
 
@@ -43,32 +45,35 @@ Boss1.prototype = {
         this.asset.body.collideWorldBounds = true;
         this.game.camera.follow(this.asset);
 
-
+        // Adds the sword for swinging to the right
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
         this.sword.scale.x = 0.25;
         this.sword.scale.y = 0.25;
         this.sword.animations.add('swing');
         this.sword.visible = false;
-        this.game.physics.enable(this.sword, Phaser.Physics.ARCADE);
-        //sword two sprite
+
+        // Adds the sword for swinging to the left
         this.sword2 = this.add.sprite(this.asset.x,this.asset.y,'sword2');
         this.sword2.scale.x = 0.25;
         this.sword2.scale.y = 0.25;
         this.sword2.animations.add('swingtwo');
         this.sword2.visible = false;
 
-        this.sword3 = this.add.sprite(this.asset.x,this.asset.y, 'swordup');
+        // Adds the sword for swinging up
+        this.sword3 = this.add.sprite(this.asset.x,this.asset.y, 'sword3');
         this.sword3.scale.x = 0.25;
         this.sword3.scale.y = 0.25;
+        // Creates the animation
         this.sword3.animations.add('swingthree');
-        this.sword3.visible = true;
-        this.game.physics.enable(this.sword, Phaser.Physics.ARCADE);
-        //sword two sprite
-        this.sword4 = this.add.sprite(this.asset.x,this.asset.y,'sworddown');
+        this.sword3.visible = false;
+
+        // Adds the sword for swingin down
+        this.sword4 = this.add.sprite(this.asset.x,this.asset.y,'sword4');
         this.sword4.scale.x = 0.25;
         this.sword4.scale.y = 0.25;
+        // Creates the animation
         this.sword4.animations.add('swingfour');
-        this.sword4.visible = true;
+        this.sword4.visible = false;
 
 
 
@@ -143,19 +148,46 @@ Boss1.prototype = {
                 this.sword2.visible = true;
                 this.sword2.animations.play('swingtwo', 13, false);
             }
-            if (this.asset.frame == 10 || this.asset.frame == 11 || this.asset.frame == 12) {
+            if (this.asset.frame == 9 || this.asset.frame == 10 || this.asset.frame == 11) {
                 this.sword3.visible = true;
                 this.sword3.animations.play('swingthree', 13, false);
-
-
             }
-            if (this.asset.frame == 1 || this.asset.frame == 2 || this.asset.frame == 3) {
+            if (this.asset.frame == 0 || this.asset.frame == 1 || this.asset.frame == 2) {
                 this.sword4.visible = true;
                 this.sword4.animations.play('swingfour', 13, false);
-
-
             }
         }
+
+        this.sword.animations.currentAnim.onComplete.add(function () {
+            this.sword.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+        this.sword2.animations.currentAnim.onComplete.add(function () {
+            this.sword2.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+        this.sword3.animations.currentAnim.onComplete.add(function () {
+            this.sword3.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+        this.sword4.animations.currentAnim.onComplete.add(function () {
+            this.sword4.visible = false;
+            alreadyhit1 = 0;
+            alreadyhit2 = 0;
+        }, this);
+
+        //keep the sword by the main character
+        this.sword.x = this.asset.x;
+        this.sword.y = this.asset.y;
+        this.sword2.x = this.asset.x - 20;
+        this.sword2.y = this.asset.y;
+        this.sword3.x = this.asset.x - 5;
+        this.sword3.y = this.asset.y - 30;
+        this.sword4.x = this.asset.x - 10;
+        this.sword4.y = this.asset.y + 10;
 
 
 
