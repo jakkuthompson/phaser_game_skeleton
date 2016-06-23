@@ -133,6 +133,8 @@ Boss1.prototype = {
 
         this.asset.body.velocity.set(0);
 
+        this.bosshealth.text = "Boss's Health: " + bosshealth;
+
 
 
 
