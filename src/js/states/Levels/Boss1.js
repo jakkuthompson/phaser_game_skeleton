@@ -1,6 +1,8 @@
 var Boss1 = function () {
     this.map = null;
     this.kingsnekkek = null;
+
+
 };
 
 
@@ -13,8 +15,14 @@ var bosshealth = 100;
 var alreadyhit1 = 1;
 var alreadyhit2 = 1;
 
+var test = 0;
+
+
+
 
 Boss1.prototype = {
+
+
 
 
 
@@ -88,18 +96,25 @@ Boss1.prototype = {
         this.kingsnekkek.animations.add('slither', [0, 1, 2, 3, 4], 5, true);
         this.kingsnekkek.play('slither');
 
-        this.healthbar = this.add.bitmapData(400, 20);
 
-        this.barProgress = 128;
+        var bosstext = "Boss's Health: " + bosshealth;
 
-        // the bar itself
-        this.bar = this.add.bitmapData(128, 8);
+        this.bosshealth = this.game.add.text(0, 0, bosstext);
 
-
-        this.game.add.tween(this).to({barProgress: 0}, 2000, null, true, 0, Infinity);
+        this.bosshealth.fixedToCamera = true;
 
 
-        this.healthbar.fixedToCamera = true;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -117,6 +132,17 @@ Boss1.prototype = {
         this.physics.arcade.collide(this.asset, this.layermanager.active);
 
         this.asset.body.velocity.set(0);
+
+
+
+
+
+
+
+
+
+
+
 
         if (this.cursors.left.isDown || aKey.isDown) {
             this.asset.body.velocity.x = -200;
@@ -191,21 +217,7 @@ Boss1.prototype = {
 
 
 
-        if (this.barProgress < 32) {
-            this.healthbar.tint = '#f00';
-        }
-        else if (this.barProgress < 64) {
-            this.healthbar.tint = '#ff0';
-        }
-        else {
-            this.healthbar.tint = '#0f0';
-        }
 
-        // draw the bar
-        this.bar.context.fillRect(0, 0, this.barProgress, 8);
-
-        // important - without this line, the context will never be updated on the GPU when using webGL
-        this.bar.dirty = true;
 
 
 
