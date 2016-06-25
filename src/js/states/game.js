@@ -311,23 +311,41 @@ Game.prototype = {
       this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
     }
 
+    if (herohealth == 6) {
+      this.heart3.frame = 0;
+      this.heart2.frame = 0;
+      this.heart1.frame = 0;
+    }
     if (herohealth == 5) {
       this.heart3.frame = 1;
+      this.heart2.frame = 0;
+      this.heart1.frame = 0;
     }
     if (herohealth == 4) {
       this.heart3.frame = 2;
+      this.heart2.frame = 0;
+      this.heart1.frame = 0;
     }
     if (herohealth == 3) {
+      this.heart3.frame = 2;
       this.heart2.frame = 1;
+      this.heart1.frame = 0;
     }
     if (herohealth == 2) {
+      this.heart3.frame = 2;
       this.heart2.frame = 2;
+      this.heart1.frame = 0;
     }
     if (herohealth == 1) {
+      this.heart3.frame = 2;
+      this.heart2.frame = 2;
       this.heart1.frame = 1;
     }
     if (herohealth == 0) {
+      this.heart3.frame = 2;
+      this.heart2.frame = 2;
       this.heart1.frame = 2;
+      this.asset.kill();
     }
 
     //check for enemy kill

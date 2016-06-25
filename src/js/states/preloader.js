@@ -52,11 +52,12 @@ Preloader.prototype = {
     this.load.tilemap('boss-1', 'assets/game/Level1/boss1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.spritesheet('warptile', 'assets/game/gotoboss.png', 32, 32);
     this.load.spritesheet('kingsnekkek', 'assets/game/Level1/Enemies/King_Snekkek.png', 300, 300);
+    this.load.spritesheet('snekhead', 'assets/game/Level1/Enemies/snekhead.png', 32, 32);
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
     this.load.spritesheet('sword', 'assets/game/Sword.png', 192, 192, 7);
     this.load.spritesheet('sword2', 'assets/game/sword2.png', 192, 192, 7);
     this.load.spritesheet('exitstore', 'assets/game/shop/Exit.png');
-    this.load.spritesheet('snekkek', 'assets/game/Level1/snekek.png', 32, 32);
+    this.load.spritesheet('snekkek', 'assets/game/Level1/Enemies/snekkekfinal.png', 32, 32);
     this.load.spritesheet('heart', '../assets/game/GUI/heart.png', 32, 32);
     this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
     this.load.spritesheet('youlose', '../assets/game/youlose.png', 128, 128);
@@ -64,6 +65,7 @@ Preloader.prototype = {
     this.load.spritesheet('healthbar', '/assets/game/Level1/Boss/Healthbar.png',100,50,100);
     this.load.spritesheet('sword4', '/assets/game/sworddown.png', 192,192,12);
     this.load.spritesheet('sword3', 'assets/game/swordup.png', 192,192,12);
+    this.load.image('stairs', 'assets/game/Level1/stairs.png');
 
 
 

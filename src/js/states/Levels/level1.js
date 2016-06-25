@@ -65,7 +65,8 @@ Level1.prototype = {
         this.rightroom6.visible = false;
         this.rightroom7 = this.add.sprite(0, 0, 'rightroom7');
 
-        this.entrancedecor = this.add.tileSprite(0, 0, 3200, 3200, 'entrancedecor');
+        this.entrancedecor = this.add.sprite(1568, 2592, 'entrancedecor');
+        this.stairs = this.add.sprite(1216, 2912, 'stairs');
         this.warppad = this.add.sprite(864, 2688, 'warptile');
         this.physics.enable(this.warppad, Phaser.Physics.ARCADE);
         this.warppad.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
@@ -97,42 +98,18 @@ Level1.prototype = {
         this.warppad5.animations.add('flash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7, true);
         this.warppad5.play('flash');
 
-        this.map.setTileIndexCallback(850, () => {
-            this.asset.x = 1120;
-            this.asset.y = 2912;
-            this.room1.visible = false;
-            this.room2.visible = true;
-            this.warppad.visible = true;
-            this.warppad1.visible = true;
-            this.warppad2.visible = true;
-            this.snekkek.kill();
-            this.entrancedecor.visible = false;
-        }, this.asset);
-
         this.map.setTileIndexCallback(1002, () => {
             this.asset.x = 1248;
             this.asset.y = 2912;
             this.room1.visible = true;
             this.entrancedecor.visible = true;
+            this.stairs.visible = true;
             this.snekkek.revive();
             snekkekhealth = 2;
             this.room2.visible = false;
             this.warppad.visible = false;
             this.warppad1.visible = false;
             this.warppad2.visible = false;
-        }, this.asset);
-
-        this.map.setTileIndexCallback(3009, () => {
-            this.asset.x = 3136;
-            this.asset.y = 2944;
-            this.room2.visible = false;
-            this.rightroom1.visible = true;
-            this.warppad3.visible = true;
-            this.warppad4.visible = true;
-            this.warppad5.visible = true;
-        }, this.asset);
-
-        this.map.setTileIndexCallback(3012, () => {
         }, this.asset);
 
         this.map.setTileIndexCallback(961, () => {
@@ -159,6 +136,8 @@ Level1.prototype = {
 
         this.snekkekGroup = this.game.add.group();
         this.snekkek = this.add.sprite(1568, 2816, 'snekkek');
+        this.snekkek.animations.add('down', [0, 1, 4, 5], 2, true);
+        this.snekkek.animations.add('right', [8, 9], 2, true);
         this.snekkekGroup.add(this.snekkek);
         this.physics.enable(this.snekkek, Phaser.Physics.ARCADE);
         this.snekkek.body.enable = true;
@@ -245,10 +224,13 @@ Level1.prototype = {
 
         // Only test collision on the active layer.
         this.game.physics.arcade.collide(this.asset, this.layer);
+        this.game.physics.arcade.collide(this.asset, this.entrancedecor);
+        this.game.physics.arcade.collide(this.asset, this.stairs, stairs, null, this);
         this.game.physics.arcade.collide(this.asset, this.snekkek, heroattacked, null, this);
-        this.game.physics.arcade.collide(this.layer, this.snekkek);
+        this.game.physics.arcade.collide(this.asset, this.warppad, warp1, null, this);
         this.game.physics.arcade.overlap(this.asset, this.warppad1, warpBack, null, this);
         this.game.physics.arcade.collide(this.asset, this.warppad2, warpBack, null, this);
+        this.game.physics.arcade.collide(this.asset, this.warppad3, warp2, null, this);
         this.game.physics.arcade.collide(this.asset, this.warppad4, warpBack, null, this);
         this.game.physics.arcade.collide(this.asset, this.warppad5, warpBack, null, this);
         this.game.physics.arcade.overlap(this.asset, this.heart, heal, null, this);
@@ -315,17 +297,21 @@ Level1.prototype = {
 
         //check for enemy kill
         if (snekkekKilled == false) {
-            if (this.asset.x < this.snekkek.x) {
+            if (this.asset.x <= this.snekkek.x) {
                 this.snekkek.body.velocity.x = -100;
+                this.snekkek.animations.play('down');
             }
-            if (this.asset.x > this.snekkek.x) {
+            if (this.asset.x >= this.snekkek.x) {
                 this.snekkek.body.velocity.x = 100;
+                this.snekkek.animations.play('down');
             }
-            if (this.asset.y < this.snekkek.y) {
+            if (this.asset.y <= this.snekkek.y) {
                 this.snekkek.body.velocity.y = -100;
+                this.snekkek.frame = 16;
             }
-            if (this.asset.y > this.snekkek.y) {
+            if (this.asset.y >= this.snekkek.y) {
                 this.snekkek.body.velocity.y = 100;
+                this.snekkek.animations.play('down');
             }
         }
 
@@ -429,9 +415,27 @@ function heal () {
     }
 }
 
+function stairs () {
+    this.asset.x = 1120;
+    this.asset.y = 2912;
+    this.room1.visible = false;
+    this.room2.visible = true;
+    this.warppad.visible = true;
+    this.warppad1.visible = true;
+    this.warppad2.visible = true;
+    this.snekkek.kill();
+    this.entrancedecor.visible = false;
+    this.stairs.visible = false;
+}
 
 function warp1 () {
-
+    this.asset.x = 3136;
+    this.asset.y = 2944;
+    this.room2.visible = false;
+    this.rightroom1.visible = true;
+    this.warppad3.visible = true;
+    this.warppad4.visible = true;
+    this.warppad5.visible = true;
 }
 
 function warp2 () {
