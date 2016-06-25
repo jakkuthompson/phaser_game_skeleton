@@ -11,11 +11,15 @@ module.exports = Boss1;
 const LayerManager = require('../../common/tilemaps/layer_manager');
 
 
-var bosshealth = 100;
+var bosshealth = 50;
 var alreadyhit1 = 1;
 var alreadyhit2 = 1;
 
-var test = 0;
+var animplaying = false;
+
+
+
+
 
 
 
@@ -27,6 +31,9 @@ Boss1.prototype = {
 
 
     create: function () {
+
+
+
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -97,17 +104,11 @@ Boss1.prototype = {
         this.kingsnekkek.play('slither');
 
 
-        var bosstext = "Boss's Health: " + bosshealth;
 
-        this.bosshealth = this.game.add.text(0, 0, bosstext);
+
+        this.bosshealth = this.game.add.text(325, 0, "Boss Health");
 
         this.bosshealth.fixedToCamera = true;
-
-
-
-
-
-
 
 
 
@@ -133,8 +134,28 @@ Boss1.prototype = {
 
         this.asset.body.velocity.set(0);
 
-        this.bosshealth.text = "Boss's Health: " + bosshealth;
+        this.healthbar = this.game.add.sprite(200,-375,'healthbar');
 
+        this.healthbar.scale.x = 4;
+        this.healthbar.scale.y = 16;
+
+        this.healthbar.smoothed = false;
+
+
+
+        this.healthbar.fixedToCamera = true;
+
+        this.healthbar.frame = bosshealth - 100;
+
+        if(bosshealth >= 50){
+            this.healthbar.tint = 0x00ff00;
+        }
+        else if(bosshealth >= 25 && bosshealth < 50){
+            this.healthbar.tint = 0xffff00;
+        }
+        else{
+            this.healthbar.tint = 0xff0000;
+        }
 
 
 
@@ -168,21 +189,27 @@ Boss1.prototype = {
 
         //sword attack
         if (attackKey.isDown || spacebar.isDown) {
-            if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
-                this.sword.visible = true;
-                this.sword.animations.play('swing', 13, false);
-            }
-            if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
-                this.sword2.visible = true;
-                this.sword2.animations.play('swingtwo', 13, false);
-            }
-            if (this.asset.frame == 9 || this.asset.frame == 10 || this.asset.frame == 11) {
-                this.sword3.visible = true;
-                this.sword3.animations.play('swingthree', 13, false);
-            }
-            if (this.asset.frame == 0 || this.asset.frame == 1 || this.asset.frame == 2) {
-                this.sword4.visible = true;
-                this.sword4.animations.play('swingfour', 13, false);
+            if(animplaying == false) {
+                if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
+                    this.sword.visible = true;
+                    this.sword.animations.play('swing', 13, false);
+                    animplaying = true;
+                }
+                if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
+                    this.sword2.visible = true;
+                    this.sword2.animations.play('swingtwo', 13, false);
+                    animplaying = true;
+                }
+                if (this.asset.frame == 9 || this.asset.frame == 10 || this.asset.frame == 11) {
+                    this.sword3.visible = true;
+                    this.sword3.animations.play('swingthree', 13, false);
+                    animplaying = true;
+                }
+                if (this.asset.frame == 0 || this.asset.frame == 1 || this.asset.frame == 2) {
+                    this.sword4.visible = true;
+                    this.sword4.animations.play('swingfour', 13, false);
+                    animplaying = true;
+                }
             }
         }
 
@@ -190,21 +217,25 @@ Boss1.prototype = {
             this.sword.visible = false;
             alreadyhit1 = 0;
             alreadyhit2 = 0;
+            animplaying = false;
         }, this);
         this.sword2.animations.currentAnim.onComplete.add(function () {
             this.sword2.visible = false;
             alreadyhit1 = 0;
             alreadyhit2 = 0;
+            animplaying = false;
         }, this);
         this.sword3.animations.currentAnim.onComplete.add(function () {
             this.sword3.visible = false;
             alreadyhit1 = 0;
             alreadyhit2 = 0;
+            animplaying = false;
         }, this);
         this.sword4.animations.currentAnim.onComplete.add(function () {
             this.sword4.visible = false;
             alreadyhit1 = 0;
             alreadyhit2 = 0;
+            animplaying = false;
         }, this);
 
         //keep the sword by the main character
@@ -227,5 +258,7 @@ Boss1.prototype = {
 
     }
 };
+
+
 
 module.exports = Boss1;
