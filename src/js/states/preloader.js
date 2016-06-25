@@ -14,6 +14,7 @@ Preloader.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
+
     this.load.image('testsprite', 'assets/test.png');
     this.load.image('logo', 'assets/TeamSkeltal.png');
     this.load.image('menulogo', 'assets/menu/shatteredfates.png');
@@ -51,7 +52,7 @@ Preloader.prototype = {
     this.load.image('rightroom7', 'assets/game/Level1/rightroom7.png');
     this.load.tilemap('boss-1', 'assets/game/Level1/boss1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.spritesheet('warptile', 'assets/game/gotoboss.png', 32, 32);
-    this.load.spritesheet('kingsnekkek', 'assets/game/Level1/Enemies/King_Snekkek.png', 300, 300);
+    this.load.spritesheet('kingsnekkek', 'assets/game/Level1/Enemies/kingsnekkek.png', 300, 300);
     this.load.spritesheet('snekhead', 'assets/game/Level1/Enemies/snekhead.png', 32, 32);
     this.load.spritesheet('enemy', 'assets/game/walk - vanilla.png', 64, 64);
     this.load.spritesheet('sword', 'assets/game/Sword.png', 192, 192, 7);
@@ -62,10 +63,14 @@ Preloader.prototype = {
     this.load.spritesheet('coin', '../assets/game/GUI/coin.png', 32, 32);
     this.load.spritesheet('youlose', '../assets/game/youlose.png', 128, 128);
     this.load.spritesheet('skip', '../assets/game/GUI/skip__1__360.png', 32, 32);
+    this.load.spritesheet('exit', '../assets/game/GUI/exit_360.png', 100, 70);
     this.load.spritesheet('healthbar', '/assets/game/Level1/Boss/Healthbar.png',100,50,100);
     this.load.spritesheet('sword4', '/assets/game/sworddown.png', 192,192,12);
     this.load.spritesheet('sword3', 'assets/game/swordup.png', 192,192,12);
     this.load.image('stairs', 'assets/game/Level1/stairs.png');
+    this.load.image('hallway', 'assets/game/Level1/bossentrance.png');
+    this.load.image('loading', 'assets/game/GUI/loadingscreen_360.png');
+
 
 
 

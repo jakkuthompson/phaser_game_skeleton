@@ -47,34 +47,38 @@ Boss1.prototype = {
 
         // Adds the sword for swinging to the right
         this.sword = this.add.sprite(this.asset.x,this.asset.y, 'sword');
+        this.physics.enable(this.sword, Phaser.Physics.ARCADE);
         this.sword.scale.x = 0.25;
         this.sword.scale.y = 0.25;
         this.sword.animations.add('swing');
-        this.sword.visible = false;
+        this.sword.kill();
 
         // Adds the sword for swinging to the left
         this.sword2 = this.add.sprite(this.asset.x,this.asset.y,'sword2');
+        this.physics.enable(this.sword2, Phaser.Physics.ARCADE);
         this.sword2.scale.x = 0.25;
         this.sword2.scale.y = 0.25;
         this.sword2.animations.add('swingtwo');
-        this.sword2.visible = false;
+        this.sword2.kill();
 
         // Adds the sword for swinging up
         this.sword3 = this.add.sprite(this.asset.x,this.asset.y, 'sword3');
+        this.physics.enable(this.sword3, Phaser.Physics.ARCADE);
         this.sword3.scale.x = 0.25;
         this.sword3.scale.y = 0.25;
         // Creates the animation
         this.sword3.animations.add('swingthree');
-        this.sword3.visible = false;
+        this.sword3.kill();
         this.world.swap(this.asset, this.sword3);
 
-        // Adds the sword for swingin down
+        // Adds the sword for swinging down
         this.sword4 = this.add.sprite(this.asset.x,this.asset.y,'sword4');
+        this.physics.enable(this.sword4, Phaser.Physics.ARCADE);
         this.sword4.scale.x = 0.25;
         this.sword4.scale.y = 0.25;
         // Creates the animation
         this.sword4.animations.add('swingfour');
-        this.sword4.visible = false;
+        this.sword4.kill();
 
         this.kingsnekkek = this.add.sprite(799, 63, 'kingsnekkek');
         this.physics.enable(this.kingsnekkek, Phaser.Physics.ARCADE);
@@ -155,6 +159,7 @@ Boss1.prototype = {
 
         this.physics.arcade.collide(this.asset, this.layermanager.active);
         this.physics.arcade.collide(this.asset, this.kingsnekkek, heroattacked, null, this);
+        this.physics.arcade.collide(this.snekhead, this.kingsnekkek, kingsnekkekAttacked, null, this);
         this.physics.arcade.collide(this.sword, this.snekhead);
         this.physics.arcade.collide(this.sword2, this.snekhead);
         this.physics.arcade.collide(this.sword3, this.snekhead);
@@ -198,22 +203,22 @@ Boss1.prototype = {
         if (attackKey.isDown || spacebar.isDown) {
             if(animplaying == false) {
                 if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
-                    this.sword.visible = true;
+                    this.sword.revive();
                     this.sword.animations.play('swing', 13, false);
                     animplaying = true;
                 }
                 if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
-                    this.sword2.visible = true;
+                    this.sword2.revive();
                     this.sword2.animations.play('swingtwo', 13, false);
                     animplaying = true;
                 }
                 if (this.asset.frame == 9 || this.asset.frame == 10 || this.asset.frame == 11) {
-                    this.sword3.visible = true;
+                    this.sword3.revive();
                     this.sword3.animations.play('swingthree', 13, false);
                     animplaying = true;
                 }
                 if (this.asset.frame == 0 || this.asset.frame == 1 || this.asset.frame == 2) {
-                    this.sword4.visible = true;
+                    this.sword4.revive();
                     this.sword4.animations.play('swingfour', 13, false);
                     animplaying = true;
                 }
@@ -353,6 +358,12 @@ function listenerResume () {
 }
 
 function kingsnekkekAttacked () {
+    bosshealth -= 10;
+    this.kingsnekkek.animations.play('attacked');
+    console.log("That's a hit!");
+}
+
+function kingsnekkekKilled () {
 
 }
 

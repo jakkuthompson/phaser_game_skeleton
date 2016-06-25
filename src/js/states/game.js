@@ -39,7 +39,6 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
-
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.startSystem(Phaser.Physics.P2JS);
 
