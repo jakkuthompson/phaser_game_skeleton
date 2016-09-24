@@ -29,6 +29,7 @@ var alreadyhit2 = 0;
 var playerhit = 0;
 var animplaying = false;
 var worldScale = 1;
+var playerdied = false;
 
 
 Level1.prototype = {
@@ -54,7 +55,7 @@ Level1.prototype = {
         this.room3 = this.add.sprite(0, 0, 'dungeon3');
         this.room3.visible = false;
         this.hallway = this.add.sprite(0, 0, 'hallway');
-        this.hallway.alpha = 1
+        this.hallway.alpha = 1;
         this.hallway.visible = false;
         this.rightroom1 = this.add.sprite(0, 0, 'rightroom1');
         this.rightroom1.visible = false;
@@ -266,7 +267,7 @@ Level1.prototype = {
             this.asset.x = 1248;
             this.asset.y = 2912;
             this.room1.visible = true;
-            this.entrancedecor.visible.revive();
+            this.entrancedecor.revive();
             this.stairs.revive();
             this.snekkek.revive();
             snekkekhealth = 2;
@@ -466,27 +467,27 @@ Level1.prototype = {
         this.game.physics.arcade.overlap(this.asset, this.heart, heal, null, this);
 
         this.asset.body.velocity.set(0);
-
-        if (this.cursors.left.isDown || aKey.isDown) {
-            this.asset.body.velocity.x = -200;
-            this.asset.play('left');
+        if (playerdied == false) {
+            if (this.cursors.left.isDown || aKey.isDown) {
+                this.asset.body.velocity.x = -200;
+                this.asset.play('left');
+            }
+            else if (this.cursors.right.isDown || dKey.isDown) {
+                this.asset.body.velocity.x = 200;
+                this.asset.play('right');
+            }
+            else if (this.cursors.up.isDown || wKey.isDown) {
+                this.asset.body.velocity.y = -200;
+                this.asset.play('up');
+            }
+            else if (this.cursors.down.isDown || sKey.isDown) {
+                this.asset.body.velocity.y = 200;
+                this.asset.play('down');
+            }
+            else {
+                this.asset.animations.stop();
+            }
         }
-        else if (this.cursors.right.isDown || dKey.isDown) {
-            this.asset.body.velocity.x = 200;
-            this.asset.play('right');
-        }
-        else if (this.cursors.up.isDown || wKey.isDown) {
-            this.asset.body.velocity.y = -200;
-            this.asset.play('up');
-        }
-        else if (this.cursors.down.isDown || sKey.isDown) {
-            this.asset.body.velocity.y = 200;
-            this.asset.play('down');
-        }
-        else {
-            this.asset.animations.stop();
-        }
-
         if (attackKey.isDown || spacebar.isDown) {
             if(animplaying == false) {
                 if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
@@ -614,6 +615,7 @@ Level1.prototype = {
             this.heart1.frame = 1;
         }
         if (herohealth == 0) {
+            playerdied = true;
             this.heart3.frame = 2;
             this.heart2.frame = 2;
             this.heart1.frame = 2;
@@ -627,12 +629,24 @@ Level1.prototype = {
             this.music.pause();
             this.time.events.add(1000, () => {
                 this.asset.animations.play('died');
-                this.asset.body.moves = false;
             });
-            this.asset.animations.play('died');
-            this.time.events.add(5000, () => {
+            this.time.events.add(3000, () => {
                 this.asset.kill();
-                this.camera.fade('#000000');
+            });
+            this.time.events.add(3500, () => {
+                this.add.tween(this.camera).to( {alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, false);
+            });
+            this.time.events.add(3800, () => {
+                this.state.start('Menu');
+                this.snekkek.revive();
+                this.heart1.revive();
+                this.heart2.revive();
+                this.heart3.revive();
+                this.coin.revive();
+                this.text.revive();
+                this.pause.revive();
+                herohealth = 6;
+                playerdied = false;
             });
         }
 
@@ -715,6 +729,10 @@ function heroattacked () {
 }
 
 function heal () {
+    if (herohealth == 3) {
+        herohealth += 2;
+        herohealth --;
+    }
     if (herohealth < 5) {
         herohealth += 2;
         this.heart.kill();

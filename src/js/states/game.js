@@ -33,6 +33,7 @@ var sectimer = 0;
 var walkmore = true;
 var walkmore2 = true;
 var test = true;
+var animplaying = false;
 
 module.exports = Game;
 
@@ -94,6 +95,7 @@ Game.prototype = {
     this.sword.animations.add('swing');
     this.sword.visible = false;
     this.game.physics.enable(this.sword, Phaser.Physics.ARCADE);
+
     //sword two sprite
     this.sword2 = this.add.sprite(this.asset.x,this.asset.y,'sword2');
     this.sword2.scale.x = 0.25;
@@ -101,6 +103,25 @@ Game.prototype = {
     this.sword2.animations.add('swingtwo');
     this.sword2.visible = false;
     this.game.physics.enable(this.sword2, Phaser.Physics.ARCADE);
+
+    // Adds the sword for swinging up
+    this.sword3 = this.add.sprite(this.asset.x,this.asset.y, 'sword3');
+    this.physics.enable(this.sword3, Phaser.Physics.ARCADE);
+    this.sword3.scale.x = 0.25;
+    this.sword3.scale.y = 0.25;
+    // Creates the animation
+    this.sword3.animations.add('swingthree');
+    this.sword3.kill();
+    this.world.swap(this.asset, this.sword3);
+
+    // Adds the sword for swinging down
+    this.sword4 = this.add.sprite(this.asset.x,this.asset.y,'sword4');
+    this.physics.enable(this.sword4, Phaser.Physics.ARCADE);
+    this.sword4.scale.x = 0.25;
+    this.sword4.scale.y = 0.25;
+    // Creates the animation
+    this.sword4.animations.add('swingfour');
+    this.sword4.kill();
 
     this.game.camera.follow(this.asset);
 
@@ -240,6 +261,8 @@ Game.prototype = {
     var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
     this.physics.arcade.collide(this.asset, this.layer);
+    this.game.physics.arcade.collide(this.asset, this.enemy1, heroattacked1, null, this);
+    this.game.physics.arcade.collide(this.asset, this.enemy2, heroattacked2, null, this);
     this.physics.arcade.collide(this.enemy1, this.enemy2);
     this.physics.arcade.collide(this.enemy2, this.enemy1);
 
@@ -268,47 +291,64 @@ Game.prototype = {
 
     //sword attack
     if (attackKey.isDown || spacebar.isDown) {
-      if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
-        this.sword.visible = true;
-        this.sword.animations.play('swing', 13, false);
-      }
-      if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
-        this.sword2.visible = true;
-        this.sword2.animations.play('swingtwo', 13, false);
+      if(animplaying == false) {
+        if (this.asset.frame == 6 || this.asset.frame == 7 || this.asset.frame == 8) {
+          this.sword.revive();
+          this.sword.animations.play('swing', 13, false);
+          animplaying = true;
+        }
+        if (this.asset.frame == 3 || this.asset.frame == 4 || this.asset.frame == 5) {
+          this.sword2.revive();
+          this.sword2.animations.play('swingtwo', 13, false);
+          animplaying = true;
+        }
+        if (this.asset.frame == 9 || this.asset.frame == 10 || this.asset.frame == 11) {
+          this.sword3.revive();
+          this.sword3.animations.play('swingthree', 13, false);
+          animplaying = true;
+        }
+        if (this.asset.frame == 0 || this.asset.frame == 1 || this.asset.frame == 2) {
+          this.sword4.revive();
+          this.sword4.animations.play('swingfour', 13, false);
+          animplaying = true;
+        }
       }
     }
+
     this.sword.animations.currentAnim.onComplete.add(function () {
       this.sword.visible = false;
       alreadyhit1 = 0;
       alreadyhit2 = 0;
+      animplaying = false;
     }, this);
     this.sword2.animations.currentAnim.onComplete.add(function () {
       this.sword2.visible = false;
       alreadyhit1 = 0;
       alreadyhit2 = 0;
+      animplaying = false;
     }, this);
-
+    this.sword3.animations.currentAnim.onComplete.add(function () {
+      this.sword3.visible = false;
+      alreadyhit1 = 0;
+      alreadyhit2 = 0;
+      animplaying = false;
+    }, this);
+    this.sword4.animations.currentAnim.onComplete.add(function () {
+      this.sword4.visible = false;
+      alreadyhit1 = 0;
+      alreadyhit2 = 0;
+      animplaying = false;
+    }, this);
 
     //keep the sword by the main character
     this.sword.x = this.asset.x;
     this.sword.y = this.asset.y;
     this.sword2.x = this.asset.x - 20;
     this.sword2.y = this.asset.y;
-
-    //collision detection for hitting the enemies
-    if (this.sword.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-      this.game.physics.arcade.overlap(this.sword, this.enemy1, enemy1attacked, null, this);
-    }
-    if (this.sword2.animations.currentAnim.isPlaying == true && alreadyhit1 == 0) {
-      this.game.physics.arcade.overlap(this.sword2, this.enemy1, enemy1attacked, null, this);
-    }
-
-    if (this.sword.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
-      this.game.physics.arcade.overlap(this.sword, this.enemy2, enemy2attacked, null, this);
-    }
-    if (this.sword2.animations.currentAnim.isPlaying == true && alreadyhit2 == 0) {
-      this.game.physics.arcade.overlap(this.sword2, this.enemy2, enemy2attacked, null, this);
-    }
+    this.sword3.x = this.asset.x - 5;
+    this.sword3.y = this.asset.y - 30;
+    this.sword4.x = this.asset.x - 10;
+    this.sword4.y = this.asset.y + 10;
 
     if (herohealth == 6) {
       this.heart3.frame = 0;
@@ -362,71 +402,105 @@ Game.prototype = {
 
     //collision detection for hero getting attacked
     if (enemy1health > 0) {
-      this.game.physics.arcade.collide(this.asset, this.enemy1, heroattacked, null, this);
+      this.game.physics.arcade.collide(this.asset, this.enemy1, heroattacked1, null, this);
     }
     if (enemy2health > 0) {
-      this.game.physics.arcade.collide(this.asset, this.enemy2, heroattacked, null, this);
+      this.game.physics.arcade.collide(this.asset, this.enemy2, heroattacked2, null, this);
     }
 
     //enemy2 movement
 
-    if (walkmore2 == true) {
-      walkmore2 = false;
-      this.enemy2.frame = 1;
-      tween2.start();
-      tween2.onComplete.add(doSomething, this);
-      function doSomething() {
-        this.enemy2.frame = 13;
-        tween6.start();
-        tween6.onComplete.add(doSomething, this);
-        function doSomething() {
-          this.enemy2.frame = 5;
-          tween7.start();
-          tween7.onComplete.add(doSomething, this);
-          function doSomething() {
-            this.enemy2.frame = 9;
-            tween8.start();
-            tween8.onComplete.add(doSomething, this);
-            function doSomething() {
-              walkmore2 = true;
-            }
-          }
-        }
-      }
-    }
+    //if (walkmore2 == true) {
+      //walkmore2 = false;
+      //this.enemy2.frame = 1;
+      //tween2.start();
+      //tween2.onComplete.add(doSomething, this);
+      //function doSomething() {
+        //this.enemy2.frame = 13;
+        //tween6.start();
+        //tween6.onComplete.add(doSomething, this);
+        //function doSomething() {
+          //this.enemy2.frame = 5;
+          //tween7.start();
+          //tween7.onComplete.add(doSomething, this);
+          //function doSomething() {
+            //this.enemy2.frame = 9;
+            //tween8.start();
+            //tween8.onComplete.add(doSomething, this);
+            //function doSomething() {
+              //walkmore2 = true;
+            //}
+          //}
+        //}
+      //}
+    //}
 
 
     //enemy1 movement
 
 
-    if (walkmore == true) {
+    //if (walkmore == true) {
 
-      this.enemy1.frame = 9;
-      tween1.start();
-      walkmore = false;
-      tween1.onComplete.add(doSomething2, this);
-      function doSomething2() {
-        this.enemy1.frame = 5;
-        tween3.start();
-        tween3.onComplete.add(doSomething2, this);
-        function doSomething2() {
-          this.enemy1.frame = 13;
-          tween4.start();
-          tween4.onComplete.add(doSomething2, this);
-          function doSomething2() {
-            this.enemy1.frame = 1;
-            tween5.start();
-            tween5.onComplete.add(doSomething2, this);
-            function doSomething2() {
-              walkmore = true;
-            }
-          }
-        }
-      }
-    }
+      //this.enemy1.frame = 9;
+      //tween1.start();
+      //walkmore = false;
+      //tween1.onComplete.add(doSomething2, this);
+      //function doSomething2() {
+       //this.enemy1.frame = 5;
+        //tween3.start();
+        //tween3.onComplete.add(doSomething2, this);
+        //function doSomething2() {
+          //this.enemy1.frame = 13;
+          //tween4.start();
+          //tween4.onComplete.add(doSomething2, this);
+          //function doSomething2() {
+            //this.enemy1.frame = 1;
+            //tween5.start();
+            //tween5.onComplete.add(doSomething2, this);
+            //function doSomething2() {
+              //walkmore = true;
+            //}
+          //}
+        //}
+      //}
+    //}
   }
 
 };
+
+function heroattacked1 () {
+  herohealth--;
+  if (this.asset.x < this.enemy1.x) {
+    this.asset.x -= 32;
+  }
+  if (this.asset.x > this.enemy1.x) {
+    this.asset.x += 32;
+  }
+  if (this.asset.y < this.enemy1.y) {
+    this.asset.y -= 32;
+  }
+  if (this.asset.y > this.enemy1.y) {
+    this.asset.y += 32;
+  }
+
+}
+
+function heroattacked2 () {
+  herohealth--;
+  if (this.asset.x < this.enemy2.x) {
+    this.asset.x -= 32;
+  }
+  if (this.asset.x > this.enemy2.x) {
+    this.asset.x += 32;
+  }
+  if (this.asset.y < this.enemy2.y) {
+    this.asset.y -= 32;
+  }
+  if (this.asset.y > this.enemy2.y) {
+    this.asset.y += 32;
+  }
+
+}
 
 function enemy1attacked () {
   enemy1health = enemy1health - 1;
@@ -438,16 +512,6 @@ function enemy2attacked () {
   enemy2health = enemy2health - 1;
   alreadyhit2 = 1;
   console.log(enemy2health);
-}
-
-function heroattacked () {
-  if(this.sword2.animations.currentAnim.isPlaying == false && this.sword.animations.currentAnim.isPlaying == false) {
-    if (sectimer = 1) {
-      herohealth--;
-      tween11 = this.game.add.tween(this.asset);
-      tween11.to({x: [this.asset.x + 50], y: [this.asset.y]}, 200, "Linear");
-    }
-  }
 }
 
 function listenerPause () {

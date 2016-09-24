@@ -70,9 +70,7 @@ Preloader.prototype = {
     this.load.image('stairs', 'assets/game/Level1/stairs.png');
     this.load.image('hallway', 'assets/game/Level1/bossentrance.png');
     this.load.image('loading', 'assets/game/GUI/loadingscreen_360.png');
-
-
-
+    this.load.image('coderdojotoledo', 'assets//game/coderdojo.png');
 
     this.game.time.advancedTiming = true;
   },

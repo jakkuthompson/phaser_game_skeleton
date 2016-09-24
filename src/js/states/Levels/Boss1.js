@@ -321,6 +321,8 @@ Boss1.prototype = {
 
         this.healthbar.frame = Math.abs(bosshealth - 100);
 
+        this.healthbar.dirty = true;
+
         if(bosshealth >= 50){
             this.healthbar.tint = 0x00ff00;
         }
